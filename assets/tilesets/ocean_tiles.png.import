@@ -1,0 +1,34 @@
+[remap]
+
+importer="texture"
+type="StreamTexture"
+path="res://.import/ocean_tiles.png-09b70c0d13ed3f57c663f70c41100f76.stex"
+metadata={
+"vram_texture": false
+}
+
+[deps]
+
+source_file="res://assets/tilesets/ocean_tiles.png"
+dest_files=[ "res://.import/ocean_tiles.png-09b70c0d13ed3f57c663f70c41100f76.stex" ]
+
+[params]
+
+compress/mode=0
+compress/lossy_quality=0.7
+compress/hdr_mode=0
+compress/bptc_ldr=0
+compress/normal_map=0
+flags/repeat=0
+flags/filter=true
+flags/mipmaps=false
+flags/anisotropic=false
+flags/srgb=2
+process/fix_alpha_border=true
+process/premult_alpha=false
+process/HDR_as_SRGB=false
+process/invert_color=false
+stream=false
+size_limit=0
+detect_3d=true
+svg/scale=1.0
