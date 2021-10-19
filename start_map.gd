@@ -16,14 +16,7 @@ var elementTileMap
 var zoningTileMap
 var unitTileMap
 var oceanTileMap
-var mapWidth = 30
-var mapHeight = 30
-var tileWidth = 64
-var tileHeight = 32
 var camera
-
-# var my_x = 0
-# var my_y = 0
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -37,14 +30,14 @@ func _ready():
 	Global.oceanLevel = 2
 	updateOceanLevel()
 	
-	initCamera(mapWidth, mapHeight)
+	initCamera(Global.mapWidth, Global.mapHeight)
 	# loadMapData()
 
 # Set camera to start at middle of map, and set camera edge limits
 # Width/height is number of map tiles
 func initCamera(width, height):
-	var mid_x = (width / 2) * tileWidth
-	var mid_y = (height / 2) * tileHeight
+	var mid_x = (width / 2) * Global.TILE_WIDTH
+	var mid_y = (height / 2) * Global.TILE_HEIGHT
 	
 	# Use the player starting tile to calculate camera position
 	camera.position.y = mid_y
@@ -52,12 +45,11 @@ func initCamera(width, height):
 	camera.limit_left = (mid_x * -1) - MAP_EDGE_BUFFER
 	camera.limit_top = -MAP_EDGE_BUFFER
 	camera.limit_right = mid_x + MAP_EDGE_BUFFER
-	camera.limit_bottom = mapHeight * tileHeight + MAP_EDGE_BUFFER
-
-
+	camera.limit_bottom = Global.mapHeight * Global.TILE_HEIGHT + MAP_EDGE_BUFFER
 
 func _unhandled_input(event):
 	if event is InputEventMouseButton and event.pressed:
+		
 		var tile = elementTileMap.world_to_map(get_global_mouse_position())
 		var index = elementTileMap.get_cell(tile.x, tile.y)
 		var height = index % TILES_IN_SET
@@ -72,21 +64,22 @@ func _unhandled_input(event):
 					clear_tile(tile)
 					elementTileMap.set_cell(tile.x, tile.y, DIRT_TILE_START + height)
 				else:
-					adjust_tile_height(tile, index)
+					adjust_tile_height(tile)
+					$VectorBase.redraw_map()
 			# Sand Tool
 			2:
 				if !is_sand(index):
 					clear_tile(tile)
 					elementTileMap.set_cell(tile.x, tile.y, SAND_TILE_START + height)
 				else:
-					adjust_tile_height(tile, index)
+					adjust_tile_height(tile)
 			# Water Tool
 			3:
 				if !is_water(index):
 					clear_tile(tile)
 					elementTileMap.set_cell(tile.x, tile.y, WATER_TILE_START + height)
 				else:
-					adjust_tile_height(tile, index)
+					adjust_tile_height(tile)
 			# Residential Zoning
 			4:
 				if !is_dirt(index):
@@ -146,19 +139,15 @@ func _unhandled_input(event):
 			Global.oceanLevel += 1
 			updateOceanLevel()
 
-	elif event is InputEventMouseMotion:
+	elif event is InputEventMouseMotion:		
 		var tile = elementTileMap.world_to_map(get_global_mouse_position())
 		var height = elementTileMap.get_cell(tile.x, tile.y) % TILES_IN_SET
-		
-		# my_x = get_global_mouse_position().x
-		# my_y = get_global_mouse_position().y
-		# update()
 		
 		$HUD.update_tile_display(tile, height)
 		$HUD.update_mouse(get_global_mouse_position())
 
 func tile_out_of_bounds(tile):
-	return tile.x < 0 || mapWidth <= tile.x || tile.y < 0 || mapHeight <= tile.y
+	return tile.x < 0 || Global.mapWidth <= tile.x || tile.y < 0 || Global.mapHeight <= tile.y
 
 func is_dirt(index):
 	return DIRT_TILE_START <= index && index < DIRT_TILE_START + TILES_IN_SET
@@ -179,24 +168,18 @@ func clear_tile(tile):
 	zoningTileMap.set_cell(tile.x, tile.y, -1)
 	unitTileMap.set_cell(tile.x, tile.y, -1)
 
-func adjust_tile_height(tile, index):
-	clear_tile(tile)
-	var height = index % TILES_IN_SET
-	
+func adjust_tile_height(tile):	
 	if Input.is_action_pressed("left_click"):
-		if height < TILES_IN_SET - 1:
-			elementTileMap.set_cell(tile.x, tile.y, index + 1)
-			$HUD.update_tile_display(tile, height + 1)
-			
+		Global.tileMap[tile.x][tile.y].raise_tile()	
+		$VectorBase.set_shape(tile.x, tile.y)		
 	elif Input.is_action_pressed("right_click"):
-		if height > 0:
-			elementTileMap.set_cell(tile.x, tile.y, index - 1)
-			$HUD.update_tile_display(tile, height - 1)
+		Global.tileMap[tile.x][tile.y].lower_tile()
+		$VectorBase.set_shape(tile.x, tile.y)		
 
 func updateOceanLevel():
 	$HUD.update_ocean_display()
-	for i in mapWidth:
-		for j in mapHeight:
+	for i in Global.mapWidth:
+		for j in Global.mapHeight:
 			var height = elementTileMap.get_cell(i, j) % TILES_IN_SET
 			if height < Global.oceanLevel:
 				clear_units(Vector2(i, j))

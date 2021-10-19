@@ -32,7 +32,7 @@ func _process(delta):
 		move_vector.y += 1
 
 	# Zooming out via keyboard
-	if Input.is_action_just_released("zoom_out") && self.zoom.x < 2.5:
+	if Input.is_action_just_released("zoom_out") && self.zoom.x < 1.5:
 		self.zoom.x += 0.25
 		self.zoom.y += 0.25
 		
@@ -53,7 +53,7 @@ func _process(delta):
 			self.position.y -= self.position.y + cam_y - self.limit_bottom
 	
 	# Zooming in via keyboard
-	elif Input.is_action_just_released("zoom_in") && self.zoom.x > 0.5:
+	elif Input.is_action_just_released("zoom_in") && self.zoom.x > 0.25:
 		self.zoom.x -= 0.25
 		self.zoom.y -= 0.25
 		

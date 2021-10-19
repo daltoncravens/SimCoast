@@ -5,7 +5,7 @@
 [ext_resource path="res://start_map.gd" type="Script" id=3]
 [ext_resource path="res://Camera2D.gd" type="Script" id=4]
 [ext_resource path="res://assets/buttons/water_active.png" type="Texture" id=5]
-[ext_resource path="res://Highlight.gd" type="Script" id=6]
+[ext_resource path="res://VectorBase.gd" type="Script" id=6]
 [ext_resource path="res://assets/buttons/water_normal.png" type="Texture" id=9]
 [ext_resource path="res://assets/buttons/dirt_active.png" type="Texture" id=10]
 [ext_resource path="res://assets/buttons/sand_active.png" type="Texture" id=11]
@@ -2826,6 +2826,10 @@ limit_smoothed = true
 smoothing_enabled = true
 script = ExtResource( 4 )
 
+[node name="VectorBase" type="Polygon2D" parent="."]
+visible = false
+script = ExtResource( 6 )
+
 [node name="Base" type="TileMap" parent="."]
 mode = 1
 tile_set = SubResource( 1 )
@@ -2857,9 +2861,6 @@ tile_set = SubResource( 4 )
 cell_size = Vector2( 64, 32 )
 cell_y_sort = true
 format = 1
-
-[node name="Highlight" type="Polygon2D" parent="Base"]
-script = ExtResource( 6 )
 
 [node name="HUD" type="CanvasLayer" parent="."]
 script = ExtResource( 1 )
