@@ -16,22 +16,14 @@ var elementTileMap
 var zoningTileMap
 var unitTileMap
 var oceanTileMap
+var vectorMap
 var camera
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	Global.mapTool = 0
 	camera = get_node("Camera2D")
 	elementTileMap = get_node("Base")
-	zoningTileMap = get_node("Base/Zoning")
-	unitTileMap = get_node("Base/Units")	
-	oceanTileMap = get_node("Base/Ocean")
-	
-	Global.oceanLevel = 2
-	updateOceanLevel()
-	
 	initCamera(Global.mapWidth, Global.mapHeight)
-	# loadMapData()
 
 # Set camera to start at middle of map, and set camera edge limits
 # Width/height is number of map tiles
@@ -47,89 +39,56 @@ func initCamera(width, height):
 	camera.limit_right = mid_x + MAP_EDGE_BUFFER
 	camera.limit_bottom = Global.mapHeight * Global.TILE_HEIGHT + MAP_EDGE_BUFFER
 
+# Handle inputs (clicks, keys)
 func _unhandled_input(event):
 	if event is InputEventMouseButton and event.pressed:
-		
-		var tile = elementTileMap.world_to_map(get_global_mouse_position())
-		var index = elementTileMap.get_cell(tile.x, tile.y)
-		var height = index % TILES_IN_SET
+		var cube = $VectorMap.get_tile_at(get_global_mouse_position())
 	
-		if tile_out_of_bounds(tile):
+		# If the click was not on a valid tile, do nothing
+		if not cube:
 			return
 		
+		# Perform action based on current tool selected
 		match Global.mapTool:
-			# Dirt Tool
-			1:
-				if !is_dirt(index):
-					clear_tile(tile)
-					elementTileMap.set_cell(tile.x, tile.y, DIRT_TILE_START + height)
+			1: # Dirt Base Tool
+				if !Global.tileMap[cube.i][cube.j].is_dirt():
+					Global.tileMap[cube.i][cube.j].set_base("DIRT")
 				else:
-					adjust_tile_height(tile)
-					$VectorBase.redraw_map()
-			# Sand Tool
-			2:
-				if !is_sand(index):
-					clear_tile(tile)
-					elementTileMap.set_cell(tile.x, tile.y, SAND_TILE_START + height)
+					adjust_tile_height(cube)
+				cube.update()
+			2: # Sand Base Tool
+				if !Global.tileMap[cube.i][cube.j].is_sand():
+					Global.tileMap[cube.i][cube.j].set_base("SAND")
 				else:
-					adjust_tile_height(tile)
-			# Water Tool
-			3:
-				if !is_water(index):
-					clear_tile(tile)
-					elementTileMap.set_cell(tile.x, tile.y, WATER_TILE_START + height)
+					adjust_tile_height(cube)
+				cube.update()
+			3: # Water Base Tool
+				if !Global.tileMap[cube.i][cube.j].is_water():
+					Global.tileMap[cube.i][cube.j].set_base("WATER")
 				else:
-					adjust_tile_height(tile)
-			# Residential Zoning
-			4:
-				if !is_dirt(index):
+					adjust_tile_height(cube)
+				cube.update()
+			# Zoning and Infrasturcture
+			4, 5, 6, 7, 8:
+				if !Global.tileMap[cube.i][cube.j].is_dirt():
 					return
+
+				Global.tileMap[cube.i][cube.j].clear_tile()
 				
 				if Input.is_action_pressed("left_click"):
-					clear_tile(tile)
-					zoningTileMap.set_cell(tile.x, tile.y, RZONE_TILE_START + height)
-				elif Input.is_action_pressed("right_click"):
-					zoningTileMap.set_cell(tile.x, tile.y, -1)
-			# Commercial Zoning
-			5:
-				if !is_dirt(index):
-					return
-				
-				if Input.is_action_pressed("left_click"):
-					clear_tile(tile)
-					zoningTileMap.set_cell(tile.x, tile.y, CZONE_TILE_START + height)
-				elif Input.is_action_pressed("right_click"):
-					zoningTileMap.set_cell(tile.x, tile.y, -1)
-			# Industrial Zoning
-			6:
-				if !is_dirt(index):
-					return
-				
-				if Input.is_action_pressed("left_click"):
-					clear_tile(tile)
-					zoningTileMap.set_cell(tile.x, tile.y, IZONE_TILE_START + height)
-				elif Input.is_action_pressed("right_click"):
-					zoningTileMap.set_cell(tile.x, tile.y, -1)				
-			# Plant Trees
-			7:
-				if !is_dirt(index):
-					return
-				
-				if Input.is_action_pressed("left_click"):
-					clear_tile(tile)
-					unitTileMap.set_cell(tile.x, tile.y, PARK_TILE_START + height)
-				elif Input.is_action_pressed("right_click"):
-					unitTileMap.set_cell(tile.x, tile.y, -1)
-			# Build Road
-			8:
-				if !is_dirt(index):
-					return
-				
-				if Input.is_action_pressed("left_click"):
-					clear_tile(tile)
-					unitTileMap.set_cell(tile.x, tile.y, ROAD_TILE_START + height)
-				elif Input.is_action_pressed("right_click"):
-					unitTileMap.set_cell(tile.x, tile.y, -1)
+					match Global.mapTool:
+						4:
+							Global.tileMap[cube.i][cube.j].zone = 1
+						5:
+							Global.tileMap[cube.i][cube.j].zone = 2
+						6:
+							Global.tileMap[cube.i][cube.j].zone = 3
+						7:
+							Global.tileMap[cube.i][cube.j].inf = 2
+						8:
+							Global.tileMap[cube.i][cube.j].inf = 1
+			
+				cube.update()
 
 	elif event is InputEventKey && event.pressed:
 		if event.scancode == KEY_O and Global.oceanLevel > 0:
@@ -141,52 +100,30 @@ func _unhandled_input(event):
 
 	elif event is InputEventMouseMotion:		
 		var tile = elementTileMap.world_to_map(get_global_mouse_position())
-		var height = elementTileMap.get_cell(tile.x, tile.y) % TILES_IN_SET
+		var height = 0
+		if !tile_out_of_bounds(tile):
+			height = Global.tileMap[tile.x][tile.y].height
 		
 		$HUD.update_tile_display(tile, height)
 		$HUD.update_mouse(get_global_mouse_position())
 
 func tile_out_of_bounds(tile):
 	return tile.x < 0 || Global.mapWidth <= tile.x || tile.y < 0 || Global.mapHeight <= tile.y
-
-func is_dirt(index):
-	return DIRT_TILE_START <= index && index < DIRT_TILE_START + TILES_IN_SET
-
-func is_sand(index):
-	return SAND_TILE_START <= index && index < SAND_TILE_START + TILES_IN_SET
-
-func is_water(index):
-	return WATER_TILE_START <= index && index < WATER_TILE_START + TILES_IN_SET
-
-func clear_zoning(tile):
-	zoningTileMap.set_cell(tile.x, tile.y, -1)
-
-func clear_units(tile):
-	unitTileMap.set_cell(tile.x, tile.y, -1)
-
-func clear_tile(tile):
-	zoningTileMap.set_cell(tile.x, tile.y, -1)
-	unitTileMap.set_cell(tile.x, tile.y, -1)
-
-func adjust_tile_height(tile):	
+	
+# Changes a tile's height depending on type of click
+func adjust_tile_height(cube):	
 	if Input.is_action_pressed("left_click"):
-		Global.tileMap[tile.x][tile.y].raise_tile()	
-		$VectorBase.set_shape(tile.x, tile.y)		
+		Global.tileMap[cube.i][cube.j].raise_tile()
 	elif Input.is_action_pressed("right_click"):
-		Global.tileMap[tile.x][tile.y].lower_tile()
-		$VectorBase.set_shape(tile.x, tile.y)		
+		Global.tileMap[cube.i][cube.j].lower_tile()
 
+# On a change in ocean height, check each cube for a change, then re-draw
 func updateOceanLevel():
 	$HUD.update_ocean_display()
 	for i in Global.mapWidth:
 		for j in Global.mapHeight:
-			var height = elementTileMap.get_cell(i, j) % TILES_IN_SET
-			if height < Global.oceanLevel:
-				clear_units(Vector2(i, j))
-				oceanTileMap.set_cell(i, j, (height * TILES_IN_SET) + Global.oceanLevel)
-			else:
-				oceanTileMap.set_cell(i, j, -1)
-	
+			Global.tileMap[i][j].water_cube.update_polygons()
+
 func loadMapData():
 	var file = File.new()
 	if not file.file_exists(mapPath):

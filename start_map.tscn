@@ -1,11 +1,13 @@
-[gd_scene load_steps=39 format=2]
+[gd_scene load_steps=41 format=2]
 
 [ext_resource path="res://HUD.gd" type="Script" id=1]
 [ext_resource path="res://assets/buttons/water_hover.png" type="Texture" id=2]
 [ext_resource path="res://start_map.gd" type="Script" id=3]
 [ext_resource path="res://Camera2D.gd" type="Script" id=4]
 [ext_resource path="res://assets/buttons/water_active.png" type="Texture" id=5]
-[ext_resource path="res://VectorBase.gd" type="Script" id=6]
+[ext_resource path="res://OceanMap.gd" type="Script" id=6]
+[ext_resource path="res://VectorMap.gd" type="Script" id=7]
+[ext_resource path="res://Ocean.gd" type="Script" id=8]
 [ext_resource path="res://assets/buttons/water_normal.png" type="Texture" id=9]
 [ext_resource path="res://assets/buttons/dirt_active.png" type="Texture" id=10]
 [ext_resource path="res://assets/buttons/sand_active.png" type="Texture" id=11]
@@ -2826,11 +2828,8 @@ limit_smoothed = true
 smoothing_enabled = true
 script = ExtResource( 4 )
 
-[node name="VectorBase" type="Polygon2D" parent="."]
-visible = false
-script = ExtResource( 6 )
-
 [node name="Base" type="TileMap" parent="."]
+visible = false
 mode = 1
 tile_set = SubResource( 1 )
 cell_size = Vector2( 64, 32 )
@@ -2886,13 +2885,12 @@ margin_bottom = 24.0
 text = "Tile: (0, 0)"
 
 [node name="OceanLevel" type="Label" parent="HUD/MarginContainer"]
-visible = false
 margin_left = 10.0
 margin_top = 10.0
 margin_right = 1270.0
 margin_bottom = 24.0
 text = "Ocean Level: "
-align = 2
+align = 1
 
 [node name="MousePosition" type="Label" parent="HUD/MarginContainer"]
 margin_left = 10.0
@@ -3014,3 +3012,12 @@ texture_normal = ExtResource( 35 )
 texture_pressed = ExtResource( 36 )
 texture_hover = ExtResource( 34 )
 texture_focused = ExtResource( 36 )
+
+[node name="VectorMap" type="YSort" parent="."]
+script = ExtResource( 7 )
+
+[node name="Ocean" type="Area2D" parent="VectorMap"]
+script = ExtResource( 8 )
+
+[node name="OceanMap" type="YSort" parent="."]
+script = ExtResource( 6 )
