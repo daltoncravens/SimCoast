@@ -1,0 +1,103 @@
+[gd_scene load_steps=9 format=2]
+
+[ext_resource path="res://title_scrn/font/upheavtt_24.tres" type="DynamicFont" id=1]
+[ext_resource path="res://title_scrn/font/AldotheApache.ttf" type="DynamicFontData" id=2]
+[ext_resource path="res://title_scrn/buttons/QuitButton.tscn" type="PackedScene" id=3]
+[ext_resource path="res://title_scrn/buttons/NewGameButton.tscn" type="PackedScene" id=4]
+[ext_resource path="res://title_scrn/buttons/LoadGameButton.tscn" type="PackedScene" id=5]
+[ext_resource path="res://title_scrn/buttons/OptionsButton.tscn" type="PackedScene" id=6]
+[ext_resource path="res://title_scrn/buttons/ContinueButton.tscn" type="PackedScene" id=7]
+
+[sub_resource type="DynamicFont" id=1]
+size = 140
+font_data = ExtResource( 2 )
+
+[node name="StartMenu" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MenuLayout" type="VBoxContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 150.0
+margin_top = 40.0
+margin_right = -150.0
+margin_bottom = -40.0
+custom_constants/separation = 5
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Title" type="Label" parent="MenuLayout"]
+margin_right = 1066.0
+margin_bottom = 117.0
+custom_fonts/font = SubResource( 1 )
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
+custom_constants/shadow_offset_x = 5
+custom_constants/shadow_offset_y = 5
+text = "SimCoast"
+align = 1
+valign = 1
+
+[node name="Buttons" type="VBoxContainer" parent="MenuLayout"]
+margin_top = 122.0
+margin_right = 1066.0
+margin_bottom = 688.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_constants/separation = 40
+alignment = 1
+
+[node name="ContinueButton" parent="MenuLayout/Buttons" instance=ExtResource( 7 )]
+margin_top = 78.0
+margin_right = 1066.0
+margin_bottom = 128.0
+rect_min_size = Vector2( 866, 50 )
+
+[node name="NewGameButton" parent="MenuLayout/Buttons" instance=ExtResource( 4 )]
+margin_top = 168.0
+margin_right = 1066.0
+margin_bottom = 218.0
+rect_min_size = Vector2( 866, 50 )
+
+[node name="LoadGameButton" parent="MenuLayout/Buttons" instance=ExtResource( 5 )]
+margin_top = 258.0
+margin_right = 1066.0
+margin_bottom = 308.0
+rect_min_size = Vector2( 866, 50 )
+
+[node name="OptionsButton" parent="MenuLayout/Buttons" instance=ExtResource( 6 )]
+margin_top = 348.0
+margin_right = 1066.0
+margin_bottom = 398.0
+rect_min_size = Vector2( 866, 50 )
+
+[node name="QuitButton" parent="MenuLayout/Buttons" instance=ExtResource( 3 )]
+margin_top = 438.0
+margin_right = 1066.0
+margin_bottom = 488.0
+rect_min_size = Vector2( 866, 50 )
+
+[node name="AcceptDialog" type="AcceptDialog" parent="MenuLayout"]
+margin_right = 83.0
+margin_bottom = 58.0
+popup_exclusive = true
+dialog_text = "Test"
+
+[node name="VersionLabel" type="Label" parent="."]
+anchor_top = 1.0
+anchor_bottom = 1.0
+margin_top = -101.0
+margin_right = 1066.0
+size_flags_vertical = 3
+custom_fonts/font = ExtResource( 1 )
+text = "Version 1.0.0 Alpha
+SimCoast Squad"
+valign = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
