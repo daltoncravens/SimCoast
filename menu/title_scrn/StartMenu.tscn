@@ -1,12 +1,14 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=11 format=2]
 
-[ext_resource path="res://title_scrn/font/upheavtt_24.tres" type="DynamicFont" id=1]
-[ext_resource path="res://title_scrn/font/AldotheApache.ttf" type="DynamicFontData" id=2]
-[ext_resource path="res://title_scrn/buttons/QuitButton.tscn" type="PackedScene" id=3]
-[ext_resource path="res://title_scrn/buttons/NewGameButton.tscn" type="PackedScene" id=4]
-[ext_resource path="res://title_scrn/buttons/LoadGameButton.tscn" type="PackedScene" id=5]
-[ext_resource path="res://title_scrn/buttons/OptionsButton.tscn" type="PackedScene" id=6]
-[ext_resource path="res://title_scrn/buttons/ContinueButton.tscn" type="PackedScene" id=7]
+[ext_resource path="res://menu/title_scrn/font/upheavtt_24.tres" type="DynamicFont" id=1]
+[ext_resource path="res://menu/title_scrn/font/AldotheApache.ttf" type="DynamicFontData" id=2]
+[ext_resource path="res://menu/title_scrn/buttons/QuitButton.tscn" type="PackedScene" id=3]
+[ext_resource path="res://menu/title_scrn/buttons/NewGameButton.tscn" type="PackedScene" id=4]
+[ext_resource path="res://menu/title_scrn/buttons/LoadGameButton.tscn" type="PackedScene" id=5]
+[ext_resource path="res://menu/title_scrn/buttons/OptionsButton.tscn" type="PackedScene" id=6]
+[ext_resource path="res://menu/title_scrn/buttons/ContinueButton.tscn" type="PackedScene" id=7]
+[ext_resource path="res://menu/title_scrn/OptionsPop.gd" type="Script" id=8]
+[ext_resource path="res://menu/title_scrn/font/upheavtt_40.tres" type="DynamicFont" id=9]
 
 [sub_resource type="DynamicFont" id=1]
 size = 140
@@ -32,7 +34,7 @@ __meta__ = {
 }
 
 [node name="Title" type="Label" parent="MenuLayout"]
-margin_right = 1066.0
+margin_right = 980.0
 margin_bottom = 117.0
 custom_fonts/font = SubResource( 1 )
 custom_colors/font_color = Color( 1, 1, 1, 1 )
@@ -45,48 +47,42 @@ valign = 1
 
 [node name="Buttons" type="VBoxContainer" parent="MenuLayout"]
 margin_top = 122.0
-margin_right = 1066.0
-margin_bottom = 688.0
+margin_right = 980.0
+margin_bottom = 640.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_constants/separation = 40
 alignment = 1
 
 [node name="ContinueButton" parent="MenuLayout/Buttons" instance=ExtResource( 7 )]
-margin_top = 78.0
-margin_right = 1066.0
-margin_bottom = 128.0
+margin_top = 54.0
+margin_right = 980.0
+margin_bottom = 104.0
 rect_min_size = Vector2( 866, 50 )
 
 [node name="NewGameButton" parent="MenuLayout/Buttons" instance=ExtResource( 4 )]
-margin_top = 168.0
-margin_right = 1066.0
-margin_bottom = 218.0
+margin_top = 144.0
+margin_right = 980.0
+margin_bottom = 194.0
 rect_min_size = Vector2( 866, 50 )
 
 [node name="LoadGameButton" parent="MenuLayout/Buttons" instance=ExtResource( 5 )]
-margin_top = 258.0
-margin_right = 1066.0
-margin_bottom = 308.0
+margin_top = 234.0
+margin_right = 980.0
+margin_bottom = 284.0
 rect_min_size = Vector2( 866, 50 )
 
 [node name="OptionsButton" parent="MenuLayout/Buttons" instance=ExtResource( 6 )]
-margin_top = 348.0
-margin_right = 1066.0
-margin_bottom = 398.0
+margin_top = 324.0
+margin_right = 980.0
+margin_bottom = 374.0
 rect_min_size = Vector2( 866, 50 )
 
 [node name="QuitButton" parent="MenuLayout/Buttons" instance=ExtResource( 3 )]
-margin_top = 438.0
-margin_right = 1066.0
-margin_bottom = 488.0
+margin_top = 414.0
+margin_right = 980.0
+margin_bottom = 464.0
 rect_min_size = Vector2( 866, 50 )
-
-[node name="AcceptDialog" type="AcceptDialog" parent="MenuLayout"]
-margin_right = 83.0
-margin_bottom = 58.0
-popup_exclusive = true
-dialog_text = "Test"
 
 [node name="VersionLabel" type="Label" parent="."]
 anchor_top = 1.0
@@ -101,3 +97,58 @@ valign = 2
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="OptionsPop" type="PopupPanel" parent="."]
+visible = true
+margin_left = 389.111
+margin_top = 110.952
+margin_right = 889.111
+margin_bottom = 610.952
+script = ExtResource( 8 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MarginContainer" type="MarginContainer" parent="OptionsPop"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+custom_constants/margin_right = 0
+custom_constants/margin_top = 465
+custom_constants/margin_left = 400
+custom_constants/margin_bottom = 0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="BackButton" type="Button" parent="OptionsPop/MarginContainer"]
+margin_left = 400.0
+margin_top = 465.0
+margin_right = 500.0
+margin_bottom = 500.0
+rect_min_size = Vector2( 100, 35 )
+size_flags_horizontal = 0
+size_flags_vertical = 0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="OptionsPop/MarginContainer/BackButton"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -50.0
+margin_top = -18.0
+margin_right = 50.0
+margin_bottom = 18.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+custom_fonts/font = ExtResource( 9 )
+text = "Back"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[connection signal="pressed" from="MenuLayout/Buttons/OptionsButton" to="OptionsPop" method="_on_OptionsButton_pressed"]
