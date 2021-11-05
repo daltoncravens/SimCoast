@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://menu/title_scrn/font/upheavtt_24.tres" type="DynamicFont" id=1]
 [ext_resource path="res://menu/title_scrn/font/AldotheApache.ttf" type="DynamicFontData" id=2]
@@ -7,16 +7,22 @@
 [ext_resource path="res://menu/title_scrn/buttons/LoadGameButton.tscn" type="PackedScene" id=5]
 [ext_resource path="res://menu/title_scrn/buttons/OptionsButton.tscn" type="PackedScene" id=6]
 [ext_resource path="res://menu/title_scrn/buttons/ContinueButton.tscn" type="PackedScene" id=7]
-[ext_resource path="res://menu/title_scrn/OptionsPop.gd" type="Script" id=8]
-[ext_resource path="res://menu/title_scrn/font/upheavtt_40.tres" type="DynamicFont" id=9]
+[ext_resource path="res://menu/title_scrn/OptionsPopup.gd" type="Script" id=8]
+[ext_resource path="res://menu/title_scrn/DeleteSaveConfirm.gd" type="Script" id=9]
+[ext_resource path="res://menu/title_scrn/StartMenu.gd" type="Script" id=10]
+[ext_resource path="res://menu/title_scrn/musicassets/english-chorus.mp3" type="AudioStream" id=11]
 
 [sub_resource type="DynamicFont" id=1]
 size = 140
 font_data = ExtResource( 2 )
 
+[sub_resource type="Theme" id=2]
+default_font = ExtResource( 1 )
+
 [node name="StartMenu" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
+script = ExtResource( 10 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -51,38 +57,33 @@ margin_right = 980.0
 margin_bottom = 640.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-custom_constants/separation = 40
+custom_constants/separation = 20
 alignment = 1
 
 [node name="ContinueButton" parent="MenuLayout/Buttons" instance=ExtResource( 7 )]
-margin_top = 54.0
+margin_top = 31.0
 margin_right = 980.0
-margin_bottom = 104.0
-rect_min_size = Vector2( 866, 50 )
+margin_bottom = 106.0
 
 [node name="NewGameButton" parent="MenuLayout/Buttons" instance=ExtResource( 4 )]
-margin_top = 144.0
+margin_top = 126.0
 margin_right = 980.0
-margin_bottom = 194.0
-rect_min_size = Vector2( 866, 50 )
+margin_bottom = 201.0
 
 [node name="LoadGameButton" parent="MenuLayout/Buttons" instance=ExtResource( 5 )]
-margin_top = 234.0
+margin_top = 221.0
 margin_right = 980.0
-margin_bottom = 284.0
-rect_min_size = Vector2( 866, 50 )
+margin_bottom = 296.0
 
 [node name="OptionsButton" parent="MenuLayout/Buttons" instance=ExtResource( 6 )]
-margin_top = 324.0
+margin_top = 316.0
 margin_right = 980.0
-margin_bottom = 374.0
-rect_min_size = Vector2( 866, 50 )
+margin_bottom = 391.0
 
 [node name="QuitButton" parent="MenuLayout/Buttons" instance=ExtResource( 3 )]
-margin_top = 414.0
+margin_top = 411.0
 margin_right = 980.0
-margin_bottom = 464.0
-rect_min_size = Vector2( 866, 50 )
+margin_bottom = 486.0
 
 [node name="VersionLabel" type="Label" parent="."]
 anchor_top = 1.0
@@ -98,57 +99,201 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="OptionsPop" type="PopupPanel" parent="."]
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 11 )
+
+[node name="AudioStreamPlayer2" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 11 )
+autoplay = true
+bus = "Music"
+
+[node name="AudioStreamPlayer3" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 11 )
+autoplay = true
+bus = "SFX"
+
+[node name="OptionsPopup" type="AcceptDialog" parent="."]
 visible = true
-margin_left = 389.111
-margin_top = 110.952
-margin_right = 889.111
-margin_bottom = 610.952
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -250.0
+margin_top = -250.0
+margin_right = 250.0
+margin_bottom = 267.0
+rect_min_size = Vector2( 400, 400 )
+theme = SubResource( 2 )
+window_title = "Options Menu"
 script = ExtResource( 8 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="MarginContainer" type="MarginContainer" parent="OptionsPop"]
+[node name="VBoxContainer" type="VBoxContainer" parent="OptionsPopup"]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -242.0
+margin_top = 8.0
+margin_right = 242.0
+margin_bottom = 473.0
+custom_constants/separation = 5
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="FullScreen" type="HBoxContainer" parent="OptionsPopup/VBoxContainer"]
+margin_right = 484.0
+margin_bottom = 40.0
+alignment = 1
+
+[node name="FullScreenLabel" type="Label" parent="OptionsPopup/VBoxContainer/FullScreen"]
+margin_left = 86.0
+margin_top = 9.0
+margin_right = 317.0
+margin_bottom = 31.0
+custom_fonts/font = ExtResource( 1 )
+text = "Toggle Fullscreen"
+align = 1
+
+[node name="FullScreenToggle" type="CheckButton" parent="OptionsPopup/VBoxContainer/FullScreen"]
+margin_left = 321.0
+margin_right = 397.0
+margin_bottom = 40.0
+
+[node name="MasterVolume" type="HBoxContainer" parent="OptionsPopup/VBoxContainer"]
+margin_top = 45.0
+margin_right = 484.0
+margin_bottom = 85.0
+custom_constants/separation = 20
+
+[node name="MasterLabel" type="Label" parent="OptionsPopup/VBoxContainer/MasterVolume"]
+margin_top = 9.0
+margin_right = 181.0
+margin_bottom = 31.0
+custom_fonts/font = ExtResource( 1 )
+text = "Master Volume"
+align = 1
+
+[node name="MasterVolSlider" type="HSlider" parent="OptionsPopup/VBoxContainer/MasterVolume"]
+margin_left = 201.0
+margin_right = 351.0
+margin_bottom = 30.0
+rect_min_size = Vector2( 150, 30 )
+min_value = -50.0
+max_value = 50.0
+
+[node name="MasterMute" type="CheckButton" parent="OptionsPopup/VBoxContainer/MasterVolume"]
+margin_left = 400.0
+margin_right = 447.0
+margin_bottom = 40.0
+pressed = true
+
+[node name="MusicVolume" type="HBoxContainer" parent="OptionsPopup/VBoxContainer"]
+margin_top = 90.0
+margin_right = 484.0
+margin_bottom = 130.0
+custom_constants/separation = 30
+
+[node name="MusicLabel" type="Label" parent="OptionsPopup/VBoxContainer/MusicVolume"]
+margin_top = 9.0
+margin_right = 167.0
+margin_bottom = 31.0
+custom_fonts/font = ExtResource( 1 )
+text = "Music Volume"
+align = 1
+
+[node name="MusicVolSlider" type="HSlider" parent="OptionsPopup/VBoxContainer/MusicVolume"]
+margin_left = 197.0
+margin_right = 347.0
+margin_bottom = 30.0
+rect_min_size = Vector2( 150, 30 )
+min_value = -50.0
+max_value = 50.0
+
+[node name="MusicMute" type="CheckButton" parent="OptionsPopup/VBoxContainer/MusicVolume"]
+margin_left = 400.0
+margin_right = 453.0
+margin_bottom = 40.0
+pressed = true
+
+[node name="SFXVolume" type="HBoxContainer" parent="OptionsPopup/VBoxContainer"]
+margin_top = 135.0
+margin_right = 484.0
+margin_bottom = 175.0
+custom_constants/separation = 60
+
+[node name="SFXLabel" type="Label" parent="OptionsPopup/VBoxContainer/SFXVolume"]
+margin_top = 9.0
+margin_right = 137.0
+margin_bottom = 31.0
+custom_fonts/font = ExtResource( 1 )
+text = "SFX Volume"
+align = 1
+
+[node name="SFXVolSlider" type="HSlider" parent="OptionsPopup/VBoxContainer/SFXVolume"]
+margin_left = 197.0
+margin_right = 347.0
+margin_bottom = 30.0
+rect_min_size = Vector2( 150, 30 )
+min_value = -50.0
+max_value = 50.0
+
+[node name="SFXMute" type="CheckButton" parent="OptionsPopup/VBoxContainer/SFXVolume"]
+margin_left = 407.0
+margin_right = 483.0
+margin_bottom = 40.0
+pressed = true
+
+[node name="DeleteSaveButton" type="Button" parent="OptionsPopup/VBoxContainer"]
+margin_top = 180.0
+margin_right = 484.0
+margin_bottom = 208.0
+flat = true
+
+[node name="Label" type="Label" parent="OptionsPopup/VBoxContainer/DeleteSaveButton"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-size_flags_horizontal = 0
-size_flags_vertical = 0
-custom_constants/margin_right = 0
-custom_constants/margin_top = 465
-custom_constants/margin_left = 400
-custom_constants/margin_bottom = 0
+margin_left = 150.0
+margin_right = -250.0
+custom_fonts/font = ExtResource( 1 )
+text = "Delete Save"
+align = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="BackButton" type="Button" parent="OptionsPop/MarginContainer"]
-margin_left = 400.0
-margin_top = 465.0
-margin_right = 500.0
-margin_bottom = 500.0
-rect_min_size = Vector2( 100, 35 )
-size_flags_horizontal = 0
-size_flags_vertical = 0
+[node name="DeleteSaveConfirm" type="ConfirmationDialog" parent="OptionsPopup"]
+margin_left = 8.0
+margin_top = 8.0
+margin_right = 492.0
+margin_bottom = 473.0
+rect_min_size = Vector2( 300, 80 )
+script = ExtResource( 9 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Label" type="Label" parent="OptionsPop/MarginContainer/BackButton"]
+[node name="WarningMsg" type="Label" parent="OptionsPopup/DeleteSaveConfirm"]
 anchor_left = 0.5
-anchor_top = 0.5
 anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = -50.0
-margin_top = -18.0
-margin_right = 50.0
-margin_bottom = 18.0
-size_flags_horizontal = 0
-size_flags_vertical = 0
-custom_fonts/font = ExtResource( 9 )
-text = "Back"
-__meta__ = {
-"_edit_use_anchors_": false
-}
+margin_left = -234.0
+margin_top = 8.0
+margin_right = 234.0
+margin_bottom = 421.0
+text = "Are you sure you wish to delete your current save file?
 
-[connection signal="pressed" from="MenuLayout/Buttons/OptionsButton" to="OptionsPop" method="_on_OptionsButton_pressed"]
+Warning: Deleted save files cannot be recovered!"
+align = 1
+autowrap = true
+
+[connection signal="pressed" from="MenuLayout/Buttons/OptionsButton" to="OptionsPopup" method="_on_OptionsButton_pressed"]
+[connection signal="pressed" from="MenuLayout/Buttons/QuitButton" to="." method="_on_QuitButton_pressed"]
+[connection signal="pressed" from="OptionsPopup/VBoxContainer/FullScreen/FullScreenToggle" to="." method="_on_FullScreenToggle_pressed"]
+[connection signal="value_changed" from="OptionsPopup/VBoxContainer/MasterVolume/MasterVolSlider" to="." method="_on_MasterVolSlider_value_changed"]
+[connection signal="toggled" from="OptionsPopup/VBoxContainer/MasterVolume/MasterMute" to="." method="_on_MasterMute_toggled"]
+[connection signal="value_changed" from="OptionsPopup/VBoxContainer/MusicVolume/MusicVolSlider" to="." method="_on_MusicVolSlider_value_changed"]
+[connection signal="toggled" from="OptionsPopup/VBoxContainer/MusicVolume/MusicMute" to="." method="_on_MusicMute_toggled"]
+[connection signal="value_changed" from="OptionsPopup/VBoxContainer/SFXVolume/SFXVolSlider" to="." method="_on_SFXVolSlider_value_changed"]
+[connection signal="toggled" from="OptionsPopup/VBoxContainer/SFXVolume/SFXMute" to="." method="_on_SFXMute_toggled"]
+[connection signal="pressed" from="OptionsPopup/VBoxContainer/DeleteSaveButton" to="OptionsPopup/DeleteSaveConfirm" method="_on_DeleteSaveButton_pressed"]

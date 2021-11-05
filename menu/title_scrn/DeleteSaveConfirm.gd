@@ -1,12 +1,8 @@
-extends PopupPanel
+extends ConfirmationDialog
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	pass # Replace with function body.
 
-func _on_OptionsButton_pressed():
+func _on_DeleteSaveButton_pressed():
 	popup()
-
-
-func _on_BackButton_pressed():
-	pass
