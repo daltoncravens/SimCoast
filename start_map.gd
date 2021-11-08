@@ -22,10 +22,17 @@ var tileWidth = 64
 var tileHeight = 32
 var camera
 
+var gameTime = {"month": 12,
+				"day": 31,
+				"year": 2020}
+var gameTime_since_update = 0.0
+var gameSpeed = 5000
+
 # var my_x = 0
 # var my_y = 0
 
 # Called when the node enters the scene tree for the first time.
+
 func _ready():
 	Global.mapTool = 0
 	camera = get_node("Camera2D")
@@ -203,7 +210,43 @@ func updateOceanLevel():
 				oceanTileMap.set_cell(i, j, (height * TILES_IN_SET) + Global.oceanLevel)
 			else:
 				oceanTileMap.set_cell(i, j, -1)
-	
+
+func updateGameTime(delta):
+	gameTime_since_update += delta * gameSpeed
+	if gameTime_since_update > 60000:
+		if gameTime.month == 1 || gameTime.month == 3 || gameTime.month == 5 || gameTime.month == 7 || gameTime.month == 8 || gameTime.month == 10 || gameTime.month == 12:
+			if gameTime.day < 31:
+				gameTime.day += 1
+			else:
+				gameTime.day = 1
+				if gameTime.month < 12:
+					gameTime.month += 1
+				else:
+					gameTime.month = 1
+					gameTime.year += 1
+		elif gameTime.month == 2:
+			if gameTime.year % 4 == 0:
+				if gameTime.day < 29:
+					gameTime.day += 1
+				else:
+					gameTime.day = 1
+					gameTime.month += 1
+					
+			else:
+				if gameTime.day < 28:
+					gameTime.day += 1
+				else:
+					gameTime.day = 1
+					gameTime.month += 1
+		else:
+			if gameTime.day < 30:
+				gameTime.day += 1
+			else:
+				gameTime.day = 1
+				gameTime.month += 1
+		gameTime_since_update = 0
+	$HUD.update_time(gameTime)
+
 func loadMapData():
 	var file = File.new()
 	if not file.file_exists(mapPath):
@@ -218,4 +261,4 @@ func loadMapData():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta):
-	pass
+	updateGameTime(_delta)

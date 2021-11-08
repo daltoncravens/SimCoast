@@ -1,4 +1,4 @@
-[gd_scene load_steps=41 format=2]
+[gd_scene load_steps=48 format=2]
 
 [ext_resource path="res://HUD.gd" type="Script" id=1]
 [ext_resource path="res://assets/buttons/water_hover.png" type="Texture" id=2]
@@ -36,6 +36,7 @@
 [ext_resource path="res://assets/buttons/road_hover.png" type="Texture" id=34]
 [ext_resource path="res://assets/buttons/road_normal.png" type="Texture" id=35]
 [ext_resource path="res://assets/buttons/road_active.png" type="Texture" id=36]
+[ext_resource path="res://assets/tilesets/populated tiles.png" type="Texture" id=37]
 
 [sub_resource type="TileSet" id=1]
 0/name = "dirt_0"
@@ -964,6 +965,160 @@
 32/shape_one_way_margin = 0.0
 32/shapes = [  ]
 32/z_index = 0
+33/name = "populated tiles.png 33"
+33/texture = ExtResource( 37 )
+33/tex_offset = Vector2( 0, 0 )
+33/modulate = Color( 1, 1, 1, 1 )
+33/region = Rect2( 32, 32, 64, 64 )
+33/tile_mode = 0
+33/occluder_offset = Vector2( 0, 0 )
+33/navigation_offset = Vector2( 0, 0 )
+33/shape_offset = Vector2( 0, 0 )
+33/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+33/shape_one_way = false
+33/shape_one_way_margin = 0.0
+33/shapes = [  ]
+33/z_index = 0
+34/name = "populated tiles.png 34"
+34/texture = ExtResource( 37 )
+34/tex_offset = Vector2( 0, 0 )
+34/modulate = Color( 1, 1, 1, 1 )
+34/region = Rect2( 128, 32, 64, 64 )
+34/tile_mode = 0
+34/occluder_offset = Vector2( 0, 0 )
+34/navigation_offset = Vector2( 0, 0 )
+34/shape_offset = Vector2( 0, 0 )
+34/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+34/shape_one_way = false
+34/shape_one_way_margin = 0.0
+34/shapes = [  ]
+34/z_index = 0
+35/name = "populated tiles.png 35"
+35/texture = ExtResource( 37 )
+35/tex_offset = Vector2( 0, 0 )
+35/modulate = Color( 1, 1, 1, 1 )
+35/region = Rect2( 224, 32, 64, 64 )
+35/tile_mode = 0
+35/occluder_offset = Vector2( 0, 0 )
+35/navigation_offset = Vector2( 0, 0 )
+35/shape_offset = Vector2( 0, 0 )
+35/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+35/shape_one_way = false
+35/shape_one_way_margin = 0.0
+35/shapes = [  ]
+35/z_index = 0
+36/name = "populated tiles.png 36"
+36/texture = ExtResource( 37 )
+36/tex_offset = Vector2( 0, 0 )
+36/modulate = Color( 1, 1, 1, 1 )
+36/region = Rect2( 320, 32, 64, 64 )
+36/tile_mode = 0
+36/occluder_offset = Vector2( 0, 0 )
+36/navigation_offset = Vector2( 0, 0 )
+36/shape_offset = Vector2( 0, 0 )
+36/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+36/shape_one_way = false
+36/shape_one_way_margin = 0.0
+36/shapes = [  ]
+36/z_index = 0
+37/name = "populated tiles.png 37"
+37/texture = ExtResource( 37 )
+37/tex_offset = Vector2( 0, 0 )
+37/modulate = Color( 1, 1, 1, 1 )
+37/region = Rect2( 416, 32, 64, 64 )
+37/tile_mode = 0
+37/occluder_offset = Vector2( 0, 0 )
+37/navigation_offset = Vector2( 0, 0 )
+37/shape_offset = Vector2( 0, 0 )
+37/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+37/shape_one_way = false
+37/shape_one_way_margin = 0.0
+37/shapes = [  ]
+37/z_index = 0
+38/name = "populated tiles.png 38"
+38/texture = ExtResource( 37 )
+38/tex_offset = Vector2( 0, 0 )
+38/modulate = Color( 1, 1, 1, 1 )
+38/region = Rect2( 512, 32, 64, 64 )
+38/tile_mode = 0
+38/occluder_offset = Vector2( 0, 0 )
+38/navigation_offset = Vector2( 0, 0 )
+38/shape_offset = Vector2( 0, 0 )
+38/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+38/shape_one_way = false
+38/shape_one_way_margin = 0.0
+38/shapes = [  ]
+38/z_index = 0
+39/name = "populated tiles.png 39"
+39/texture = ExtResource( 37 )
+39/tex_offset = Vector2( 0, 0 )
+39/modulate = Color( 1, 1, 1, 1 )
+39/region = Rect2( 608, 32, 64, 64 )
+39/tile_mode = 0
+39/occluder_offset = Vector2( 0, 0 )
+39/navigation_offset = Vector2( 0, 0 )
+39/shape_offset = Vector2( 0, 0 )
+39/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+39/shape_one_way = false
+39/shape_one_way_margin = 0.0
+39/shapes = [  ]
+39/z_index = 0
+40/name = "populated tiles.png 40"
+40/texture = ExtResource( 37 )
+40/tex_offset = Vector2( 0, 0 )
+40/modulate = Color( 1, 1, 1, 1 )
+40/region = Rect2( 704, 32, 64, 64 )
+40/tile_mode = 0
+40/occluder_offset = Vector2( 0, 0 )
+40/navigation_offset = Vector2( 0, 0 )
+40/shape_offset = Vector2( 0, 0 )
+40/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+40/shape_one_way = false
+40/shape_one_way_margin = 0.0
+40/shapes = [  ]
+40/z_index = 0
+41/name = "populated tiles.png 41"
+41/texture = ExtResource( 37 )
+41/tex_offset = Vector2( 0, 0 )
+41/modulate = Color( 1, 1, 1, 1 )
+41/region = Rect2( 800, 32, 64, 64 )
+41/tile_mode = 0
+41/occluder_offset = Vector2( 0, 0 )
+41/navigation_offset = Vector2( 0, 0 )
+41/shape_offset = Vector2( 0, 0 )
+41/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+41/shape_one_way = false
+41/shape_one_way_margin = 0.0
+41/shapes = [  ]
+41/z_index = 0
+42/name = "populated tiles.png 42"
+42/texture = ExtResource( 37 )
+42/tex_offset = Vector2( 0, 0 )
+42/modulate = Color( 1, 1, 1, 1 )
+42/region = Rect2( 896, 32, 64, 64 )
+42/tile_mode = 0
+42/occluder_offset = Vector2( 0, 0 )
+42/navigation_offset = Vector2( 0, 0 )
+42/shape_offset = Vector2( 0, 0 )
+42/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+42/shape_one_way = false
+42/shape_one_way_margin = 0.0
+42/shapes = [  ]
+42/z_index = 0
+43/name = "populated tiles.png 43"
+43/texture = ExtResource( 37 )
+43/tex_offset = Vector2( 0, 0 )
+43/modulate = Color( 1, 1, 1, 1 )
+43/region = Rect2( 992, 32, 64, 64 )
+43/tile_mode = 0
+43/occluder_offset = Vector2( 0, 0 )
+43/navigation_offset = Vector2( 0, 0 )
+43/shape_offset = Vector2( 0, 0 )
+43/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+43/shape_one_way = false
+43/shape_one_way_margin = 0.0
+43/shapes = [  ]
+43/z_index = 0
 
 [sub_resource type="TileSet" id=3]
 0/name = "park_0"
@@ -2817,6 +2972,25 @@
 109/shapes = [  ]
 109/z_index = 0
 
+[sub_resource type="StyleBoxFlat" id=5]
+bg_color = Color( 0.133333, 0.886275, 0.129412, 1 )
+border_color = Color( 0.00392157, 0.00392157, 0.00392157, 1 )
+
+[sub_resource type="StyleBoxFlat" id=6]
+bg_color = Color( 0.54902, 0.717647, 0.6, 1 )
+
+[sub_resource type="StyleBoxFlat" id=7]
+bg_color = Color( 0, 0, 1, 1 )
+
+[sub_resource type="StyleBoxFlat" id=8]
+bg_color = Color( 0.686275, 0.866667, 0.909804, 1 )
+
+[sub_resource type="StyleBoxFlat" id=9]
+bg_color = Color( 0.964706, 0.839216, 0.0431373, 1 )
+
+[sub_resource type="StyleBoxFlat" id=10]
+bg_color = Color( 0.886275, 0.815686, 0.6, 1 )
+
 [node name="CityMap" type="Node2D"]
 position = Vector2( -2, 3 )
 script = ExtResource( 3 )
@@ -2921,21 +3095,9 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="dirt_button" type="TextureButton" parent="HUD/Control/VBoxContainer"]
+[node name="sand_button" type="TextureButton" parent="HUD/Control/VBoxContainer"]
 margin_right = 32.0
 margin_bottom = 32.0
-toggle_mode = true
-keep_pressed_outside = true
-group = ExtResource( 16 )
-texture_normal = ExtResource( 12 )
-texture_pressed = ExtResource( 10 )
-texture_hover = ExtResource( 13 )
-texture_focused = ExtResource( 10 )
-
-[node name="sand_button" type="TextureButton" parent="HUD/Control/VBoxContainer"]
-margin_top = 36.0
-margin_right = 32.0
-margin_bottom = 68.0
 toggle_mode = true
 keep_pressed_outside = true
 group = ExtResource( 16 )
@@ -2945,9 +3107,9 @@ texture_hover = ExtResource( 14 )
 texture_focused = ExtResource( 11 )
 
 [node name="water_button" type="TextureButton" parent="HUD/Control/VBoxContainer"]
-margin_top = 72.0
+margin_top = 36.0
 margin_right = 32.0
-margin_bottom = 104.0
+margin_bottom = 68.0
 toggle_mode = true
 keep_pressed_outside = true
 group = ExtResource( 16 )
@@ -2957,9 +3119,9 @@ texture_hover = ExtResource( 2 )
 texture_focused = ExtResource( 5 )
 
 [node name="rzone_button" type="TextureButton" parent="HUD/Control/VBoxContainer"]
-margin_top = 108.0
+margin_top = 72.0
 margin_right = 32.0
-margin_bottom = 140.0
+margin_bottom = 104.0
 toggle_mode = true
 keep_pressed_outside = true
 group = ExtResource( 16 )
@@ -2969,9 +3131,9 @@ texture_hover = ExtResource( 19 )
 texture_focused = ExtResource( 20 )
 
 [node name="czone_button" type="TextureButton" parent="HUD/Control/VBoxContainer"]
-margin_top = 144.0
+margin_top = 108.0
 margin_right = 32.0
-margin_bottom = 176.0
+margin_bottom = 140.0
 toggle_mode = true
 keep_pressed_outside = true
 group = ExtResource( 16 )
@@ -2981,9 +3143,9 @@ texture_hover = ExtResource( 22 )
 texture_focused = ExtResource( 23 )
 
 [node name="izone_button" type="TextureButton" parent="HUD/Control/VBoxContainer"]
-margin_top = 180.0
+margin_top = 144.0
 margin_right = 32.0
-margin_bottom = 212.0
+margin_bottom = 176.0
 toggle_mode = true
 keep_pressed_outside = true
 group = ExtResource( 16 )
@@ -2993,9 +3155,9 @@ texture_hover = ExtResource( 28 )
 texture_focused = ExtResource( 29 )
 
 [node name="park_button" type="TextureButton" parent="HUD/Control/VBoxContainer"]
-margin_top = 216.0
+margin_top = 180.0
 margin_right = 32.0
-margin_bottom = 248.0
+margin_bottom = 212.0
 toggle_mode = true
 keep_pressed_outside = true
 group = ExtResource( 16 )
@@ -3005,9 +3167,9 @@ texture_hover = ExtResource( 24 )
 texture_focused = ExtResource( 25 )
 
 [node name="road_button" type="TextureButton" parent="HUD/Control/VBoxContainer"]
-margin_top = 252.0
+margin_top = 216.0
 margin_right = 32.0
-margin_bottom = 284.0
+margin_bottom = 248.0
 toggle_mode = true
 keep_pressed_outside = true
 group = ExtResource( 16 )
@@ -3015,6 +3177,68 @@ texture_normal = ExtResource( 35 )
 texture_pressed = ExtResource( 36 )
 texture_hover = ExtResource( 34 )
 texture_focused = ExtResource( 36 )
+
+[node name="dirt_button" type="TextureButton" parent="HUD/Control/VBoxContainer"]
+margin_top = 252.0
+margin_right = 32.0
+margin_bottom = 284.0
+toggle_mode = true
+keep_pressed_outside = true
+group = ExtResource( 16 )
+texture_normal = ExtResource( 12 )
+texture_pressed = ExtResource( 10 )
+texture_hover = ExtResource( 13 )
+texture_focused = ExtResource( 10 )
+
+[node name="ResDemand" type="ProgressBar" parent="HUD/Control"]
+margin_left = 1197.31
+margin_top = 655.36
+margin_right = 1269.31
+margin_bottom = 677.36
+rect_rotation = -90.0126
+custom_styles/fg = SubResource( 5 )
+custom_styles/bg = SubResource( 6 )
+percent_visible = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ComDemand" type="ProgressBar" parent="HUD/Control"]
+margin_left = 1219.98
+margin_top = 655.384
+margin_right = 1291.98
+margin_bottom = 677.384
+rect_rotation = -90.0126
+custom_styles/fg = SubResource( 7 )
+custom_styles/bg = SubResource( 8 )
+percent_visible = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="IndDemand" type="ProgressBar" parent="HUD/Control"]
+margin_left = 1242.79
+margin_top = 655.346
+margin_right = 1314.79
+margin_bottom = 677.346
+rect_rotation = -90.0126
+custom_styles/fg = SubResource( 9 )
+custom_styles/bg = SubResource( 10 )
+percent_visible = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Date" type="Label" parent="HUD"]
+margin_left = 925.0
+margin_top = 10.0
+margin_right = 1270.0
+margin_bottom = 68.0
+text = "Date"
+align = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Agent" type="Node" parent="."]
 script = ExtResource( 7 )
