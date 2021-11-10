@@ -16,14 +16,20 @@ func _ready():
 	update_polygons()
 	self.add_child(coll)
 
-func set_coordinates(a, b):
+func set_index(a, b):
 	self.i = a
 	self.j = b
+	x = (i * (Global.TILE_WIDTH / 2.0)) + (j * (-Global.TILE_WIDTH / 2.0))
+	y = (i * (Global.TILE_HEIGHT / 2.0)) + (j * (Global.TILE_HEIGHT / 2.0))
+	update_polygons()
+
+# Used to rotate map, changes x/y values without altering i/j values
+func adjust_coordinates(a, b):
+	x = (a * (Global.TILE_WIDTH / 2.0)) + (b * (-Global.TILE_WIDTH / 2.0))
+	y = (a * (Global.TILE_HEIGHT / 2.0)) + (b * (Global.TILE_HEIGHT / 2.0))
 	update_polygons()
 
 func update_polygons():
-	x = (i * (Global.TILE_WIDTH / 2.0)) + (j * (-Global.TILE_WIDTH / 2.0))
-	y = (i * (Global.TILE_HEIGHT / 2.0)) + (j * (Global.TILE_HEIGHT / 2.0))
 	var h = Global.tileMap[i][j].height
 	
 	top_poly.set_polygon(PoolVector2Array([Vector2(x, y - h), Vector2(x + (Global.TILE_WIDTH / 2.0), y - h + (Global.TILE_HEIGHT / 2.0)), 

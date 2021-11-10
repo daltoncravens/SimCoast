@@ -3,6 +3,8 @@
 
 extends Node
 
+const MAP_EDGE_BUFFER = 150
+
 const TILE_WIDTH = 64
 const TILE_HEIGHT = 32
 
@@ -15,6 +17,10 @@ var mapTool = 0
 var tileMap = initTileMap()
 
 var oceanLevel = 8
+
+var camDirection = 0
+var rowRange = range(0, mapWidth, 1)
+var colRange = range(0, mapHeight, 1)
 
 func initTileMap():
 	var tm = []

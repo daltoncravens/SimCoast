@@ -10,6 +10,27 @@ var viewport_size
 var cam_x
 var cam_y
 
+func rotateCamera(d):
+	Global.camDirection += d
+	if Global.camDirection == -1:
+		Global.camDirection = 3
+	if Global.camDirection == 4:
+		Global.camDirection = 0
+	
+	match Global.camDirection:
+		0:
+			Global.rowRange = range(0, Global.mapWidth, 1)
+			Global.colRange = range(0, Global.mapHeight, 1)
+		1:
+			Global.rowRange = range(Global.mapWidth - 1, -1, -1)
+			Global.colRange = range(0, Global.mapHeight, 1)
+		2:
+			Global.rowRange = range(Global.mapWidth - 1, -1, -1)
+			Global.colRange = range(Global.mapHeight - 1, -1, -1)
+		3:
+			Global.rowRange = range(0, Global.mapWidth, 1)
+			Global.colRange = range(Global.mapHeight - 1, -1, -1)
+
 # Sets camera (x, y) to middle of screen scaled by current zoom level
 func _ready():
 	viewport_size = get_viewport().size

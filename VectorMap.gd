@@ -6,14 +6,14 @@ const cube_script = preload("res://TileCube.gd")
 # Initialize all map tile cubes and collision polygons
 func _ready():
 	for i in Global.mapHeight:
-		for j in Global.mapWidth:
+		for j in Global.mapWidth:			
 			Global.tileMap[i][j].cube.set_script(cube_script)
-			Global.tileMap[i][j].cube.set_coordinates(i, j)
+			Global.tileMap[i][j].cube.set_index(i, j)
 			Global.tileMap[i][j].cube.set_pickable(true)
 			self.add_child(Global.tileMap[i][j].cube)
 
 # Draws all of the individual cubes in the map space
-func _draw():
+func _draw():	
 	for i in Global.mapWidth:
 		for j in Global.mapHeight:
 			Global.tileMap[i][j].cube.update()
@@ -30,3 +30,30 @@ func get_tile_at(pos):
 				cube = c2
 		return cube
 	return null
+
+# Assign new x/y values for each tile based on camera direction
+func rotate_map():
+	var a = 0
+	var b = 0
+	
+	match Global.camDirection:
+		0, 2:
+			for i in Global.rowRange:
+				for j in Global.colRange:
+					var cube = Global.tileMap[i][j].cube
+					self.remove_child(cube)
+					cube.adjust_coordinates(a, b)
+					self.add_child(cube)
+					b += 1
+				a += 1
+				b = 0
+		1, 3:
+			for j in Global.colRange:
+				for i in Global.rowRange:
+					var cube = Global.tileMap[i][j].cube
+					self.remove_child(cube)
+					cube.adjust_coordinates(a, b)
+					self.add_child(cube)
+					b += 1
+				a += 1
+				b = 0

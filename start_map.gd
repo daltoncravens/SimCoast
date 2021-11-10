@@ -1,28 +1,12 @@
 extends Node2D
 
-const MAP_EDGE_BUFFER = 150
-const TILES_IN_SET = 11
-const DIRT_TILE_START = 0
-const SAND_TILE_START = 11
-const WATER_TILE_START = 22
-const RZONE_TILE_START = 0
-const CZONE_TILE_START = 11
-const IZONE_TILE_START = 22
-const PARK_TILE_START = 0
-const ROAD_TILE_START = 11
-
 var mapPath = "res://maps/test.json"
-var elementTileMap
-var zoningTileMap
-var unitTileMap
-var oceanTileMap
 var vectorMap
 var camera
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	camera = get_node("Camera2D")
-	elementTileMap = get_node("Base")
 	initCamera(Global.mapWidth, Global.mapHeight)
 
 # Set camera to start at middle of map, and set camera edge limits
@@ -34,10 +18,10 @@ func initCamera(width, height):
 	# Use the player starting tile to calculate camera position
 	camera.position.y = mid_y
 	
-	camera.limit_left = (mid_x * -1) - MAP_EDGE_BUFFER
-	camera.limit_top = -MAP_EDGE_BUFFER
-	camera.limit_right = mid_x + MAP_EDGE_BUFFER
-	camera.limit_bottom = Global.mapHeight * Global.TILE_HEIGHT + MAP_EDGE_BUFFER
+	camera.limit_left = (mid_x * -1) - Global.MAP_EDGE_BUFFER
+	camera.limit_top = -Global.MAP_EDGE_BUFFER
+	camera.limit_right = mid_x + Global.MAP_EDGE_BUFFER
+	camera.limit_bottom = Global.mapHeight * Global.TILE_HEIGHT + Global.MAP_EDGE_BUFFER
 
 # Handle inputs (clicks, keys)
 func _unhandled_input(event):
@@ -97,18 +81,25 @@ func _unhandled_input(event):
 		elif event.scancode == KEY_P and Global.oceanLevel < 9:
 			Global.oceanLevel += 1
 			updateOceanLevel()
+		elif event.scancode == KEY_Q:
+			camera.rotateCamera(-1)
+			$VectorMap.rotate_map()
+		elif event.scancode == KEY_W:
+			camera.rotateCamera(1)
+			$VectorMap.rotate_map()
 
 	elif event is InputEventMouseMotion:		
-		var tile = elementTileMap.world_to_map(get_global_mouse_position())
-		var height = 0
-		if !tile_out_of_bounds(tile):
-			height = Global.tileMap[tile.x][tile.y].height
+		var cube = $VectorMap.get_tile_at(get_global_mouse_position())
 		
-		$HUD.update_tile_display(tile, height)
+		if cube:
+			$HUD.update_tile_display(cube.i, cube.j, Global.tileMap[cube.i][cube.j].height)
+		else:
+			$HUD.update_tile_display('x', 'x', 'x')
+	
 		$HUD.update_mouse(get_global_mouse_position())
 
-func tile_out_of_bounds(tile):
-	return tile.x < 0 || Global.mapWidth <= tile.x || tile.y < 0 || Global.mapHeight <= tile.y
+func tile_out_of_bounds(cube):
+	return cube.i < 0 || Global.mapWidth <= cube.i || cube.j < 0 || Global.mapHeight <= cube.j
 	
 # Changes a tile's height depending on type of click
 func adjust_tile_height(cube):	
@@ -124,16 +115,16 @@ func updateOceanLevel():
 		for j in Global.mapHeight:
 			Global.tileMap[i][j].water_cube.update_polygons()
 
-func loadMapData():
-	var file = File.new()
-	if not file.file_exists(mapPath):
-		return
-	file.open(mapPath, File.READ)
-	var mapData = parse_json(file.get_as_text())
-	file.close()
-
-	elementTileMap.setGridSize(mapData.width, mapData.height)
-	elementTileMap.setCells(mapData.tiles)
+#func loadMapData():
+#	var file = File.new()
+#	if not file.file_exists(mapPath):
+#		return
+#	file.open(mapPath, File.READ)
+#	var mapData = parse_json(file.get_as_text())
+#	file.close()
+#
+#	elementTileMap.setGridSize(mapData.width, mapData.height)
+#	elementTileMap.setCells(mapData.tiles)
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
