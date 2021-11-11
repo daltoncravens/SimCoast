@@ -20,7 +20,8 @@ enum TileZone {
 enum TileInf {
 	NONE,
 	ROAD,
-	PARK
+	PARK,
+	OCEAN
 }
 
 var i
@@ -64,8 +65,8 @@ func lower_tile():
 
 func raise_water():
 	waterHeight += 2
-	if waterHeight > Global.MAX_HEIGHT:
-		waterHeight = Global.MAX_HEIGHT
+	if (waterHeight + height) > Global.MAX_HEIGHT:
+		waterHeight = Global.MAX_HEIGHT - height
 	check_water()
 	cube.update_polygons()
 
@@ -81,6 +82,19 @@ func check_water():
 		flooded = true
 	else:
 		flooded = false
+
+func manage_ocean():
+	if height >= Global.oceanLevel:
+		waterHeight = 0
+	elif (height + waterHeight) < Global.oceanLevel:
+		waterHeight += Global.oceanLevel - (height + waterHeight)
+	elif (height + waterHeight) > Global.oceanLevel:
+		waterHeight -= (height + waterHeight) - Global.oceanLevel
+	
+	if waterHeight < 0:
+		waterHeight = 0
+	check_water()
+	cube.update_polygons()
 
 func is_dirt():
 	return base == 0
