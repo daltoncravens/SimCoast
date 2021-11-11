@@ -26,6 +26,7 @@ enum TileInf {
 var i
 var j
 var height
+var waterHeight
 var zone
 var base
 var inf
@@ -40,6 +41,7 @@ func _init(a, b):
 	var rng = RandomNumberGenerator.new()
 	rng.randomize()
 	height = rng.randi_range(0, 20)
+	waterHeight = 0
 	zone = TileZone.NONE
 	inf = TileInf.NONE
 	base = TileBase.DIRT
@@ -58,6 +60,22 @@ func lower_tile():
 	height -= 2
 	if height < 0:
 		height = 0
+	cube.update_polygons()
+
+func raise_water():
+	waterHeight += 2
+	if waterHeight > Global.MAX_HEIGHT:
+		waterHeight = Global.MAX_HEIGHT
+	if waterHeight != 0:
+		flooded = true
+	cube.update_polygons()
+
+func lower_water():
+	waterHeight -= 2
+	if waterHeight < 0:
+		waterHeight = 0
+	if waterHeight != 0:
+		flooded = true
 	cube.update_polygons()
 
 func is_dirt():

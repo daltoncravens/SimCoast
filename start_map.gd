@@ -47,10 +47,10 @@ func _unhandled_input(event):
 					adjust_tile_height(cube)
 				cube.update()
 			3: # Water Base Tool
-				if !Global.tileMap[cube.i][cube.j].is_water():
-					Global.tileMap[cube.i][cube.j].set_base("WATER")
-				else:
-					adjust_tile_height(cube)
+				#if !Global.tileMap[cube.i][cube.j].is_water():
+				#	Global.tileMap[cube.i][cube.j].set_base("WATER")
+				#else:
+				adjust_tile_water(cube)
 				cube.update()
 			# Zoning and Infrasturcture
 			4, 5, 6, 7, 8:
@@ -92,9 +92,9 @@ func _unhandled_input(event):
 		var cube = $VectorMap.get_tile_at(get_global_mouse_position())
 		
 		if cube:
-			$HUD.update_tile_display(cube.i, cube.j, Global.tileMap[cube.i][cube.j].height)
+			$HUD.update_tile_display(cube.i, cube.j, Global.tileMap[cube.i][cube.j].height, Global.tileMap[cube.i][cube.j].waterHeight)
 		else:
-			$HUD.update_tile_display('x', 'x', 'x')
+			$HUD.update_tile_display('x', 'x', 'x', 'x')
 	
 		$HUD.update_mouse(get_global_mouse_position())
 
@@ -107,6 +107,13 @@ func adjust_tile_height(cube):
 		Global.tileMap[cube.i][cube.j].raise_tile()
 	elif Input.is_action_pressed("right_click"):
 		Global.tileMap[cube.i][cube.j].lower_tile()
+
+# Change water height of tile
+func adjust_tile_water(cube):
+	if Input.is_action_pressed("left_click"):
+		Global.tileMap[cube.i][cube.j].raise_water()
+	elif Input.is_action_just_pressed("right_click"):
+		Global.tileMap[cube.i][cube.j].lower_water()
 
 # On a change in ocean height, check each cube for a change, then re-draw
 func updateOceanLevel():
