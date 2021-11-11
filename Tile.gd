@@ -66,17 +66,21 @@ func raise_water():
 	waterHeight += 2
 	if waterHeight > Global.MAX_HEIGHT:
 		waterHeight = Global.MAX_HEIGHT
-	if waterHeight != 0:
-		flooded = true
+	check_water()
 	cube.update_polygons()
 
 func lower_water():
 	waterHeight -= 2
 	if waterHeight < 0:
 		waterHeight = 0
+	check_water()
+	cube.update_polygons()
+
+func check_water():
 	if waterHeight != 0:
 		flooded = true
-	cube.update_polygons()
+	else:
+		flooded = false
 
 func is_dirt():
 	return base == 0
