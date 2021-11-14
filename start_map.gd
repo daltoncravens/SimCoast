@@ -46,8 +46,12 @@ func _unhandled_input(event):
 				else:
 					adjust_tile_height(cube)
 				cube.update()
-			3: # Water Height Tool
-				adjust_tile_water(cube)
+			3: # Ocean Base Tool
+				if !Global.tileMap[cube.i][cube.j].is_ocean():
+					Global.tileMap[cube.i][cube.j].set_base("OCEAN")
+					Global.tileMap[cube.i][cube.j].baseHeight = Global.oceanHeight
+					Global.tileMap[cube.i][cube.j].waterHeight = 0
+					cube.update_polygons()
 				cube.update()
 			# Zoning and Infrasturcture
 			4, 5, 6, 7, 8:
@@ -70,21 +74,19 @@ func _unhandled_input(event):
 							Global.tileMap[cube.i][cube.j].inf = 1
 			
 				cube.update()
-			#Ocean Tool
+			# Water Tool
 			9:
-				if !Global.tileMap[cube.i][cube.j].is_sand():
-					Global.tileMap[cube.i][cube.j].set_base("SAND")
-				Global.tileMap[cube.i][cube.j].inf = 3
-				adjust_tile_ocean(cube)
-				cube.update()
+				if !Global.tileMap[cube.i][cube.j].is_ocean():
+					adjust_tile_water(cube)
+					cube.update()
 
 	elif event is InputEventKey && event.pressed:
-		if event.scancode == KEY_O and Global.oceanLevel > 0:
-			Global.oceanLevel -= 1
-			updateOceanLevel()
-		elif event.scancode == KEY_P and Global.oceanLevel < 20:
-			Global.oceanLevel += 1
-			updateOceanLevel()
+		if event.scancode == KEY_O and Global.oceanHeight > 0:
+			Global.oceanHeight -= 1
+			updateOcean()
+		elif event.scancode == KEY_P and Global.oceanHeight < Global.MAX_HEIGHT:
+			Global.oceanHeight += 1
+			updateOcean()
 		elif event.scancode == KEY_Q:
 			camera.rotateCamera(-1)
 			$VectorMap.rotate_map()
@@ -102,7 +104,7 @@ func _unhandled_input(event):
 		var cube = $VectorMap.get_tile_at(get_global_mouse_position())
 		
 		if cube:
-			$HUD.update_tile_display(cube.i, cube.j, Global.tileMap[cube.i][cube.j].height, Global.tileMap[cube.i][cube.j].waterHeight)
+			$HUD.update_tile_display(cube.i, cube.j, Global.tileMap[cube.i][cube.j].baseHeight, Global.tileMap[cube.i][cube.j].waterHeight)
 		else:
 			$HUD.update_tile_display('x', 'x', 'x', 'x')
 	
@@ -125,16 +127,17 @@ func adjust_tile_water(cube):
 	elif Input.is_action_just_pressed("right_click"):
 		Global.tileMap[cube.i][cube.j].lower_water()
 
-# Manage ocean tiles
-func adjust_tile_ocean(cube):
-	Global.tileMap[cube.i][cube.j].manage_ocean()
 
 # On a change in ocean height, check each cube for a change, then re-draw
-func updateOceanLevel():
+func updateOcean():
 	$HUD.update_ocean_display()
-	#for i in Global.mapWidth:
-	#	for j in Global.mapHeight:
-	#		Global.tileMap[i][j].water_cube.update_polygons()
+	for i in Global.mapWidth:
+		for j in Global.mapHeight:
+			if Global.tileMap[i][j].is_ocean():
+				Global.tileMap[i][j].baseHeight = Global.oceanHeight
+				Global.tileMap[i][j].waterHeight = 0
+				Global.tileMap[i][j].cube.update_polygons()
+				Global.tileMap[i][j].cube.update()
 
 func saveMapData():
 	var saveName = "test1"
@@ -144,16 +147,13 @@ func saveMapData():
 	
 	for i in Global.mapWidth:
 		for j in Global.mapHeight:
-			if Global.tileMap[i][j].inf == 3:
-				Global.tileMap[i][j].manage_ocean()
-				Global.tileMap[i][j].cube.update()
-			mapData.append([i, j, Global.tileMap[i][j].height, Global.tileMap[i][j].base, Global.tileMap[i][j].zone, Global.tileMap[i][j].inf])
+			mapData.append([i, j, Global.tileMap[i][j].baseHeight, Global.tileMap[i][j].base, Global.tileMap[i][j].zone, Global.tileMap[i][j].inf])
 			
 	var data = {
 		"name": saveName,
 		"mapWidth": Global.mapWidth,
 		"mapHeight": Global.mapHeight,
-		"oceanLevel": Global.oceanLevel,
+		"oceanHeight": Global.oceanHeight,
 		"tiles": mapData
 	}
 	
@@ -173,8 +173,8 @@ func loadMapData():
 	
 	Global.mapWidth = mapData.mapWidth
 	Global.mapHeight = mapData.mapHeight
-	Global.oceanLevel = mapData.oceanLevel
-	
+	Global.oceanHeight = mapData.oceanHeight
+		
 	Global.tileMap.clear()
 	
 	for _x in range(Global.mapWidth):
