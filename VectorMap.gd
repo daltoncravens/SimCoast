@@ -12,6 +12,19 @@ func _ready():
 			Global.tileMap[i][j].cube.set_pickable(true)
 			self.add_child(Global.tileMap[i][j].cube)
 
+func clearNodes():
+	for x in get_children():
+		x.queue_free()
+
+func reinitMap():
+	clearNodes()
+	for i in Global.mapHeight:
+		for j in Global.mapWidth:			
+			Global.tileMap[i][j].cube.set_script(cube_script)
+			Global.tileMap[i][j].cube.set_index(i, j)
+			Global.tileMap[i][j].cube.set_pickable(true)
+			self.add_child(Global.tileMap[i][j].cube)
+
 # Draws all of the individual cubes in the map space
 func _draw():	
 	for i in Global.mapWidth:

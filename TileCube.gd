@@ -82,7 +82,6 @@ func get_cube_colors():
 					return Global.C_ZONE
 				3:
 					return Global.I_ZONE
-			
 		1:
 			return Global.SAND
 		2:
