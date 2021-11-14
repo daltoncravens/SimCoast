@@ -25,3 +25,5 @@ func button_pressed():
 			Global.mapTool = 7
 		'road_button':
 			Global.mapTool = 8
+		'ocean_button':
+			Global.mapTool = 9

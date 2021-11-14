@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/zoning_tiles.png-f165de60abe68219094a3674a3a1ce1c.stex"
+path="res://.import/ocean_active.png-8bd25334363505527ae63f37e40494c5.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/tilesets/zoning_tiles.png"
-dest_files=[ "res://.import/zoning_tiles.png-f165de60abe68219094a3674a3a1ce1c.stex" ]
+source_file="res://assets/buttons/ocean_active.png"
+dest_files=[ "res://.import/ocean_active.png-8bd25334363505527ae63f37e40494c5.stex" ]
 
 [params]
 

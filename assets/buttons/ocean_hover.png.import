@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/ocean_tiles.png-09b70c0d13ed3f57c663f70c41100f76.stex"
+path="res://.import/ocean_hover.png-2ae76036decd52f6fd35c18270a634f2.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/tilesets/ocean_tiles.png"
-dest_files=[ "res://.import/ocean_tiles.png-09b70c0d13ed3f57c663f70c41100f76.stex" ]
+source_file="res://assets/buttons/ocean_hover.png"
+dest_files=[ "res://.import/ocean_hover.png-2ae76036decd52f6fd35c18270a634f2.stex" ]
 
 [params]
 
