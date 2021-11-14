@@ -10,6 +10,9 @@ var y = 0
 var top_poly = Polygon2D.new()
 var left_poly = Polygon2D.new()
 var right_poly = Polygon2D.new()
+var left_water_poly = Polygon2D.new()
+var right_water_poly = Polygon2D.new()
+var top_water_poly = Polygon2D.new()
 var coll = CollisionPolygon2D.new()
 
 func _ready():
@@ -32,15 +35,33 @@ func adjust_coordinates(a, b):
 func update_polygons():
 	var h = Global.tileMap[i][j].height
 	
-	top_poly.set_polygon(PoolVector2Array([Vector2(x, y - h), Vector2(x + (Global.TILE_WIDTH / 2.0), y - h + (Global.TILE_HEIGHT / 2.0)), 
-		Vector2(x, y - h + Global.TILE_HEIGHT), Vector2(x - (Global.TILE_WIDTH / 2.0), y - h + (Global.TILE_HEIGHT / 2.0)), Vector2(x, y - h)]))
-	
 	left_poly.set_polygon(PoolVector2Array([Vector2(x, y - h + Global.TILE_HEIGHT), Vector2(x, y + Global.TILE_HEIGHT), 
 		Vector2(x - (Global.TILE_WIDTH / 2.0), y + (Global.TILE_HEIGHT/2.0)), Vector2(x - (Global.TILE_WIDTH / 2.0), y - h + (Global.TILE_HEIGHT / 2.0))]))
 	
 	right_poly.set_polygon(PoolVector2Array([Vector2(x, y - h + Global.TILE_HEIGHT), Vector2(x, y + Global.TILE_HEIGHT), 
 		Vector2(x + (Global.TILE_WIDTH / 2.0), y + (Global.TILE_HEIGHT / 2.0)), Vector2(x + (Global.TILE_WIDTH / 2.0), y - h + (Global.TILE_HEIGHT / 2.0))]))
-
+	
+	#If translucent water is desired, we need to draw the top of the land. 
+	#Unclear on how to properly YSort since it will put this ahead of the water's top piece
+	#For the time being, keeping opaque water
+	#top_poly.set_polygon(PoolVector2Array([Vector2(x, y - h), Vector2(x + (Global.TILE_WIDTH / 2.0), y - h + (Global.TILE_HEIGHT / 2.0)), 
+	#	Vector2(x, y - h + Global.TILE_HEIGHT), Vector2(x - (Global.TILE_WIDTH / 2.0), y - h + (Global.TILE_HEIGHT / 2.0)), Vector2(x, y - h)]))
+	
+	if Global.tileMap[i][j].flooded:
+		var w = Global.tileMap[i][j].waterHeight
+		
+		left_water_poly.set_polygon(PoolVector2Array([Vector2(x, y - h + Global.TILE_HEIGHT), Vector2(x, y - h - w + Global.TILE_HEIGHT), 
+			Vector2(x - (Global.TILE_WIDTH / 2.0), y - h - w + (Global.TILE_HEIGHT / 2.0)), Vector2(x - (Global.TILE_WIDTH / 2.0), y - h + (Global.TILE_HEIGHT / 2.0))]))
+		
+		right_water_poly.set_polygon(PoolVector2Array([Vector2(x, y - h + Global.TILE_HEIGHT), Vector2(x, y - h - w + Global.TILE_HEIGHT), 
+			Vector2(x + (Global.TILE_WIDTH / 2.0), y - h - w + (Global.TILE_HEIGHT / 2.0)), Vector2(x + (Global.TILE_WIDTH / 2.0), y - h + (Global.TILE_HEIGHT / 2.0))]))
+		
+		top_water_poly.set_polygon(PoolVector2Array([Vector2(x, y - h - w), Vector2(x + (Global.TILE_WIDTH / 2.0), y - h - w + (Global.TILE_HEIGHT / 2.0)), 
+			Vector2(x, y - h - w + Global.TILE_HEIGHT), Vector2(x - (Global.TILE_WIDTH / 2.0), y - h - w + (Global.TILE_HEIGHT / 2.0)), Vector2(x, y - h - w)]))
+	else:
+		top_poly.set_polygon(PoolVector2Array([Vector2(x, y - h), Vector2(x + (Global.TILE_WIDTH / 2.0), y - h + (Global.TILE_HEIGHT / 2.0)), 
+			Vector2(x, y - h + Global.TILE_HEIGHT), Vector2(x - (Global.TILE_WIDTH / 2.0), y - h + (Global.TILE_HEIGHT / 2.0)), Vector2(x, y - h)]))
+	
 	coll.set_polygon(PoolVector2Array([Vector2(x, y - h), Vector2(x + (Global.TILE_WIDTH / 2.0), y - h + (Global.TILE_HEIGHT / 2.0)), 
 		Vector2(x + (Global.TILE_WIDTH / 2.0), y + (Global.TILE_HEIGHT / 2.0)), Vector2(x, y + Global.TILE_HEIGHT), 
 		Vector2(x - (Global.TILE_WIDTH / 2.0), y + (Global.TILE_HEIGHT/2.0)), Vector2(x - (Global.TILE_WIDTH / 2.0), y - h + (Global.TILE_HEIGHT / 2.0)), Vector2(x, y - h)]))
@@ -70,8 +91,16 @@ func get_cube_colors():
 	
 func _draw():
 	var colors = get_cube_colors()
+	var waterColors = Global.WATER
+	
 	if Global.tileMap[i][j].height > 0:
 		draw_polygon(left_poly.get_polygon(), PoolColorArray([colors[1]]))
 		draw_polygon(right_poly.get_polygon(), PoolColorArray([colors[2]]))
-	draw_polygon(top_poly.get_polygon(), PoolColorArray([colors[0]]))
-	draw_polyline(top_poly.get_polygon(), colors[3])
+	if Global.tileMap[i][j].flooded:
+		draw_polygon(left_water_poly.get_polygon(), PoolColorArray([waterColors[1]]))
+		draw_polygon(right_water_poly.get_polygon(), PoolColorArray([waterColors[2]]))
+		draw_polygon(top_water_poly.get_polygon(), PoolColorArray([waterColors[0]]))
+		draw_polyline(top_water_poly.get_polygon(), waterColors[3])
+	else:
+		draw_polygon(top_poly.get_polygon(), PoolColorArray([colors[0]]))
+		draw_polyline(top_poly.get_polygon(), colors[3])

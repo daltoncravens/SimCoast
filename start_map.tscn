@@ -1,4 +1,4 @@
-[gd_scene load_steps=32 format=2]
+[gd_scene load_steps=35 format=2]
 
 [ext_resource path="res://HUD.gd" type="Script" id=1]
 [ext_resource path="res://assets/buttons/water_hover.png" type="Texture" id=2]
@@ -7,6 +7,7 @@
 [ext_resource path="res://assets/buttons/water_active.png" type="Texture" id=5]
 [ext_resource path="res://OceanMap.gd" type="Script" id=6]
 [ext_resource path="res://VectorMap.gd" type="Script" id=7]
+[ext_resource path="res://assets/buttons/ocean_active.png" type="Texture" id=8]
 [ext_resource path="res://assets/buttons/water_normal.png" type="Texture" id=9]
 [ext_resource path="res://assets/buttons/dirt_active.png" type="Texture" id=10]
 [ext_resource path="res://assets/buttons/sand_active.png" type="Texture" id=11]
@@ -28,6 +29,8 @@
 [ext_resource path="res://assets/buttons/park_normal.png" type="Texture" id=27]
 [ext_resource path="res://assets/buttons/izone_hover.png" type="Texture" id=28]
 [ext_resource path="res://assets/buttons/izone_active.png" type="Texture" id=29]
+[ext_resource path="res://assets/buttons/ocean_hover.png" type="Texture" id=30]
+[ext_resource path="res://assets/buttons/ocean_normal.png" type="Texture" id=31]
 [ext_resource path="res://assets/buttons/road_hover.png" type="Texture" id=34]
 [ext_resource path="res://assets/buttons/road_normal.png" type="Texture" id=35]
 [ext_resource path="res://assets/buttons/road_active.png" type="Texture" id=36]
@@ -194,6 +197,18 @@ texture_normal = ExtResource( 35 )
 texture_pressed = ExtResource( 36 )
 texture_hover = ExtResource( 34 )
 texture_focused = ExtResource( 36 )
+
+[node name="ocean_button" type="TextureButton" parent="HUD/Control/VBoxContainer"]
+margin_top = 288.0
+margin_right = 32.0
+margin_bottom = 320.0
+toggle_mode = true
+keep_pressed_outside = true
+group = ExtResource( 16 )
+texture_normal = ExtResource( 31 )
+texture_pressed = ExtResource( 8 )
+texture_hover = ExtResource( 30 )
+texture_focused = ExtResource( 8 )
 
 [node name="VectorMap" type="YSort" parent="."]
 script = ExtResource( 7 )
