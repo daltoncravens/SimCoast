@@ -1,142 +1,78 @@
 extends Node2D
 
-const MAP_EDGE_BUFFER = 150
-const TILES_IN_SET = 11
-const DIRT_TILE_START = 0
-const SAND_TILE_START = 11
-const WATER_TILE_START = 22
-const RZONE_TILE_START = 0
-const CZONE_TILE_START = 11
-const IZONE_TILE_START = 22
-const PARK_TILE_START = 0
-const ROAD_TILE_START = 11
-
-var mapPath = "res://maps/test.json"
-var elementTileMap
-var zoningTileMap
-var unitTileMap
-var oceanTileMap
-var mapWidth = 30
-var mapHeight = 30
-var tileWidth = 64
-var tileHeight = 32
+var mapPath = "res://maps/test1.json"
+var vectorMap
 var camera
-
-# var my_x = 0
-# var my_y = 0
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	Global.mapTool = 0
 	camera = get_node("Camera2D")
-	elementTileMap = get_node("Base")
-	zoningTileMap = get_node("Base/Zoning")
-	unitTileMap = get_node("Base/Units")	
-	oceanTileMap = get_node("Base/Ocean")
-	
-	Global.oceanLevel = 2
-	updateOceanLevel()
-	
-	initCamera(mapWidth, mapHeight)
-	# loadMapData()
+	initCamera(Global.mapWidth, Global.mapHeight)
 
 # Set camera to start at middle of map, and set camera edge limits
 # Width/height is number of map tiles
 func initCamera(width, height):
-	var mid_x = (width / 2) * tileWidth
-	var mid_y = (height / 2) * tileHeight
+	var mid_x = (width / 2) * Global.TILE_WIDTH
+	var mid_y = (height / 2) * Global.TILE_HEIGHT
 	
 	# Use the player starting tile to calculate camera position
 	camera.position.y = mid_y
 	
-	camera.limit_left = (mid_x * -1) - MAP_EDGE_BUFFER
-	camera.limit_top = -MAP_EDGE_BUFFER
-	camera.limit_right = mid_x + MAP_EDGE_BUFFER
-	camera.limit_bottom = mapHeight * tileHeight + MAP_EDGE_BUFFER
+	camera.limit_left = (mid_x * -1) - Global.MAP_EDGE_BUFFER
+	camera.limit_top = -Global.MAP_EDGE_BUFFER
+	camera.limit_right = mid_x + Global.MAP_EDGE_BUFFER
+	camera.limit_bottom = Global.mapHeight * Global.TILE_HEIGHT + Global.MAP_EDGE_BUFFER
 
-
-
+# Handle inputs (clicks, keys)
 func _unhandled_input(event):
 	if event is InputEventMouseButton and event.pressed:
-		var tile = elementTileMap.world_to_map(get_global_mouse_position())
-		var index = elementTileMap.get_cell(tile.x, tile.y)
-		var height = index % TILES_IN_SET
+		var cube = $VectorMap.get_tile_at(get_global_mouse_position())
 	
-		if tile_out_of_bounds(tile):
+		# If the click was not on a valid tile, do nothing
+		if not cube:
 			return
 		
+		# Perform action based on current tool selected
 		match Global.mapTool:
-			# Dirt Tool
-			1:
-				if !is_dirt(index):
-					clear_tile(tile)
-					elementTileMap.set_cell(tile.x, tile.y, DIRT_TILE_START + height)
+			1: # Dirt Base Tool
+				if !Global.tileMap[cube.i][cube.j].is_dirt():
+					Global.tileMap[cube.i][cube.j].set_base("DIRT")
 				else:
-					adjust_tile_height(tile, index)
-			# Sand Tool
-			2:
-				if !is_sand(index):
-					clear_tile(tile)
-					elementTileMap.set_cell(tile.x, tile.y, SAND_TILE_START + height)
+					adjust_tile_height(cube)
+				cube.update()
+			2: # Sand Base Tool
+				if !Global.tileMap[cube.i][cube.j].is_sand():
+					Global.tileMap[cube.i][cube.j].set_base("SAND")
 				else:
-					adjust_tile_height(tile, index)
-			# Water Tool
-			3:
-				if !is_water(index):
-					clear_tile(tile)
-					elementTileMap.set_cell(tile.x, tile.y, WATER_TILE_START + height)
+					adjust_tile_height(cube)
+				cube.update()
+			3: # Water Base Tool
+				if !Global.tileMap[cube.i][cube.j].is_water():
+					Global.tileMap[cube.i][cube.j].set_base("WATER")
 				else:
-					adjust_tile_height(tile, index)
-			# Residential Zoning
-			4:
-				if !is_dirt(index):
+					adjust_tile_height(cube)
+				cube.update()
+			# Zoning and Infrasturcture
+			4, 5, 6, 7, 8:
+				if !Global.tileMap[cube.i][cube.j].is_dirt():
 					return
+
+				Global.tileMap[cube.i][cube.j].clear_tile()
 				
 				if Input.is_action_pressed("left_click"):
-					clear_tile(tile)
-					zoningTileMap.set_cell(tile.x, tile.y, RZONE_TILE_START + height)
-				elif Input.is_action_pressed("right_click"):
-					zoningTileMap.set_cell(tile.x, tile.y, -1)
-			# Commercial Zoning
-			5:
-				if !is_dirt(index):
-					return
-				
-				if Input.is_action_pressed("left_click"):
-					clear_tile(tile)
-					zoningTileMap.set_cell(tile.x, tile.y, CZONE_TILE_START + height)
-				elif Input.is_action_pressed("right_click"):
-					zoningTileMap.set_cell(tile.x, tile.y, -1)
-			# Industrial Zoning
-			6:
-				if !is_dirt(index):
-					return
-				
-				if Input.is_action_pressed("left_click"):
-					clear_tile(tile)
-					zoningTileMap.set_cell(tile.x, tile.y, IZONE_TILE_START + height)
-				elif Input.is_action_pressed("right_click"):
-					zoningTileMap.set_cell(tile.x, tile.y, -1)				
-			# Plant Trees
-			7:
-				if !is_dirt(index):
-					return
-				
-				if Input.is_action_pressed("left_click"):
-					clear_tile(tile)
-					unitTileMap.set_cell(tile.x, tile.y, PARK_TILE_START + height)
-				elif Input.is_action_pressed("right_click"):
-					unitTileMap.set_cell(tile.x, tile.y, -1)
-			# Build Road
-			8:
-				if !is_dirt(index):
-					return
-				
-				if Input.is_action_pressed("left_click"):
-					clear_tile(tile)
-					unitTileMap.set_cell(tile.x, tile.y, ROAD_TILE_START + height)
-				elif Input.is_action_pressed("right_click"):
-					unitTileMap.set_cell(tile.x, tile.y, -1)
+					match Global.mapTool:
+						4:
+							Global.tileMap[cube.i][cube.j].zone = 1
+						5:
+							Global.tileMap[cube.i][cube.j].zone = 2
+						6:
+							Global.tileMap[cube.i][cube.j].zone = 3
+						7:
+							Global.tileMap[cube.i][cube.j].inf = 2
+						8:
+							Global.tileMap[cube.i][cube.j].inf = 1
+			
+				cube.update()
 
 	elif event is InputEventKey && event.pressed:
 		if event.scancode == KEY_O and Global.oceanLevel > 0:
@@ -145,65 +81,70 @@ func _unhandled_input(event):
 		elif event.scancode == KEY_P and Global.oceanLevel < 9:
 			Global.oceanLevel += 1
 			updateOceanLevel()
+		elif event.scancode == KEY_Q:
+			camera.rotateCamera(-1)
+			$VectorMap.rotate_map()
+		elif event.scancode == KEY_W:
+			camera.rotateCamera(1)
+			$VectorMap.rotate_map()
+		elif event.scancode == KEY_S:
+			saveMapData()
+			print("Map Data Saved")
+		elif event.scancode == KEY_L:
+			loadMapData()
+			print("Loading map data...")
 
-	elif event is InputEventMouseMotion:
-		var tile = elementTileMap.world_to_map(get_global_mouse_position())
-		var height = elementTileMap.get_cell(tile.x, tile.y) % TILES_IN_SET
+	elif event is InputEventMouseMotion:		
+		var cube = $VectorMap.get_tile_at(get_global_mouse_position())
 		
-		# my_x = get_global_mouse_position().x
-		# my_y = get_global_mouse_position().y
-		# update()
-		
-		$HUD.update_tile_display(tile, height)
+		if cube:
+			$HUD.update_tile_display(cube.i, cube.j, Global.tileMap[cube.i][cube.j].height)
+		else:
+			$HUD.update_tile_display('x', 'x', 'x')
+	
 		$HUD.update_mouse(get_global_mouse_position())
 
-func tile_out_of_bounds(tile):
-	return tile.x < 0 || mapWidth <= tile.x || tile.y < 0 || mapHeight <= tile.y
-
-func is_dirt(index):
-	return DIRT_TILE_START <= index && index < DIRT_TILE_START + TILES_IN_SET
-
-func is_sand(index):
-	return SAND_TILE_START <= index && index < SAND_TILE_START + TILES_IN_SET
-
-func is_water(index):
-	return WATER_TILE_START <= index && index < WATER_TILE_START + TILES_IN_SET
-
-func clear_zoning(tile):
-	zoningTileMap.set_cell(tile.x, tile.y, -1)
-
-func clear_units(tile):
-	unitTileMap.set_cell(tile.x, tile.y, -1)
-
-func clear_tile(tile):
-	zoningTileMap.set_cell(tile.x, tile.y, -1)
-	unitTileMap.set_cell(tile.x, tile.y, -1)
-
-func adjust_tile_height(tile, index):
-	clear_tile(tile)
-	var height = index % TILES_IN_SET
+func tile_out_of_bounds(cube):
+	return cube.i < 0 || Global.mapWidth <= cube.i || cube.j < 0 || Global.mapHeight <= cube.j
 	
+# Changes a tile's height depending on type of click
+func adjust_tile_height(cube):	
 	if Input.is_action_pressed("left_click"):
-		if height < TILES_IN_SET - 1:
-			elementTileMap.set_cell(tile.x, tile.y, index + 1)
-			$HUD.update_tile_display(tile, height + 1)
-			
+		Global.tileMap[cube.i][cube.j].raise_tile()
 	elif Input.is_action_pressed("right_click"):
-		if height > 0:
-			elementTileMap.set_cell(tile.x, tile.y, index - 1)
-			$HUD.update_tile_display(tile, height - 1)
+		Global.tileMap[cube.i][cube.j].lower_tile()
 
+# On a change in ocean height, check each cube for a change, then re-draw
 func updateOceanLevel():
 	$HUD.update_ocean_display()
-	for i in mapWidth:
-		for j in mapHeight:
-			var height = elementTileMap.get_cell(i, j) % TILES_IN_SET
-			if height < Global.oceanLevel:
-				clear_units(Vector2(i, j))
-				oceanTileMap.set_cell(i, j, (height * TILES_IN_SET) + Global.oceanLevel)
-			else:
-				oceanTileMap.set_cell(i, j, -1)
+	#for i in Global.mapWidth:
+	#	for j in Global.mapHeight:
+	#		Global.tileMap[i][j].water_cube.update_polygons()
+
+func saveMapData():
+	var saveName = "test1"
+	var filePath = str("res://maps/", saveName, ".json")
 	
+	var mapData = []
+	
+	for i in Global.mapWidth:
+		for j in Global.mapHeight:
+			mapData.append([i, j, Global.tileMap[i][j].height, Global.tileMap[i][j].base, Global.tileMap[i][j].zone, Global.tileMap[i][j].inf])
+			
+	var data = {
+		"name": saveName,
+		"mapWidth": Global.mapWidth,
+		"mapHeight": Global.mapHeight,
+		"oceanLevel": Global.oceanLevel,
+		"tiles": mapData
+	}
+	
+	var file
+	file = File.new()
+	file.open(filePath, File.WRITE)
+	file.store_line(to_json(data))
+	file.close()
+
 func loadMapData():
 	var file = File.new()
 	if not file.file_exists(mapPath):
@@ -211,10 +152,22 @@ func loadMapData():
 	file.open(mapPath, File.READ)
 	var mapData = parse_json(file.get_as_text())
 	file.close()
+	
+	Global.mapWidth = mapData.mapWidth
+	Global.mapHeight = mapData.mapHeight
+	Global.oceanLevel = mapData.oceanLevel
+	
+	Global.tileMap.clear()
+	
+	for _x in range(Global.mapWidth):
+		var row = []
+		row.resize(Global.mapHeight)
+		Global.tileMap.append(row)
 
-	elementTileMap.setGridSize(mapData.width, mapData.height)
-	elementTileMap.setCells(mapData.tiles)
+	for tileData in mapData.tiles:
+		Global.tileMap[tileData[0]][tileData[1]] = Tile.new(int(tileData[0]), int(tileData[1]), int(tileData[2]), int(tileData[3]), int(tileData[4]), int(tileData[5]))
 
+	$VectorMap.reinitMap()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta):

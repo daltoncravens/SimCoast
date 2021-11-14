@@ -10,6 +10,27 @@ var viewport_size
 var cam_x
 var cam_y
 
+func rotateCamera(d):
+	Global.camDirection += d
+	if Global.camDirection == -1:
+		Global.camDirection = 3
+	if Global.camDirection == 4:
+		Global.camDirection = 0
+	
+	match Global.camDirection:
+		0:
+			Global.rowRange = range(0, Global.mapWidth, 1)
+			Global.colRange = range(0, Global.mapHeight, 1)
+		1:
+			Global.rowRange = range(Global.mapWidth - 1, -1, -1)
+			Global.colRange = range(0, Global.mapHeight, 1)
+		2:
+			Global.rowRange = range(Global.mapWidth - 1, -1, -1)
+			Global.colRange = range(Global.mapHeight - 1, -1, -1)
+		3:
+			Global.rowRange = range(0, Global.mapWidth, 1)
+			Global.colRange = range(Global.mapHeight - 1, -1, -1)
+
 # Sets camera (x, y) to middle of screen scaled by current zoom level
 func _ready():
 	viewport_size = get_viewport().size
@@ -32,7 +53,7 @@ func _process(delta):
 		move_vector.y += 1
 
 	# Zooming out via keyboard
-	if Input.is_action_just_released("zoom_out") && self.zoom.x < 2.5:
+	if Input.is_action_just_released("zoom_out") && self.zoom.x < 1.5:
 		self.zoom.x += 0.25
 		self.zoom.y += 0.25
 		
@@ -53,7 +74,7 @@ func _process(delta):
 			self.position.y -= self.position.y + cam_y - self.limit_bottom
 	
 	# Zooming in via keyboard
-	elif Input.is_action_just_released("zoom_in") && self.zoom.x > 0.5:
+	elif Input.is_action_just_released("zoom_in") && self.zoom.x > 0.25:
 		self.zoom.x -= 0.25
 		self.zoom.y -= 0.25
 		
