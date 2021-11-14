@@ -1,11 +1,10 @@
-[gd_scene load_steps=35 format=2]
+[gd_scene load_steps=34 format=2]
 
 [ext_resource path="res://HUD.gd" type="Script" id=1]
 [ext_resource path="res://assets/buttons/water_hover.png" type="Texture" id=2]
 [ext_resource path="res://start_map.gd" type="Script" id=3]
 [ext_resource path="res://Camera2D.gd" type="Script" id=4]
 [ext_resource path="res://assets/buttons/water_active.png" type="Texture" id=5]
-[ext_resource path="res://OceanMap.gd" type="Script" id=6]
 [ext_resource path="res://VectorMap.gd" type="Script" id=7]
 [ext_resource path="res://assets/buttons/ocean_active.png" type="Texture" id=8]
 [ext_resource path="res://assets/buttons/water_normal.png" type="Texture" id=9]
@@ -69,7 +68,7 @@ margin_right = 1270.0
 margin_bottom = 24.0
 text = "Tile: (0, 0)"
 
-[node name="OceanLevel" type="Label" parent="HUD/MarginContainer"]
+[node name="OceanHeight" type="Label" parent="HUD/MarginContainer"]
 margin_left = 10.0
 margin_top = 10.0
 margin_right = 1270.0
@@ -126,17 +125,17 @@ texture_pressed = ExtResource( 11 )
 texture_hover = ExtResource( 14 )
 texture_focused = ExtResource( 11 )
 
-[node name="water_button" type="TextureButton" parent="HUD/Control/VBoxContainer"]
+[node name="ocean_button" type="TextureButton" parent="HUD/Control/VBoxContainer"]
 margin_top = 72.0
 margin_right = 32.0
 margin_bottom = 104.0
 toggle_mode = true
 keep_pressed_outside = true
 group = ExtResource( 16 )
-texture_normal = ExtResource( 9 )
-texture_pressed = ExtResource( 5 )
-texture_hover = ExtResource( 2 )
-texture_focused = ExtResource( 5 )
+texture_normal = ExtResource( 31 )
+texture_pressed = ExtResource( 8 )
+texture_hover = ExtResource( 30 )
+texture_focused = ExtResource( 8 )
 
 [node name="rzone_button" type="TextureButton" parent="HUD/Control/VBoxContainer"]
 margin_top = 108.0
@@ -198,21 +197,17 @@ texture_pressed = ExtResource( 36 )
 texture_hover = ExtResource( 34 )
 texture_focused = ExtResource( 36 )
 
-[node name="ocean_button" type="TextureButton" parent="HUD/Control/VBoxContainer"]
+[node name="water_button" type="TextureButton" parent="HUD/Control/VBoxContainer"]
 margin_top = 288.0
 margin_right = 32.0
 margin_bottom = 320.0
 toggle_mode = true
 keep_pressed_outside = true
 group = ExtResource( 16 )
-texture_normal = ExtResource( 31 )
-texture_pressed = ExtResource( 8 )
-texture_hover = ExtResource( 30 )
-texture_focused = ExtResource( 8 )
+texture_normal = ExtResource( 9 )
+texture_pressed = ExtResource( 5 )
+texture_hover = ExtResource( 2 )
+texture_focused = ExtResource( 5 )
 
 [node name="VectorMap" type="YSort" parent="."]
 script = ExtResource( 7 )
-
-[node name="OceanMap" type="YSort" parent="."]
-visible = false
-script = ExtResource( 6 )

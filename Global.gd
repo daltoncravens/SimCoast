@@ -8,7 +8,7 @@ const MAP_EDGE_BUFFER = 150
 const TILE_WIDTH = 64
 const TILE_HEIGHT = 32
 
-const MAX_HEIGHT = 20
+const MAX_HEIGHT = 30
 
 var mapWidth = 10
 var mapHeight = 10
@@ -16,7 +16,7 @@ var mapHeight = 10
 var mapTool = 0
 var tileMap = initTileMap()
 
-var oceanLevel = 8
+var oceanHeight = 3
 
 var camDirection = 0
 var rowRange = range(0, mapWidth, 1)
