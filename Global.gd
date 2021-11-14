@@ -32,7 +32,7 @@ func initTileMap():
 
 	for x in mapHeight:
 		for y in mapWidth:
-			tm[x][y] = Tile.new(x, y)
+			tm[x][y] = Tile.new(x, y, 0, 0, 0, 0)
 	
 	return tm
 

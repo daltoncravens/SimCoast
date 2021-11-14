@@ -1,6 +1,6 @@
 extends Node2D
 
-var mapPath = "res://maps/test.json"
+var mapPath = "res://maps/test1.json"
 var vectorMap
 var camera
 
@@ -87,6 +87,12 @@ func _unhandled_input(event):
 		elif event.scancode == KEY_W:
 			camera.rotateCamera(1)
 			$VectorMap.rotate_map()
+		elif event.scancode == KEY_S:
+			saveMapData()
+			print("Map Data Saved")
+		elif event.scancode == KEY_L:
+			loadMapData()
+			print("Loading map data...")
 
 	elif event is InputEventMouseMotion:		
 		var cube = $VectorMap.get_tile_at(get_global_mouse_position())
@@ -111,21 +117,57 @@ func adjust_tile_height(cube):
 # On a change in ocean height, check each cube for a change, then re-draw
 func updateOceanLevel():
 	$HUD.update_ocean_display()
+	#for i in Global.mapWidth:
+	#	for j in Global.mapHeight:
+	#		Global.tileMap[i][j].water_cube.update_polygons()
+
+func saveMapData():
+	var saveName = "test1"
+	var filePath = str("res://maps/", saveName, ".json")
+	
+	var mapData = []
+	
 	for i in Global.mapWidth:
 		for j in Global.mapHeight:
-			Global.tileMap[i][j].water_cube.update_polygons()
+			mapData.append([i, j, Global.tileMap[i][j].height, Global.tileMap[i][j].base, Global.tileMap[i][j].zone, Global.tileMap[i][j].inf])
+			
+	var data = {
+		"name": saveName,
+		"mapWidth": Global.mapWidth,
+		"mapHeight": Global.mapHeight,
+		"oceanLevel": Global.oceanLevel,
+		"tiles": mapData
+	}
+	
+	var file
+	file = File.new()
+	file.open(filePath, File.WRITE)
+	file.store_line(to_json(data))
+	file.close()
 
-#func loadMapData():
-#	var file = File.new()
-#	if not file.file_exists(mapPath):
-#		return
-#	file.open(mapPath, File.READ)
-#	var mapData = parse_json(file.get_as_text())
-#	file.close()
-#
-#	elementTileMap.setGridSize(mapData.width, mapData.height)
-#	elementTileMap.setCells(mapData.tiles)
+func loadMapData():
+	var file = File.new()
+	if not file.file_exists(mapPath):
+		return
+	file.open(mapPath, File.READ)
+	var mapData = parse_json(file.get_as_text())
+	file.close()
+	
+	Global.mapWidth = mapData.mapWidth
+	Global.mapHeight = mapData.mapHeight
+	Global.oceanLevel = mapData.oceanLevel
+	
+	Global.tileMap.clear()
+	
+	for _x in range(Global.mapWidth):
+		var row = []
+		row.resize(Global.mapHeight)
+		Global.tileMap.append(row)
 
+	for tileData in mapData.tiles:
+		Global.tileMap[tileData[0]][tileData[1]] = Tile.new(int(tileData[0]), int(tileData[1]), int(tileData[2]), int(tileData[3]), int(tileData[4]), int(tileData[5]))
+
+	$VectorMap.reinitMap()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta):

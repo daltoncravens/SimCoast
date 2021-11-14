@@ -61,7 +61,6 @@ func get_cube_colors():
 					return Global.C_ZONE
 				3:
 					return Global.I_ZONE
-			
 		1:
 			return Global.SAND
 		2:
@@ -71,7 +70,6 @@ func get_cube_colors():
 	
 func _draw():
 	var colors = get_cube_colors()
-	
 	if Global.tileMap[i][j].height > 0:
 		draw_polygon(left_poly.get_polygon(), PoolColorArray([colors[1]]))
 		draw_polygon(right_poly.get_polygon(), PoolColorArray([colors[2]]))
