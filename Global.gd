@@ -16,7 +16,7 @@ var mapHeight = 10
 var mapTool = 0
 var tileMap = initTileMap()
 
-var oceanHeight = 3
+var oceanHeight = 0
 
 var camDirection = 0
 var rowRange = range(0, mapWidth, 1)

@@ -84,9 +84,11 @@ func _unhandled_input(event):
 		if event.scancode == KEY_O and Global.oceanHeight > 0:
 			Global.oceanHeight -= 1
 			updateOcean()
+			lowerOcean()
 		elif event.scancode == KEY_P and Global.oceanHeight < Global.MAX_HEIGHT:
 			Global.oceanHeight += 1
 			updateOcean()
+			raiseOcean()
 		elif event.scancode == KEY_Q:
 			camera.rotateCamera(-1)
 			$VectorMap.rotate_map()
@@ -138,6 +140,98 @@ func updateOcean():
 				Global.tileMap[i][j].waterHeight = 0
 				Global.tileMap[i][j].cube.update_polygons()
 				Global.tileMap[i][j].cube.update()
+
+func raiseOcean():
+	var queue = []
+	
+	# Keeps track of which tiles have been checked
+	var visited = []
+	for x in range(Global.mapWidth):
+		visited.append([])
+		for _y in range(Global.mapHeight):
+			visited[x].append(0)
+	
+	# Get all ocean tiles, adjust height, and add to queue
+	for i in Global.mapWidth:
+		for j in Global.mapHeight:
+			if Global.tileMap[i][j].is_ocean():
+				Global.tileMap[i][j].baseHeight = Global.oceanHeight
+				Global.tileMap[i][j].waterHeight = 0
+				Global.tileMap[i][j].cube.update_polygons()
+				Global.tileMap[i][j].cube.update()
+				visited[i][j] = 1
+				queue.append(Global.tileMap[i][j])
+
+	# For each tile in queue, adjust water height, and check neighbors to add to queue
+	while !queue.empty():
+		var tile = queue.pop_front()
+		var a = tile.i
+		var b = tile.j
+		
+		# Adjust water height to match ocean height
+		if !tile.is_ocean():
+			tile.waterHeight = Global.oceanHeight - tile.baseHeight
+			Global.tileMap[a][b].cube.update_polygons()
+			Global.tileMap[a][b].cube.update()
+	
+		# Check each direct neighbor to determine if it will flood
+		var neighbors = [[a-1, b], [a+1, b], [a, b-1], [a, b+1]]
+		for n in neighbors:
+			if is_tile_inbounds(n[0], n[1]) && visited[n[0]][n[1]] == 0:
+				visited[n[0]][n[1]] = 1
+				if Global.tileMap[n[0]][n[1]].baseHeight < Global.oceanHeight:
+					queue.append(Global.tileMap[n[0]][n[1]])
+
+func lowerOcean():
+	var queue = []
+	
+	# Keeps track of which tiles have been checked
+	var visited = []
+	for x in range(Global.mapWidth):
+		visited.append([])
+		for _y in range(Global.mapHeight):
+			visited[x].append(0)
+	
+	# Get all ocean tiles, adjust height, and add to queue
+	for i in Global.mapWidth:
+		for j in Global.mapHeight:
+			if Global.tileMap[i][j].is_ocean():
+				Global.tileMap[i][j].baseHeight = Global.oceanHeight
+				Global.tileMap[i][j].waterHeight = 0
+				Global.tileMap[i][j].cube.update_polygons()
+				Global.tileMap[i][j].cube.update()
+				visited[i][j] = 1
+				queue.append(Global.tileMap[i][j])
+
+	# For each tile in queue, adjust water height, and check neighbors to add to queue
+	while !queue.empty():
+		var tile = queue.pop_front()
+		var a = tile.i
+		var b = tile.j
+		
+		# Adjust water height to match ocean height
+		if !tile.is_ocean():
+			tile.waterHeight = Global.oceanHeight - tile.baseHeight
+			Global.tileMap[a][b].cube.update_polygons()
+			Global.tileMap[a][b].cube.update()
+	
+		# Check each direct neighbor to determine if it will flood
+		var neighbors = [[a-1, b], [a+1, b], [a, b-1], [a, b+1]]
+		for n in neighbors:
+			if is_tile_inbounds(n[0], n[1]) && visited[n[0]][n[1]] == 0:
+				visited[n[0]][n[1]] = 1
+				if Global.tileMap[n[0]][n[1]].baseHeight + Global.tileMap[n[0]][n[1]].waterHeight > Global.oceanHeight:
+					if Global.tileMap[n[0]][n[1]].waterHeight >= 1:
+						queue.append(Global.tileMap[n[0]][n[1]])
+			
+func is_tile_inbounds(i, j):
+	if i < 0 || Global.mapWidth <= i:
+		return false
+	
+	if j < 0 || Global.mapHeight <= j:
+		return false
+	
+	return true
 
 func saveMapData():
 	var saveName = "test1"
