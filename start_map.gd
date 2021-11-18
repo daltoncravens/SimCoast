@@ -8,7 +8,7 @@ var gameTime = {"month": 12,
 				"day": 31,
 				"year": 2020}
 var gameTime_since_update = 0.0
-var gameSpeed = 5000
+var gameSpeed = 1
 
 # var my_x = 0
 # var my_y = 0
@@ -232,7 +232,7 @@ func saveMapData():
 
 func updateGameTime(delta):
 	gameTime_since_update += delta * gameSpeed
-	if gameTime_since_update > 60000:
+	if gameTime_since_update > 12:
 		if gameTime.month == 1 || gameTime.month == 3 || gameTime.month == 5 || gameTime.month == 7 || gameTime.month == 8 || gameTime.month == 10 || gameTime.month == 12:
 			if gameTime.day < 31:
 				gameTime.day += 1
