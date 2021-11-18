@@ -13,6 +13,8 @@ func button_pressed():
 			Global.mapTool = 1
 		'sand_button':
 			Global.mapTool = 2
+		'rock_button':
+			Global.mapTool = 10
 		'ocean_button':
 			Global.mapTool = 3
 		'rzone_button':

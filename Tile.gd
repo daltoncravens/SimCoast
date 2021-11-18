@@ -7,7 +7,8 @@ class_name Tile
 enum TileBase {
 	DIRT,
 	SAND,
-	OCEAN
+	OCEAN,
+	ROCK
 }
 
 enum TileZone {
@@ -32,14 +33,15 @@ var base
 var inf
 var cube = Area2D.new()
 
-func _init(a, b, c, d, e, f):
+func _init(a, b, c, d, e, f, g):
 	self.i = a
 	self.j = b
 
 	baseHeight = c
-	base = d
-	zone = e
-	inf = f
+	waterHeight = d
+	base = e
+	zone = f
+	inf = g
 
 func clear_tile():
 	zone = TileZone.NONE
@@ -70,22 +72,27 @@ func lower_water():
 	cube.update_polygons()
 
 func is_dirt():
-	return base == 0
+	return base == TileBase.DIRT
 
 func is_sand():
-	return base == 1
+	return base == TileBase.SAND
 	
 func is_ocean():
-	return base == 2
+	return base == TileBase.OCEAN
+
+func is_rock():
+	return base == TileBase.ROCK
 
 func set_base(b):
 	match b:
 		"DIRT":
-			base = 0
+			base = TileBase.DIRT
 		"SAND":
-			base = 1
+			base = TileBase.SAND
 		"OCEAN":
-			base = 2
+			base = TileBase.OCEAN
+		"ROCK":
+			base = TileBase.ROCK
 
 func _ready():
 	pass
