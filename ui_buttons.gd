@@ -14,7 +14,9 @@ func button_pressed():
 			Global.mapTool = 1
 		'sand_button':
 			Global.mapTool = 2
-		'water_button':
+		'rock_button':
+			Global.mapTool = 10
+		'ocean_button':
 			Global.mapTool = 3
 		'rzone_button':
 			Global.mapTool = 4
@@ -26,3 +28,5 @@ func button_pressed():
 			Global.mapTool = 7
 		'road_button':
 			Global.mapTool = 8
+		'water_button':
+			Global.mapTool = 9
