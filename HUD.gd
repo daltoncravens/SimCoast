@@ -8,3 +8,10 @@ func update_ocean_display():
 
 func update_mouse(pos):
 	$MarginContainer/MousePosition.text = "Mouse Position: (%s, %s)" % [pos.x, pos.y]
+
+func update_time(date):
+	$Date.text = "Date: %s" % "{month}-{day}-{year}".format ({
+		month = str(date.month).pad_zeros(2),
+		day = str(date.day).pad_zeros(2),
+		year = str(date.year).pad_zeros(2)
+		})
