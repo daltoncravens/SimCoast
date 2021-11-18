@@ -59,6 +59,7 @@ func _unhandled_input(event):
 					Global.tileMap[cube.i][cube.j].waterHeight = 0
 					cube.update_polygons()
 				cube.update()
+				
 			# Zoning and Infrasturcture
 			4, 5, 6, 7, 8:
 				if !Global.tileMap[cube.i][cube.j].is_dirt():
@@ -69,7 +70,7 @@ func _unhandled_input(event):
 				if Input.is_action_pressed("left_click"):
 					match Global.mapTool:
 						4:
-							Global.tileMap[cube.i][cube.j].zone = 1
+							Global.tileMap[cube.i][cube.j].zone_for_residential()
 						5:
 							Global.tileMap[cube.i][cube.j].zone = 2
 						6:
@@ -78,8 +79,9 @@ func _unhandled_input(event):
 							Global.tileMap[cube.i][cube.j].inf = 2
 						8:
 							Global.tileMap[cube.i][cube.j].inf = 1
-			
+
 				cube.update()
+				
 			# Water Tool
 			9:
 				if !Global.tileMap[cube.i][cube.j].is_ocean():
@@ -90,6 +92,15 @@ func _unhandled_input(event):
 					Global.tileMap[cube.i][cube.j].set_base("ROCK")
 				else:
 					adjust_tile_height(cube)
+				cube.update()
+			11: # Add/Remove Houses
+				if Global.tileMap[cube.i][cube.j].zone != 1:
+					return
+					
+				if Input.is_action_pressed("left_click"):
+					Global.tileMap[cube.i][cube.j].add_house()
+				elif Input.is_action_pressed("right_click"):
+					Global.tileMap[cube.i][cube.j].remove_house()
 				cube.update()
 
 		$HUD.update_tile_display(cube.i, cube.j, Global.tileMap[cube.i][cube.j].baseHeight, Global.tileMap[cube.i][cube.j].waterHeight)

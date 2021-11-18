@@ -21,7 +21,8 @@ enum TileZone {
 enum TileInf {
 	NONE,
 	ROAD,
-	PARK
+	PARK,
+	HOUSE
 }
 
 var i
@@ -32,6 +33,7 @@ var zone
 var base
 var inf
 var cube = Area2D.new()
+var data = [0, 0, 0, 0, 0]
 
 func _init(a, b, c, d, e, f, g):
 	self.i = a
@@ -93,6 +95,69 @@ func set_base(b):
 			base = TileBase.OCEAN
 		"ROCK":
 			base = TileBase.ROCK
+
+# Data is a generic array that stores values based on the type of infrastructure present
+# For housing, the data stores and array of the following values:
+# - [0] Number of houses present
+# - [1] Number of houses maximum
+# - [2] People living there
+# - [3] Maximum people
+# - [4] Status of tile (0: unoccupied, 1: Occupied, 2: Damaged, 3: Severe Damage, 4: Abandonded)
+func zone_for_residential():
+	zone = TileZone.RESIDENTIAL
+	data = [0, 4, 0, 0, 0]
+
+func add_house():
+	if zone != TileZone.RESIDENTIAL:
+		return
+		
+	inf = TileInf.HOUSE
+	if data[0] < data[1]:
+		data[0] += 1
+		data[3] += 4
+		
+	print("House added")
+
+func remove_house():
+	if zone != TileZone.RESIDENTIAL:
+		return
+		
+	elif data[0] <= 1:
+		data = [0, 4, 0, 0, 0]
+		inf = TileInf.NONE
+	
+	else:
+		data[0] -= 1
+		data[3] -= 4
+		if data[2] > data[3]:
+			data[2] = data[3]
+
+func add_residents(n):
+	if zone != TileZone.RESIDENTIAL:
+		return
+	
+	data[2] += n
+	if data[2] > data[3]:
+		data[2] = data[3]
+
+func remove_residents(n):
+	if zone != TileZone.RESIDENTIAL:
+		return
+		
+	data[2] -= n
+	if data[2] <= 0:
+		data[2] = 0
+		data[4] = 0
+
+func clear_house():
+	if zone != TileZone.RESIDENTIAL:
+		return
+	
+	inf = TileInf.NONE
+	data = [0, 0, 0, 0, 0]
+
+func get_data():
+	return data
 
 func _ready():
 	pass

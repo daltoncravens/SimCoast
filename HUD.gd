@@ -1,7 +1,12 @@
 extends CanvasLayer
 
 func update_tile_display(i, j, baseHeight, waterHeight):
-	$StatusBar/TileDisplay.text = "Tile: (%s, %s), Base Height: %s, Water Height: %s" % [i, j, baseHeight, waterHeight]
+	if Global.tileMap[int(i)][int(j)].zone == 1:
+		var data = Global.tileMap[int(i)][int(j)].get_data()
+		print(data)
+		$StatusBar/TileDisplay.text = "Zone: Residential, Buildings: %s / %s, People: %s / %s" % [data[0], data[1], data[2], data[3]]
+	else:
+		$StatusBar/TileDisplay.text = "Tile: (%s, %s), Base Height: %s, Water Height: %s" % [i, j, baseHeight, waterHeight]
 
 func update_ocean_display():
 	$StatusBar/OceanHeight.text = "Ocean Height: %s" % Global.oceanHeight

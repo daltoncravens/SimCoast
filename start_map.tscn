@@ -1,4 +1,4 @@
-[gd_scene load_steps=44 format=2]
+[gd_scene load_steps=47 format=2]
 
 [ext_resource path="res://HUD.gd" type="Script" id=1]
 [ext_resource path="res://assets/buttons/water_hover.png" type="Texture" id=2]
@@ -36,7 +36,10 @@
 [ext_resource path="res://assets/buttons/road_hover.png" type="Texture" id=34]
 [ext_resource path="res://assets/buttons/road_normal.png" type="Texture" id=35]
 [ext_resource path="res://assets/buttons/road_active.png" type="Texture" id=36]
+[ext_resource path="res://assets/buttons/add_house_hover.png" type="Texture" id=37]
+[ext_resource path="res://assets/buttons/add_house_active.png" type="Texture" id=38]
 [ext_resource path="res://AI/Agent.gd" type="Script" id=39]
+[ext_resource path="res://assets/buttons/add_house_normal.png" type="Texture" id=40]
 
 [sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 0.133333, 0.886275, 0.129412, 1 )
@@ -264,6 +267,18 @@ texture_normal = ExtResource( 9 )
 texture_pressed = ExtResource( 5 )
 texture_hover = ExtResource( 2 )
 texture_focused = ExtResource( 5 )
+
+[node name="add_house_button" type="TextureButton" parent="HUD/Control/VBoxContainer"]
+margin_top = 360.0
+margin_right = 32.0
+margin_bottom = 392.0
+hint_tooltip = "Add House"
+toggle_mode = true
+keep_pressed_outside = true
+group = ExtResource( 16 )
+texture_normal = ExtResource( 40 )
+texture_pressed = ExtResource( 38 )
+texture_hover = ExtResource( 37 )
 
 [node name="Demand" type="HBoxContainer" parent="HUD"]
 anchor_left = 0.00092907

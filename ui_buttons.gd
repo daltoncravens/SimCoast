@@ -30,3 +30,5 @@ func button_pressed():
 			Global.mapTool = 8
 		'water_button':
 			Global.mapTool = 9
+		'add_house_button':
+			Global.mapTool = 11
