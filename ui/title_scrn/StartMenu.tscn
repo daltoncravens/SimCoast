@@ -1,16 +1,17 @@
 [gd_scene load_steps=14 format=2]
 
-[ext_resource path="res://menu/title_scrn/font/upheavtt_24.tres" type="DynamicFont" id=1]
-[ext_resource path="res://menu/title_scrn/font/AldotheApache.ttf" type="DynamicFontData" id=2]
-[ext_resource path="res://menu/title_scrn/buttons/QuitButton.tscn" type="PackedScene" id=3]
-[ext_resource path="res://menu/title_scrn/buttons/NewGameButton.tscn" type="PackedScene" id=4]
-[ext_resource path="res://menu/title_scrn/buttons/LoadGameButton.tscn" type="PackedScene" id=5]
-[ext_resource path="res://menu/title_scrn/buttons/OptionsButton.tscn" type="PackedScene" id=6]
-[ext_resource path="res://menu/title_scrn/buttons/ContinueButton.tscn" type="PackedScene" id=7]
-[ext_resource path="res://menu/title_scrn/OptionsPopup.gd" type="Script" id=8]
-[ext_resource path="res://menu/title_scrn/DeleteSaveConfirm.gd" type="Script" id=9]
-[ext_resource path="res://menu/title_scrn/StartMenu.gd" type="Script" id=10]
-[ext_resource path="res://menu/title_scrn/musicassets/english-chorus.mp3" type="AudioStream" id=11]
+[ext_resource path="res://assets/fonts/upheavtt_24.tres" type="DynamicFont" id=1]
+[ext_resource path="res://assets/fonts/AldotheApache.ttf" type="DynamicFontData" id=2]
+[ext_resource path="res://ui/title_scrn/buttons/QuitButton.tscn" type="PackedScene" id=3]
+[ext_resource path="res://ui/title_scrn/buttons/NewGameButton.tscn" type="PackedScene" id=4]
+[ext_resource path="res://ui/title_scrn/buttons/LoadGameButton.tscn" type="PackedScene" id=5]
+[ext_resource path="res://ui/title_scrn/buttons/OptionsButton.tscn" type="PackedScene" id=6]
+[ext_resource path="res://ui/title_scrn/buttons/ContinueButton.tscn" type="PackedScene" id=7]
+[ext_resource path="res://ui/title_scrn/OptionsPopup.gd" type="Script" id=8]
+[ext_resource path="res://ui/title_scrn/DeleteSaveConfirm.gd" type="Script" id=9]
+[ext_resource path="res://ui/title_scrn/StartMenu.gd" type="Script" id=10]
+[ext_resource path="res://assets/music/english-chorus.mp3" type="AudioStream" id=11]
+
 
 [sub_resource type="DynamicFont" id=1]
 size = 140
