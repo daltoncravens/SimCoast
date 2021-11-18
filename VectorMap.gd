@@ -16,7 +16,7 @@ func clearNodes():
 	for x in get_children():
 		x.queue_free()
 
-func reinitMap():
+func loadMap():
 	clearNodes()
 	for i in Global.mapHeight:
 		for j in Global.mapWidth:			

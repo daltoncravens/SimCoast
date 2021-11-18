@@ -80,6 +80,8 @@ func get_cube_colors():
 			return Global.SAND
 		2:
 			return Global.WATER
+		3:
+			return Global.ROCK
 	
 	return Global.DIRT
 	

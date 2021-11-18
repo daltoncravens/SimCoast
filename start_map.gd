@@ -1,6 +1,6 @@
 extends Node2D
 
-var mapPath = "res://maps/test1.json"
+var mapName = "test1"
 var vectorMap
 var camera
 
@@ -79,14 +79,22 @@ func _unhandled_input(event):
 				if !Global.tileMap[cube.i][cube.j].is_ocean():
 					adjust_tile_water(cube)
 					cube.update()
+			10: # Rock Base Tool
+				if !Global.tileMap[cube.i][cube.j].is_rock():
+					Global.tileMap[cube.i][cube.j].set_base("ROCK")
+				else:
+					adjust_tile_height(cube)
+				cube.update()
+
+		$HUD.update_tile_display(cube.i, cube.j, Global.tileMap[cube.i][cube.j].baseHeight, Global.tileMap[cube.i][cube.j].waterHeight)
 
 	elif event is InputEventKey && event.pressed:
 		if event.scancode == KEY_O and Global.oceanHeight > 0:
 			Global.oceanHeight -= 1
-			updateOcean()
+			updateOceanHeight(-1)
 		elif event.scancode == KEY_P and Global.oceanHeight < Global.MAX_HEIGHT:
 			Global.oceanHeight += 1
-			updateOcean()
+			updateOceanHeight(1)
 		elif event.scancode == KEY_Q:
 			camera.rotateCamera(-1)
 			$VectorMap.rotate_map()
@@ -106,12 +114,11 @@ func _unhandled_input(event):
 		if cube:
 			$HUD.update_tile_display(cube.i, cube.j, Global.tileMap[cube.i][cube.j].baseHeight, Global.tileMap[cube.i][cube.j].waterHeight)
 		else:
-			$HUD.update_tile_display('x', 'x', 'x', 'x')
+			$HUD.update_tile_display('', '', '', '')
 	
 		$HUD.update_mouse(get_global_mouse_position())
 
-func tile_out_of_bounds(cube):
-	return cube.i < 0 || Global.mapWidth <= cube.i || cube.j < 0 || Global.mapHeight <= cube.j
+
 	
 # Changes a tile's height depending on type of click
 func adjust_tile_height(cube):	
@@ -127,10 +134,22 @@ func adjust_tile_water(cube):
 	elif Input.is_action_just_pressed("right_click"):
 		Global.tileMap[cube.i][cube.j].lower_water()
 
-
-# On a change in ocean height, check each cube for a change, then re-draw
-func updateOcean():
+# Called whenever there is a visual change in ocean level
+func updateOceanHeight(dir):
+	# Update value in display
 	$HUD.update_ocean_display()
+	
+	# Keeps track of which map tiles have been checked
+	var visited = []
+	for x in range(Global.mapWidth):
+		visited.append([])
+		for _y in range(Global.mapHeight):
+			visited[x].append(0)
+			
+	# Only tiles that have changes to water values are placed in queue
+	var queue = []
+	
+	# Update all ocean tiles, adjust height, then add to queue
 	for i in Global.mapWidth:
 		for j in Global.mapHeight:
 			if Global.tileMap[i][j].is_ocean():
@@ -138,23 +157,61 @@ func updateOcean():
 				Global.tileMap[i][j].waterHeight = 0
 				Global.tileMap[i][j].cube.update_polygons()
 				Global.tileMap[i][j].cube.update()
+				visited[i][j] = 1
+				queue.append(Global.tileMap[i][j])
+
+	# For each tile in queue, adjust water height, then check if neighbors should be added to queue
+	while !queue.empty():
+		var tile = queue.pop_front()
+
+		# Adjust water height to match ocean height
+		if !tile.is_ocean():
+			tile.waterHeight = Global.oceanHeight - tile.baseHeight
+			Global.tileMap[tile.i][tile.j].cube.update_polygons()
+			Global.tileMap[tile.i][tile.j].cube.update()
+
+		# Check each orthogonal neighbor to determine if it will flood
+		var neighbors = [[tile.i-1, tile.j], [tile.i+1, tile.j], [tile.i, tile.j-1], [tile.i, tile.j+1]]
+		for n in neighbors:
+			if is_tile_inbounds(n[0], n[1]) && visited[n[0]][n[1]] == 0:
+				visited[n[0]][n[1]] = 1
+				
+				# Rising ocean level
+				if dir > 0 && Global.tileMap[n[0]][n[1]].baseHeight < Global.oceanHeight:
+					queue.append(Global.tileMap[n[0]][n[1]])
+
+				# Falling ocean level
+				if dir < 1 && Global.tileMap[n[0]][n[1]].baseHeight + Global.tileMap[n[0]][n[1]].waterHeight > Global.oceanHeight:
+					if Global.tileMap[n[0]][n[1]].waterHeight >= 1:
+						queue.append(Global.tileMap[n[0]][n[1]])
+
+func tile_out_of_bounds(cube):
+	return cube.i < 0 || Global.mapWidth <= cube.i || cube.j < 0 || Global.mapHeight <= cube.j
+			
+func is_tile_inbounds(i, j):
+	if i < 0 || Global.mapWidth <= i:
+		return false
+	
+	if j < 0 || Global.mapHeight <= j:
+		return false
+	
+	return true
 
 func saveMapData():
-	var saveName = "test1"
-	var filePath = str("res://maps/", saveName, ".json")
+	var filePath = str("res://maps/", mapName, ".json")
 	
-	var mapData = []
-	
+	var tileData = []
+			
 	for i in Global.mapWidth:
 		for j in Global.mapHeight:
-			mapData.append([i, j, Global.tileMap[i][j].baseHeight, Global.tileMap[i][j].base, Global.tileMap[i][j].zone, Global.tileMap[i][j].inf])
+			tileData.append([i, j, Global.tileMap[i][j].baseHeight, Global.tileMap[i][j].waterHeight, Global.tileMap[i][j].base, Global.tileMap[i][j].zone, Global.tileMap[i][j].inf])
 			
 	var data = {
-		"name": saveName,
+		"name": mapName,
 		"mapWidth": Global.mapWidth,
 		"mapHeight": Global.mapHeight,
 		"oceanHeight": Global.oceanHeight,
-		"tiles": mapData
+		"tiles": tileData
 	}
 	
 	var file
@@ -165,9 +222,12 @@ func saveMapData():
 
 func loadMapData():
 	var file = File.new()
-	if not file.file_exists(mapPath):
+	var filePath = str("res://maps/", mapName, ".json")
+		
+	if not file.file_exists(filePath):
+		print("Error: Unable to find map file")
 		return
-	file.open(mapPath, File.READ)
+	file.open(filePath, File.READ)
 	var mapData = parse_json(file.get_as_text())
 	file.close()
 	
@@ -183,9 +243,9 @@ func loadMapData():
 		Global.tileMap.append(row)
 
 	for tileData in mapData.tiles:
-		Global.tileMap[tileData[0]][tileData[1]] = Tile.new(int(tileData[0]), int(tileData[1]), int(tileData[2]), int(tileData[3]), int(tileData[4]), int(tileData[5]))
+		Global.tileMap[tileData[0]][tileData[1]] = Tile.new(int(tileData[0]), int(tileData[1]), int(tileData[2]), int(tileData[3]), int(tileData[4]), int(tileData[5]), int(tileData[6]))
 
-	$VectorMap.reinitMap()
+	$VectorMap.loadMap()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta):

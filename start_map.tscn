@@ -1,10 +1,11 @@
-[gd_scene load_steps=34 format=2]
+[gd_scene load_steps=37 format=2]
 
 [ext_resource path="res://HUD.gd" type="Script" id=1]
 [ext_resource path="res://assets/buttons/water_hover.png" type="Texture" id=2]
 [ext_resource path="res://start_map.gd" type="Script" id=3]
 [ext_resource path="res://Camera2D.gd" type="Script" id=4]
 [ext_resource path="res://assets/buttons/water_active.png" type="Texture" id=5]
+[ext_resource path="res://assets/buttons/rock_active.png" type="Texture" id=6]
 [ext_resource path="res://VectorMap.gd" type="Script" id=7]
 [ext_resource path="res://assets/buttons/ocean_active.png" type="Texture" id=8]
 [ext_resource path="res://assets/buttons/water_normal.png" type="Texture" id=9]
@@ -30,6 +31,8 @@
 [ext_resource path="res://assets/buttons/izone_active.png" type="Texture" id=29]
 [ext_resource path="res://assets/buttons/ocean_hover.png" type="Texture" id=30]
 [ext_resource path="res://assets/buttons/ocean_normal.png" type="Texture" id=31]
+[ext_resource path="res://assets/buttons/rock_normal.png" type="Texture" id=32]
+[ext_resource path="res://assets/buttons/rock_hover.png" type="Texture" id=33]
 [ext_resource path="res://assets/buttons/road_hover.png" type="Texture" id=34]
 [ext_resource path="res://assets/buttons/road_normal.png" type="Texture" id=35]
 [ext_resource path="res://assets/buttons/road_active.png" type="Texture" id=36]
@@ -125,10 +128,22 @@ texture_pressed = ExtResource( 11 )
 texture_hover = ExtResource( 14 )
 texture_focused = ExtResource( 11 )
 
-[node name="ocean_button" type="TextureButton" parent="HUD/Control/VBoxContainer"]
+[node name="rock_button" type="TextureButton" parent="HUD/Control/VBoxContainer"]
 margin_top = 72.0
 margin_right = 32.0
 margin_bottom = 104.0
+toggle_mode = true
+keep_pressed_outside = true
+group = ExtResource( 16 )
+texture_normal = ExtResource( 32 )
+texture_pressed = ExtResource( 6 )
+texture_hover = ExtResource( 33 )
+texture_focused = ExtResource( 6 )
+
+[node name="ocean_button" type="TextureButton" parent="HUD/Control/VBoxContainer"]
+margin_top = 108.0
+margin_right = 32.0
+margin_bottom = 140.0
 toggle_mode = true
 keep_pressed_outside = true
 group = ExtResource( 16 )
@@ -138,9 +153,9 @@ texture_hover = ExtResource( 30 )
 texture_focused = ExtResource( 8 )
 
 [node name="rzone_button" type="TextureButton" parent="HUD/Control/VBoxContainer"]
-margin_top = 108.0
+margin_top = 144.0
 margin_right = 32.0
-margin_bottom = 140.0
+margin_bottom = 176.0
 toggle_mode = true
 keep_pressed_outside = true
 group = ExtResource( 16 )
@@ -150,9 +165,9 @@ texture_hover = ExtResource( 19 )
 texture_focused = ExtResource( 20 )
 
 [node name="czone_button" type="TextureButton" parent="HUD/Control/VBoxContainer"]
-margin_top = 144.0
+margin_top = 180.0
 margin_right = 32.0
-margin_bottom = 176.0
+margin_bottom = 212.0
 toggle_mode = true
 keep_pressed_outside = true
 group = ExtResource( 16 )
@@ -162,9 +177,9 @@ texture_hover = ExtResource( 22 )
 texture_focused = ExtResource( 23 )
 
 [node name="izone_button" type="TextureButton" parent="HUD/Control/VBoxContainer"]
-margin_top = 180.0
+margin_top = 216.0
 margin_right = 32.0
-margin_bottom = 212.0
+margin_bottom = 248.0
 toggle_mode = true
 keep_pressed_outside = true
 group = ExtResource( 16 )
@@ -174,9 +189,9 @@ texture_hover = ExtResource( 28 )
 texture_focused = ExtResource( 29 )
 
 [node name="park_button" type="TextureButton" parent="HUD/Control/VBoxContainer"]
-margin_top = 216.0
+margin_top = 252.0
 margin_right = 32.0
-margin_bottom = 248.0
+margin_bottom = 284.0
 toggle_mode = true
 keep_pressed_outside = true
 group = ExtResource( 16 )
@@ -186,9 +201,9 @@ texture_hover = ExtResource( 24 )
 texture_focused = ExtResource( 25 )
 
 [node name="road_button" type="TextureButton" parent="HUD/Control/VBoxContainer"]
-margin_top = 252.0
+margin_top = 288.0
 margin_right = 32.0
-margin_bottom = 284.0
+margin_bottom = 320.0
 toggle_mode = true
 keep_pressed_outside = true
 group = ExtResource( 16 )
@@ -198,9 +213,9 @@ texture_hover = ExtResource( 34 )
 texture_focused = ExtResource( 36 )
 
 [node name="water_button" type="TextureButton" parent="HUD/Control/VBoxContainer"]
-margin_top = 288.0
+margin_top = 324.0
 margin_right = 32.0
-margin_bottom = 320.0
+margin_bottom = 356.0
 toggle_mode = true
 keep_pressed_outside = true
 group = ExtResource( 16 )
