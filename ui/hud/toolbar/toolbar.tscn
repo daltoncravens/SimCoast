@@ -82,12 +82,38 @@ margin_right = 320.0
 margin_bottom = 100.0
 custom_styles/panel = SubResource( 2 )
 
-[node name="Label" type="Label" parent="Time"]
-margin_top = 26.0
+[node name="VBoxContainer" type="VBoxContainer" parent="Time"]
 margin_right = 320.0
-margin_bottom = 73.0
-text = "Dummy Text
-"
+margin_bottom = 100.0
+alignment = 1
+
+[node name="Time_Controls" type="HBoxContainer" parent="Time/VBoxContainer"]
+margin_top = 37.0
+margin_right = 320.0
+margin_bottom = 37.0
+alignment = 1
+
+[node name="Pause_Button" type="TextureButton" parent="Time/VBoxContainer/Time_Controls"]
+margin_left = 154.0
+margin_right = 154.0
+
+[node name="Play_Button" type="TextureButton" parent="Time/VBoxContainer/Time_Controls"]
+margin_left = 158.0
+margin_right = 158.0
+
+[node name="Faster_Speed_Button" type="TextureButton" parent="Time/VBoxContainer/Time_Controls"]
+margin_left = 162.0
+margin_right = 162.0
+
+[node name="Fastest_Speed_Button" type="TextureButton" parent="Time/VBoxContainer/Time_Controls"]
+margin_left = 166.0
+margin_right = 166.0
+
+[node name="Date" type="Label" parent="Time/VBoxContainer"]
+margin_top = 41.0
+margin_right = 320.0
+margin_bottom = 63.0
+text = "mm/dd/yyyy"
 align = 1
 valign = 1
 
@@ -103,14 +129,25 @@ margin_right = 320.0
 margin_bottom = 100.0
 custom_styles/panel = SubResource( 3 )
 
-[node name="Label" type="Label" parent="Money"]
+[node name="VBoxContainer" type="VBoxContainer" parent="Money"]
+margin_right = 320.0
+margin_bottom = 100.0
+alignment = 1
+
+[node name="Money" type="Label" parent="Money/VBoxContainer"]
 margin_top = 26.0
 margin_right = 320.0
-margin_bottom = 73.0
-text = "Dummy Text
-"
+margin_bottom = 48.0
+text = "$ 100,000,000"
 align = 1
 valign = 1
+
+[node name="Money_Per_Day" type="Label" parent="Money/VBoxContainer"]
+margin_top = 52.0
+margin_right = 320.0
+margin_bottom = 74.0
+text = "+ $ 100"
+align = 1
 
 [node name="Population" type="MarginContainer" parent="."]
 margin_left = 640.0
@@ -123,14 +160,15 @@ margin_right = 160.0
 margin_bottom = 100.0
 custom_styles/panel = SubResource( 4 )
 
-[node name="Label" type="Label" parent="Population"]
-margin_top = 26.0
+[node name="Placeholder" type="Label" parent="Population"]
+margin_top = 14.0
 margin_right = 160.0
-margin_bottom = 73.0
-text = "Dummy Text
+margin_bottom = 86.0
+text = "City Info (To Add)
 "
 align = 1
 valign = 1
+autowrap = true
 
 [node name="Actions" type="MarginContainer" parent="."]
 margin_left = 800.0
