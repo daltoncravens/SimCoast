@@ -1,14 +1,14 @@
-[gd_scene load_steps=47 format=2]
+[gd_scene load_steps=56 format=2]
 
 [ext_resource path="res://HUD.gd" type="Script" id=1]
-[ext_resource path="res://assets/buttons/water_hover.png" type="Texture" id=2]
+[ext_resource path="res://assets/buttons/add_water_hover.png" type="Texture" id=2]
 [ext_resource path="res://start_map.gd" type="Script" id=3]
 [ext_resource path="res://Camera2D.gd" type="Script" id=4]
-[ext_resource path="res://assets/buttons/water_active.png" type="Texture" id=5]
+[ext_resource path="res://assets/buttons/raise_ocean_hover.png" type="Texture" id=5]
 [ext_resource path="res://assets/buttons/rock_active.png" type="Texture" id=6]
 [ext_resource path="res://VectorMap.gd" type="Script" id=7]
 [ext_resource path="res://assets/buttons/ocean_active.png" type="Texture" id=8]
-[ext_resource path="res://assets/buttons/water_normal.png" type="Texture" id=9]
+[ext_resource path="res://assets/buttons/add_resident_active.png" type="Texture" id=9]
 [ext_resource path="res://assets/buttons/dirt_active.png" type="Texture" id=10]
 [ext_resource path="res://assets/buttons/sand_active.png" type="Texture" id=11]
 [ext_resource path="res://assets/buttons/dirt_normal.png" type="Texture" id=12]
@@ -40,6 +40,15 @@
 [ext_resource path="res://assets/buttons/add_house_active.png" type="Texture" id=38]
 [ext_resource path="res://AI/Agent.gd" type="Script" id=39]
 [ext_resource path="res://assets/buttons/add_house_normal.png" type="Texture" id=40]
+[ext_resource path="res://assets/buttons/add_resident_normal.png" type="Texture" id=41]
+[ext_resource path="res://assets/buttons/raise_ocean_normal.png" type="Texture" id=42]
+[ext_resource path="res://assets/buttons/add_water_normal.png" type="Texture" id=43]
+[ext_resource path="res://assets/buttons/add_water_active.png" type="Texture" id=44]
+[ext_resource path="res://assets/buttons/add_resident_hover.png" type="Texture" id=45]
+[ext_resource path="res://assets/buttons/lower_ocean_normal.png" type="Texture" id=46]
+[ext_resource path="res://assets/buttons/lower_ocean_active.png" type="Texture" id=47]
+[ext_resource path="res://assets/buttons/lower_ocean_hover.png" type="Texture" id=48]
+[ext_resource path="res://assets/buttons/raise_ocean_active.png" type="Texture" id=49]
 
 [sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 0.133333, 0.886275, 0.129412, 1 )
@@ -139,9 +148,39 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="dirt_button" type="TextureButton" parent="HUD/Control/VBoxContainer"]
+[node name="HBoxContainer3" type="HBoxContainer" parent="HUD/Control/VBoxContainer"]
+margin_right = 68.0
+margin_bottom = 32.0
+
+[node name="rock_button" type="TextureButton" parent="HUD/Control/VBoxContainer/HBoxContainer3"]
 margin_right = 32.0
 margin_bottom = 32.0
+hint_tooltip = "Rock Tile"
+toggle_mode = true
+keep_pressed_outside = true
+group = ExtResource( 16 )
+texture_normal = ExtResource( 32 )
+texture_pressed = ExtResource( 6 )
+texture_hover = ExtResource( 33 )
+texture_focused = ExtResource( 6 )
+
+[node name="ocean_button" type="TextureButton" parent="HUD/Control/VBoxContainer/HBoxContainer3"]
+margin_left = 36.0
+margin_right = 68.0
+margin_bottom = 32.0
+hint_tooltip = "Ocean Tile"
+toggle_mode = true
+keep_pressed_outside = true
+group = ExtResource( 16 )
+texture_normal = ExtResource( 31 )
+texture_pressed = ExtResource( 8 )
+texture_hover = ExtResource( 30 )
+texture_focused = ExtResource( 8 )
+
+[node name="dirt_button" type="TextureButton" parent="HUD/Control/VBoxContainer"]
+margin_top = 36.0
+margin_right = 68.0
+margin_bottom = 68.0
 hint_tooltip = "Dirt Tile"
 toggle_mode = true
 keep_pressed_outside = true
@@ -152,9 +191,9 @@ texture_hover = ExtResource( 13 )
 texture_focused = ExtResource( 10 )
 
 [node name="sand_button" type="TextureButton" parent="HUD/Control/VBoxContainer"]
-margin_top = 36.0
-margin_right = 32.0
-margin_bottom = 68.0
+margin_top = 72.0
+margin_right = 68.0
+margin_bottom = 104.0
 hint_tooltip = "Sand Tile"
 toggle_mode = true
 keep_pressed_outside = true
@@ -164,36 +203,10 @@ texture_pressed = ExtResource( 11 )
 texture_hover = ExtResource( 14 )
 texture_focused = ExtResource( 11 )
 
-[node name="rock_button" type="TextureButton" parent="HUD/Control/VBoxContainer"]
-margin_top = 72.0
-margin_right = 32.0
-margin_bottom = 104.0
-hint_tooltip = "Rock Tile"
-toggle_mode = true
-keep_pressed_outside = true
-group = ExtResource( 16 )
-texture_normal = ExtResource( 32 )
-texture_pressed = ExtResource( 6 )
-texture_hover = ExtResource( 33 )
-texture_focused = ExtResource( 6 )
-
-[node name="ocean_button" type="TextureButton" parent="HUD/Control/VBoxContainer"]
-margin_top = 108.0
-margin_right = 32.0
-margin_bottom = 140.0
-hint_tooltip = "Ocean Tile"
-toggle_mode = true
-keep_pressed_outside = true
-group = ExtResource( 16 )
-texture_normal = ExtResource( 31 )
-texture_pressed = ExtResource( 8 )
-texture_hover = ExtResource( 30 )
-texture_focused = ExtResource( 8 )
-
 [node name="rzone_button" type="TextureButton" parent="HUD/Control/VBoxContainer"]
-margin_top = 144.0
-margin_right = 32.0
-margin_bottom = 176.0
+margin_top = 108.0
+margin_right = 68.0
+margin_bottom = 140.0
 hint_tooltip = "Residential Zoning"
 toggle_mode = true
 keep_pressed_outside = true
@@ -204,9 +217,9 @@ texture_hover = ExtResource( 19 )
 texture_focused = ExtResource( 20 )
 
 [node name="czone_button" type="TextureButton" parent="HUD/Control/VBoxContainer"]
-margin_top = 180.0
-margin_right = 32.0
-margin_bottom = 212.0
+margin_top = 144.0
+margin_right = 68.0
+margin_bottom = 176.0
 hint_tooltip = "Commercial Zoning"
 toggle_mode = true
 keep_pressed_outside = true
@@ -217,9 +230,9 @@ texture_hover = ExtResource( 22 )
 texture_focused = ExtResource( 23 )
 
 [node name="izone_button" type="TextureButton" parent="HUD/Control/VBoxContainer"]
-margin_top = 216.0
-margin_right = 32.0
-margin_bottom = 248.0
+margin_top = 180.0
+margin_right = 68.0
+margin_bottom = 212.0
 hint_tooltip = "Industrial Zoning"
 toggle_mode = true
 keep_pressed_outside = true
@@ -230,9 +243,9 @@ texture_hover = ExtResource( 28 )
 texture_focused = ExtResource( 29 )
 
 [node name="park_button" type="TextureButton" parent="HUD/Control/VBoxContainer"]
-margin_top = 252.0
-margin_right = 32.0
-margin_bottom = 284.0
+margin_top = 216.0
+margin_right = 68.0
+margin_bottom = 248.0
 hint_tooltip = "Park Tile"
 toggle_mode = true
 keep_pressed_outside = true
@@ -243,9 +256,9 @@ texture_hover = ExtResource( 24 )
 texture_focused = ExtResource( 25 )
 
 [node name="road_button" type="TextureButton" parent="HUD/Control/VBoxContainer"]
-margin_top = 288.0
-margin_right = 32.0
-margin_bottom = 320.0
+margin_top = 252.0
+margin_right = 68.0
+margin_bottom = 284.0
 hint_tooltip = "Road Tile"
 toggle_mode = true
 keep_pressed_outside = true
@@ -256,22 +269,26 @@ texture_hover = ExtResource( 34 )
 texture_focused = ExtResource( 36 )
 
 [node name="water_button" type="TextureButton" parent="HUD/Control/VBoxContainer"]
-margin_top = 324.0
-margin_right = 32.0
-margin_bottom = 356.0
+margin_top = 288.0
+margin_right = 68.0
+margin_bottom = 320.0
 hint_tooltip = "Add/Remove Water"
 toggle_mode = true
 keep_pressed_outside = true
 group = ExtResource( 16 )
-texture_normal = ExtResource( 9 )
-texture_pressed = ExtResource( 5 )
+texture_normal = ExtResource( 43 )
+texture_pressed = ExtResource( 44 )
 texture_hover = ExtResource( 2 )
-texture_focused = ExtResource( 5 )
+texture_focused = ExtResource( 44 )
 
-[node name="add_house_button" type="TextureButton" parent="HUD/Control/VBoxContainer"]
-margin_top = 360.0
+[node name="HBoxContainer" type="HBoxContainer" parent="HUD/Control/VBoxContainer"]
+margin_top = 324.0
+margin_right = 68.0
+margin_bottom = 356.0
+
+[node name="add_house_button" type="TextureButton" parent="HUD/Control/VBoxContainer/HBoxContainer"]
 margin_right = 32.0
-margin_bottom = 392.0
+margin_bottom = 32.0
 hint_tooltip = "Add House"
 toggle_mode = true
 keep_pressed_outside = true
@@ -279,6 +296,44 @@ group = ExtResource( 16 )
 texture_normal = ExtResource( 40 )
 texture_pressed = ExtResource( 38 )
 texture_hover = ExtResource( 37 )
+
+[node name="add_resident_button" type="TextureButton" parent="HUD/Control/VBoxContainer/HBoxContainer"]
+margin_left = 36.0
+margin_right = 68.0
+margin_bottom = 32.0
+hint_tooltip = "Add Resident"
+toggle_mode = true
+keep_pressed_outside = true
+group = ExtResource( 16 )
+texture_normal = ExtResource( 41 )
+texture_pressed = ExtResource( 9 )
+texture_hover = ExtResource( 45 )
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="HUD/Control/VBoxContainer"]
+margin_top = 360.0
+margin_right = 68.0
+margin_bottom = 392.0
+
+[node name="raise_ocean_button" type="TextureButton" parent="HUD/Control/VBoxContainer/HBoxContainer2"]
+margin_right = 32.0
+margin_bottom = 32.0
+hint_tooltip = "Raise Ocean Level"
+keep_pressed_outside = true
+group = ExtResource( 16 )
+texture_normal = ExtResource( 42 )
+texture_pressed = ExtResource( 49 )
+texture_hover = ExtResource( 5 )
+
+[node name="lower_ocean_button" type="TextureButton" parent="HUD/Control/VBoxContainer/HBoxContainer2"]
+margin_left = 36.0
+margin_right = 68.0
+margin_bottom = 32.0
+hint_tooltip = "Lower Ocean Level"
+keep_pressed_outside = true
+group = ExtResource( 16 )
+texture_normal = ExtResource( 46 )
+texture_pressed = ExtResource( 47 )
+texture_hover = ExtResource( 48 )
 
 [node name="Demand" type="HBoxContainer" parent="HUD"]
 anchor_left = 0.00092907

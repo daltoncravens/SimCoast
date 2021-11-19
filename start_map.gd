@@ -95,14 +95,21 @@ func _unhandled_input(event):
 				cube.update()
 			11: # Add/Remove Houses
 				if Global.tileMap[cube.i][cube.j].zone != 1:
-					return
-					
+					return		
 				if Input.is_action_pressed("left_click"):
 					Global.tileMap[cube.i][cube.j].add_house()
 				elif Input.is_action_pressed("right_click"):
 					Global.tileMap[cube.i][cube.j].remove_house()
 				cube.update()
-
+			12: # Add/Remove Residents
+				if Global.tileMap[cube.i][cube.j].zone != 1:
+					return		
+				if Input.is_action_pressed("left_click"):
+					Global.tileMap[cube.i][cube.j].add_residents(1)
+				elif Input.is_action_pressed("right_click"):
+					Global.tileMap[cube.i][cube.j].remove_residents(1)
+				cube.update()
+		
 		$HUD.update_tile_display(cube.i, cube.j, Global.tileMap[cube.i][cube.j].baseHeight, Global.tileMap[cube.i][cube.j].waterHeight)
 
 	elif event is InputEventKey && event.pressed:

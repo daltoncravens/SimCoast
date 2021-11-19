@@ -32,3 +32,13 @@ func button_pressed():
 			Global.mapTool = 9
 		'add_house_button':
 			Global.mapTool = 11
+		'add_resident_button':
+			Global.mapTool = 12
+		'raise_ocean_button':
+			if Global.oceanHeight < Global.MAX_HEIGHT:
+				Global.oceanHeight += 1
+				get_node("../../").updateOceanHeight(1)
+		'lower_ocean_button':
+			if Global.oceanHeight > 0:
+				Global.oceanHeight -= 1
+				get_node("../../").updateOceanHeight(-1)
