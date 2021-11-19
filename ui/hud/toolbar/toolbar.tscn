@@ -1,4 +1,4 @@
-[gd_scene load_steps=32 format=2]
+[gd_scene load_steps=38 format=2]
 
 [ext_resource path="res://assets/fonts/upheavtt_24.tres" type="DynamicFont" id=1]
 [ext_resource path="res://assets/buttons/izone_active.png" type="Texture" id=2]
@@ -26,6 +26,12 @@
 [ext_resource path="res://assets/buttons/izone_hover.png" type="Texture" id=24]
 [ext_resource path="res://assets/buttons/park_normal.png" type="Texture" id=25]
 [ext_resource path="res://toolbar_button_group.tres" type="ButtonGroup" id=26]
+[ext_resource path="res://assets/buttons/pause_default.png" type="Texture" id=27]
+[ext_resource path="res://assets/buttons/pause_pressed.png" type="Texture" id=28]
+[ext_resource path="res://assets/buttons/play_default.png" type="Texture" id=29]
+[ext_resource path="res://assets/buttons/play_pressed.png" type="Texture" id=30]
+[ext_resource path="res://assets/buttons/fast_forward_pressed.png" type="Texture" id=31]
+[ext_resource path="res://assets/buttons/fast_forward_default.png" type="Texture" id=32]
 
 [sub_resource type="Theme" id=1]
 default_font = ExtResource( 1 )
@@ -88,31 +94,43 @@ margin_bottom = 100.0
 alignment = 1
 
 [node name="Time_Controls" type="HBoxContainer" parent="Time/VBoxContainer"]
-margin_top = 37.0
+margin_top = 21.0
 margin_right = 320.0
-margin_bottom = 37.0
+margin_bottom = 53.0
 alignment = 1
 
 [node name="Pause_Button" type="TextureButton" parent="Time/VBoxContainer/Time_Controls"]
-margin_left = 154.0
-margin_right = 154.0
+margin_left = 108.0
+margin_right = 140.0
+margin_bottom = 32.0
+toggle_mode = true
+action_mode = 0
+texture_normal = ExtResource( 27 )
+texture_pressed = ExtResource( 28 )
 
 [node name="Play_Button" type="TextureButton" parent="Time/VBoxContainer/Time_Controls"]
-margin_left = 158.0
-margin_right = 158.0
+margin_left = 144.0
+margin_right = 176.0
+margin_bottom = 32.0
+toggle_mode = true
+pressed = true
+action_mode = 0
+texture_normal = ExtResource( 29 )
+texture_pressed = ExtResource( 30 )
 
-[node name="Faster_Speed_Button" type="TextureButton" parent="Time/VBoxContainer/Time_Controls"]
-margin_left = 162.0
-margin_right = 162.0
-
-[node name="Fastest_Speed_Button" type="TextureButton" parent="Time/VBoxContainer/Time_Controls"]
-margin_left = 166.0
-margin_right = 166.0
+[node name="Fast_Forward_Button" type="TextureButton" parent="Time/VBoxContainer/Time_Controls"]
+margin_left = 180.0
+margin_right = 212.0
+margin_bottom = 32.0
+toggle_mode = true
+action_mode = 0
+texture_normal = ExtResource( 32 )
+texture_pressed = ExtResource( 31 )
 
 [node name="Date" type="Label" parent="Time/VBoxContainer"]
-margin_top = 41.0
+margin_top = 57.0
 margin_right = 320.0
-margin_bottom = 63.0
+margin_bottom = 79.0
 text = "mm/dd/yyyy"
 align = 1
 valign = 1
@@ -134,7 +152,7 @@ margin_right = 320.0
 margin_bottom = 100.0
 alignment = 1
 
-[node name="Money" type="Label" parent="Money/VBoxContainer"]
+[node name="Money_Total" type="Label" parent="Money/VBoxContainer"]
 margin_top = 26.0
 margin_right = 320.0
 margin_bottom = 48.0
@@ -142,7 +160,7 @@ text = "$ 100,000,000"
 align = 1
 valign = 1
 
-[node name="Money_Per_Day" type="Label" parent="Money/VBoxContainer"]
+[node name="Money_Delta" type="Label" parent="Money/VBoxContainer"]
 margin_top = 52.0
 margin_right = 320.0
 margin_bottom = 74.0
