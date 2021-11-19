@@ -1,35 +1,37 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=7 format=2]
 
-[sub_resource type="StyleBoxFlat" id=1]
-bg_color = Color( 0.929412, 0.47451, 0.47451, 1 )
-border_width_left = 3
-border_width_top = 3
-border_width_right = 1
-border_width_bottom = 3
-border_color = Color( 0, 0, 0, 1 )
+[ext_resource path="res://assets/fonts/upheavtt_24.tres" type="DynamicFont" id=1]
+
+[sub_resource type="Theme" id=1]
+default_font = ExtResource( 1 )
 
 [sub_resource type="StyleBoxFlat" id=2]
-bg_color = Color( 0.4, 0.631373, 0.184314, 1 )
-border_width_left = 2
-border_width_top = 3
+bg_color = Color( 0.231373, 0.223529, 0.262745, 1 )
+border_width_left = 1
+border_width_top = 1
 border_width_right = 1
-border_width_bottom = 3
+border_width_bottom = 1
 border_color = Color( 0, 0, 0, 1 )
 
 [sub_resource type="StyleBoxFlat" id=3]
-bg_color = Color( 0.439216, 0.615686, 0.772549, 1 )
-border_width_left = 2
-border_width_top = 3
+bg_color = Color( 0.231373, 0.223529, 0.262745, 1 )
+border_width_top = 1
 border_width_right = 1
-border_width_bottom = 3
+border_width_bottom = 1
 border_color = Color( 0, 0, 0, 1 )
 
 [sub_resource type="StyleBoxFlat" id=4]
-bg_color = Color( 0.690196, 0.368627, 0.921569, 1 )
-border_width_left = 2
-border_width_top = 3
-border_width_right = 3
-border_width_bottom = 3
+bg_color = Color( 0.231373, 0.223529, 0.262745, 1 )
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color( 0, 0, 0, 1 )
+
+[sub_resource type="StyleBoxFlat" id=5]
+bg_color = Color( 0.231373, 0.223529, 0.262745, 1 )
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
 border_color = Color( 0, 0, 0, 1 )
 
 [node name="Toolbar" type="HBoxContainer"]
@@ -37,6 +39,7 @@ anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_top = -100.0
+theme = SubResource( 1 )
 custom_constants/separation = 0
 __meta__ = {
 "_edit_use_anchors_": false
@@ -52,12 +55,12 @@ custom_constants/margin_right = 0
 [node name="Panel" type="Panel" parent="Time"]
 margin_right = 320.0
 margin_bottom = 100.0
-custom_styles/panel = SubResource( 1 )
+custom_styles/panel = SubResource( 2 )
 
 [node name="Label" type="Label" parent="Time"]
-margin_top = 34.0
+margin_top = 26.0
 margin_right = 320.0
-margin_bottom = 65.0
+margin_bottom = 73.0
 text = "Dummy Text
 "
 align = 1
@@ -73,12 +76,12 @@ size_flags_stretch_ratio = 2.0
 [node name="Panel" type="Panel" parent="Money"]
 margin_right = 320.0
 margin_bottom = 100.0
-custom_styles/panel = SubResource( 2 )
+custom_styles/panel = SubResource( 3 )
 
 [node name="Label" type="Label" parent="Money"]
-margin_top = 34.0
+margin_top = 26.0
 margin_right = 320.0
-margin_bottom = 65.0
+margin_bottom = 73.0
 text = "Dummy Text
 "
 align = 1
@@ -93,12 +96,12 @@ size_flags_horizontal = 3
 [node name="Panel" type="Panel" parent="Population"]
 margin_right = 160.0
 margin_bottom = 100.0
-custom_styles/panel = SubResource( 3 )
+custom_styles/panel = SubResource( 4 )
 
 [node name="Label" type="Label" parent="Population"]
-margin_top = 34.0
+margin_top = 26.0
 margin_right = 160.0
-margin_bottom = 65.0
+margin_bottom = 73.0
 text = "Dummy Text
 "
 align = 1
@@ -114,12 +117,12 @@ size_flags_stretch_ratio = 3.0
 [node name="Panel" type="Panel" parent="Actions"]
 margin_right = 480.0
 margin_bottom = 100.0
-custom_styles/panel = SubResource( 4 )
+custom_styles/panel = SubResource( 5 )
 
 [node name="Label" type="Label" parent="Actions"]
-margin_top = 34.0
+margin_top = 26.0
 margin_right = 480.0
-margin_bottom = 65.0
+margin_bottom = 73.0
 text = "Dummy Text
 "
 align = 1
