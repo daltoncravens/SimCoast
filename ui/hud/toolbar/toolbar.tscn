@@ -1,6 +1,31 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=32 format=2]
 
 [ext_resource path="res://assets/fonts/upheavtt_24.tres" type="DynamicFont" id=1]
+[ext_resource path="res://assets/buttons/izone_active.png" type="Texture" id=2]
+[ext_resource path="res://assets/buttons/road_active.png" type="Texture" id=3]
+[ext_resource path="res://assets/buttons/road_hover.png" type="Texture" id=4]
+[ext_resource path="res://assets/buttons/road_normal.png" type="Texture" id=5]
+[ext_resource path="res://assets/buttons/water_hover.png" type="Texture" id=6]
+[ext_resource path="res://assets/buttons/sand_hover.png" type="Texture" id=7]
+[ext_resource path="res://assets/buttons/sand_normal.png" type="Texture" id=8]
+[ext_resource path="res://assets/buttons/water_normal.png" type="Texture" id=9]
+[ext_resource path="res://assets/buttons/dirt_hover.png" type="Texture" id=10]
+[ext_resource path="res://assets/buttons/sand_active.png" type="Texture" id=11]
+[ext_resource path="res://assets/buttons/dirt_normal.png" type="Texture" id=12]
+[ext_resource path="res://assets/buttons/rzone_hover.png" type="Texture" id=13]
+[ext_resource path="res://assets/buttons/rzone_active.png" type="Texture" id=14]
+[ext_resource path="res://assets/buttons/water_active.png" type="Texture" id=15]
+[ext_resource path="res://assets/buttons/dirt_active.png" type="Texture" id=16]
+[ext_resource path="res://assets/buttons/rzone_normal.png" type="Texture" id=17]
+[ext_resource path="res://assets/buttons/czone_normal.png" type="Texture" id=18]
+[ext_resource path="res://assets/buttons/czone_hover.png" type="Texture" id=19]
+[ext_resource path="res://assets/buttons/czone_active.png" type="Texture" id=20]
+[ext_resource path="res://assets/buttons/park_hover.png" type="Texture" id=21]
+[ext_resource path="res://assets/buttons/park_active.png" type="Texture" id=22]
+[ext_resource path="res://assets/buttons/izone_normal.png" type="Texture" id=23]
+[ext_resource path="res://assets/buttons/izone_hover.png" type="Texture" id=24]
+[ext_resource path="res://assets/buttons/park_normal.png" type="Texture" id=25]
+[ext_resource path="res://toolbar_button_group.tres" type="ButtonGroup" id=26]
 
 [sub_resource type="Theme" id=1]
 default_font = ExtResource( 1 )
@@ -119,11 +144,103 @@ margin_right = 480.0
 margin_bottom = 100.0
 custom_styles/panel = SubResource( 5 )
 
-[node name="Label" type="Label" parent="Actions"]
-margin_top = 26.0
+[node name="Buttons" type="HBoxContainer" parent="Actions"]
 margin_right = 480.0
-margin_bottom = 73.0
-text = "Dummy Text
-"
-align = 1
-valign = 1
+margin_bottom = 100.0
+alignment = 1
+
+[node name="dirt_button" type="TextureButton" parent="Actions/Buttons"]
+margin_left = 98.0
+margin_right = 130.0
+margin_bottom = 32.0
+toggle_mode = true
+keep_pressed_outside = true
+group = ExtResource( 26 )
+texture_normal = ExtResource( 12 )
+texture_pressed = ExtResource( 16 )
+texture_hover = ExtResource( 10 )
+texture_focused = ExtResource( 16 )
+
+[node name="sand_button" type="TextureButton" parent="Actions/Buttons"]
+margin_left = 134.0
+margin_right = 166.0
+margin_bottom = 32.0
+toggle_mode = true
+keep_pressed_outside = true
+group = ExtResource( 26 )
+texture_normal = ExtResource( 8 )
+texture_pressed = ExtResource( 11 )
+texture_hover = ExtResource( 7 )
+texture_focused = ExtResource( 11 )
+
+[node name="water_button" type="TextureButton" parent="Actions/Buttons"]
+margin_left = 170.0
+margin_right = 202.0
+margin_bottom = 32.0
+toggle_mode = true
+keep_pressed_outside = true
+group = ExtResource( 26 )
+texture_normal = ExtResource( 9 )
+texture_pressed = ExtResource( 15 )
+texture_hover = ExtResource( 6 )
+texture_focused = ExtResource( 15 )
+
+[node name="rzone_button" type="TextureButton" parent="Actions/Buttons"]
+margin_left = 206.0
+margin_right = 238.0
+margin_bottom = 32.0
+toggle_mode = true
+keep_pressed_outside = true
+group = ExtResource( 26 )
+texture_normal = ExtResource( 17 )
+texture_pressed = ExtResource( 14 )
+texture_hover = ExtResource( 13 )
+texture_focused = ExtResource( 14 )
+
+[node name="czone_button" type="TextureButton" parent="Actions/Buttons"]
+margin_left = 242.0
+margin_right = 274.0
+margin_bottom = 32.0
+toggle_mode = true
+keep_pressed_outside = true
+group = ExtResource( 26 )
+texture_normal = ExtResource( 18 )
+texture_pressed = ExtResource( 20 )
+texture_hover = ExtResource( 19 )
+texture_focused = ExtResource( 20 )
+
+[node name="izone_button" type="TextureButton" parent="Actions/Buttons"]
+margin_left = 278.0
+margin_right = 310.0
+margin_bottom = 32.0
+toggle_mode = true
+keep_pressed_outside = true
+group = ExtResource( 26 )
+texture_normal = ExtResource( 23 )
+texture_pressed = ExtResource( 2 )
+texture_hover = ExtResource( 24 )
+texture_focused = ExtResource( 2 )
+
+[node name="park_button" type="TextureButton" parent="Actions/Buttons"]
+margin_left = 314.0
+margin_right = 346.0
+margin_bottom = 32.0
+toggle_mode = true
+keep_pressed_outside = true
+group = ExtResource( 26 )
+texture_normal = ExtResource( 25 )
+texture_pressed = ExtResource( 22 )
+texture_hover = ExtResource( 21 )
+texture_focused = ExtResource( 22 )
+
+[node name="road_button" type="TextureButton" parent="Actions/Buttons"]
+margin_left = 350.0
+margin_right = 382.0
+margin_bottom = 32.0
+toggle_mode = true
+keep_pressed_outside = true
+group = ExtResource( 26 )
+texture_normal = ExtResource( 5 )
+texture_pressed = ExtResource( 3 )
+texture_hover = ExtResource( 4 )
+texture_focused = ExtResource( 3 )
