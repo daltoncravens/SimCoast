@@ -115,8 +115,7 @@ func add_house():
 	if data[0] < data[1]:
 		data[0] += 1
 		data[3] += 4
-		
-	print("House added")
+
 
 func remove_house():
 	if zone != TileZone.RESIDENTIAL:
