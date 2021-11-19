@@ -21,7 +21,7 @@ _global_script_class_icons={
 [application]
 
 config/name="SimCoast"
-run/main_scene="res://ui/hud/toolbar/toolbar.tscn"
+run/main_scene="res://ui/hud/options_scrn/Options.tscn"
 config/icon="res://icon.png"
 
 [autoload]
