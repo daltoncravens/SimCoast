@@ -18,7 +18,7 @@ func button_pressed():
 			Global.mapTool = 10
 		'ocean_button':
 			Global.mapTool = 3
-		'rzone_button':
+		'lr_zone_button':
 			Global.mapTool = 4
 		'czone_button':
 			Global.mapTool = 5

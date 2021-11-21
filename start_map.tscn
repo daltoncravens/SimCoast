@@ -345,19 +345,8 @@ margin_top = 216.0
 margin_right = 68.0
 margin_bottom = 248.0
 
-[node name="raise_ocean_button" type="TextureButton" parent="HUD/Control/VBoxContainer/HBoxR7"]
-margin_right = 32.0
-margin_bottom = 32.0
-hint_tooltip = "Raise Ocean Level"
-keep_pressed_outside = true
-group = ExtResource( 16 )
-texture_normal = ExtResource( 42 )
-texture_pressed = ExtResource( 49 )
-texture_hover = ExtResource( 5 )
-
 [node name="lower_ocean_button" type="TextureButton" parent="HUD/Control/VBoxContainer/HBoxR7"]
-margin_left = 36.0
-margin_right = 68.0
+margin_right = 32.0
 margin_bottom = 32.0
 hint_tooltip = "Lower Ocean Level"
 keep_pressed_outside = true
@@ -365,6 +354,17 @@ group = ExtResource( 16 )
 texture_normal = ExtResource( 46 )
 texture_pressed = ExtResource( 47 )
 texture_hover = ExtResource( 48 )
+
+[node name="raise_ocean_button" type="TextureButton" parent="HUD/Control/VBoxContainer/HBoxR7"]
+margin_left = 36.0
+margin_right = 68.0
+margin_bottom = 32.0
+hint_tooltip = "Raise Ocean Level"
+keep_pressed_outside = true
+group = ExtResource( 16 )
+texture_normal = ExtResource( 42 )
+texture_pressed = ExtResource( 49 )
+texture_hover = ExtResource( 5 )
 
 [node name="czone_button" type="TextureButton" parent="HUD/Control/VBoxContainer"]
 visible = false
