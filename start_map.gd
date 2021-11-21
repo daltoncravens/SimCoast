@@ -1,6 +1,6 @@
 # To Do
 # - Fix time overflow value
-# 
+# - Change time to be month per turn (rather than day)
 
 extends Node2D
 
@@ -76,13 +76,13 @@ func _unhandled_input(event):
 						4:
 							Global.tileMap[cube.i][cube.j].zone_for_residential()
 						5:
-							Global.tileMap[cube.i][cube.j].zone = 2
+							Global.tileMap[cube.i][cube.j].zone = Tile.TileZone.COMMERCIAL
 						6:
-							Global.tileMap[cube.i][cube.j].zone = 3
+							Global.tileMap[cube.i][cube.j].zone = Tile.TileZone.INDUSTRIAL
 						7:
-							Global.tileMap[cube.i][cube.j].inf = 2
+							Global.tileMap[cube.i][cube.j].inf = Tile.TileInf.PARK
 						8:
-							Global.tileMap[cube.i][cube.j].inf = 1
+							Global.tileMap[cube.i][cube.j].inf = Tile.TileInf.ROAD
 
 				cube.update()
 				

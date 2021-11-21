@@ -1,3 +1,11 @@
+# Condense values into arrays
+# Base Cube
+# Water Cube
+# Infrastructure array
+#  - Small Houses for light infrastructure (between 1 and 4 houses)
+#  - Once large, tall building for heavy infrastructure
+#  - Trees (triangle) for park
+
 # Stores information for collision polygon (which can be clicked on)
 # Information for how to draw each tile based on properties
 extends Area2D
@@ -39,6 +47,9 @@ func adjust_coordinates(a, b):
 	x = (a * (Global.TILE_WIDTH / 2.0)) + (b * (-Global.TILE_WIDTH / 2.0))
 	y = (a * (Global.TILE_HEIGHT / 2.0)) + (b * (Global.TILE_HEIGHT / 2.0))
 	update_polygons()
+
+# Create function to return a cube (array of polygons) given its starting point, width, depth, and height
+
 
 func update_polygons():
 	var h = Global.tileMap[i][j].baseHeight
@@ -147,4 +158,3 @@ func _draw():
 		draw_polygon(right_building_poly.get_polygon(), PoolColorArray([Color("ff888888")]))
 		draw_polygon(top_building_poly.get_polygon(), PoolColorArray([Color("ff999999")]))
 		draw_polyline(top_building_poly.get_polygon(), Color("ff666666"))
-
