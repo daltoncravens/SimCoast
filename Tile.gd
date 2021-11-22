@@ -52,9 +52,9 @@ var i
 var j
 var baseHeight = 0
 var waterHeight = 0
-var zone
-var base
-var inf
+var zone = 0
+var base = 0
+var inf = 0
 var cube = Area2D.new()
 var data = [0, 0, 0, 0, 0]
 

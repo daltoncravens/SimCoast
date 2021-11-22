@@ -53,10 +53,10 @@ func _draw():
 	# Draw building(s) if present
 	if tile.has_building() && building_visible:
 		for b in objects:
-			draw_polygon(b[1].get_polygon(), PoolColorArray([Color("ff777777")]))
-			draw_polygon(b[2].get_polygon(), PoolColorArray([Color("ff888888")]))
-			draw_polygon(b[0].get_polygon(), PoolColorArray([Color("ff999999")]))
-			draw_polyline(b[0].get_polygon(), Color("ff666666"))
+			draw_polygon(b[1].get_polygon(), PoolColorArray([buildingColor[1]]))
+			draw_polygon(b[2].get_polygon(), PoolColorArray([buildingColor[2]]))
+			draw_polygon(b[0].get_polygon(), PoolColorArray([buildingColor[0]]))
+			draw_polyline(b[0].get_polygon(), buildingColor[3])
 
 func update_polygons():
 	var tile = Global.tileMap[i][j]
@@ -105,7 +105,7 @@ func update_polygons():
 			
 				update_cube(b, building_x, building_y, building_width, building_depth, building_height, w)
 				objects.append(b)
-			
+
 		# Draws a single buildings, scaled to number of buildings
 		elif tile.is_heavy_zoned():
 			building_width = (Global.TILE_WIDTH / 2.0) + (2 * num_buildings) 
@@ -138,7 +138,7 @@ func update_polygons():
 
 # Returns a buildings color based on tile status (occupied, damaged, etc.)
 func get_building_colors():
-	return [Color("ffc59d76"), Color("ffbb8d5d"), Color("ff9e7758"), Color("ff666666")]
+	return [Color("ff999999"), Color("ff777777"), Color("ff888888"), Color("ff666666")]
 
 # Returns cube colors for base cube
 func get_cube_colors():
@@ -147,29 +147,28 @@ func get_cube_colors():
 	
 	match tile.get_base():
 		Tile.TileBase.DIRT:
-			colors = Tile.DIRT_COLOR
+			colors = Tile.DIRT_COLOR.duplicate(true)
 		Tile.TileBase.ROCK:
-			colors = Tile.ROCK_COLOR
+			colors = Tile.ROCK_COLOR.duplicate(true)
 		Tile.TileBase.SAND:
-			colors = Tile.SAND_COLOR
+			colors = Tile.SAND_COLOR.duplicate(true)
 		Tile.TileBase.OCEAN:
-			colors = Tile.WATER_COLOR
+			colors = Tile.WATER_COLOR.duplicate(true)
 
 	# Change base top color and outline if tile is zoned
-	if tile.get_zone() != Tile.TileZone.NONE:
-		match tile.get_zone():
-			Tile.TileZone.LIGHT_RESIDENTIAL:
-				colors[0] = Tile.LT_RES_ZONE_COLOR[0]
-				colors[3] = Tile.LT_RES_ZONE_COLOR[1]
-			Tile.TileZone.HEAVY_RESIDENTIAL:
-				colors[0] = Tile.HV_RES_ZONE_COLOR[0]
-				colors[3] = Tile.HV_RES_ZONE_COLOR[1]
-			Tile.TileZone.LIGHT_COMMERCIAL:
-				colors[0] = Tile.LT_COM_ZONE_COLOR[0]
-				colors[3] = Tile.LT_COM_ZONE_COLOR[1]
-			Tile.TileZone.HEAVY_COMMERCIAL:
-				colors[0] = Tile.HV_COM_ZONE_COLOR[0]
-				colors[3] = Tile.HV_COM_ZONE_COLOR[1]
+	match tile.get_zone():
+		Tile.TileZone.LIGHT_RESIDENTIAL:
+			colors[0] = Tile.LT_RES_ZONE_COLOR[0]
+			colors[3] = Tile.LT_RES_ZONE_COLOR[1]
+		Tile.TileZone.HEAVY_RESIDENTIAL:
+			colors[0] = Tile.HV_RES_ZONE_COLOR[0]
+			colors[3] = Tile.HV_RES_ZONE_COLOR[1]
+		Tile.TileZone.LIGHT_COMMERCIAL:
+			colors[0] = Tile.LT_COM_ZONE_COLOR[0]
+			colors[3] = Tile.LT_COM_ZONE_COLOR[1]
+		Tile.TileZone.HEAVY_COMMERCIAL:
+			colors[0] = Tile.HV_COM_ZONE_COLOR[0]
+			colors[3] = Tile.HV_COM_ZONE_COLOR[1]
 
 	return colors
 	
