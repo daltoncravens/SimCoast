@@ -1,7 +1,7 @@
 extends CanvasLayer
 
 func update_tile_display(i, j, baseHeight, waterHeight):
-	if Global.tileMap[int(i)][int(j)].zone == 1:
+	if Global.tileMap[int(i)][int(j)].get_zone() != Tile.TileZone.NONE:
 		var data = Global.tileMap[int(i)][int(j)].get_data()
 		$StatusBar/TileDisplay.text = "Zone: Residential, Buildings: %s / %s, People: %s / %s" % [data[0], data[1], data[2], data[3]]
 	else:

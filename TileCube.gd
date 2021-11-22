@@ -19,17 +19,7 @@ var building_visible = true
 
 var base_cube = [Polygon2D.new(), Polygon2D.new(), Polygon2D.new()]
 var water_cube = [Polygon2D.new(), Polygon2D.new(), Polygon2D.new()]
-
-var buildings = []
-
-var h1 = [Polygon2D.new(), Polygon2D.new(), Polygon2D.new()]
-var h2 = [Polygon2D.new(), Polygon2D.new(), Polygon2D.new()]
-var h3 = [Polygon2D.new(), Polygon2D.new(), Polygon2D.new()]
-var h4 = [Polygon2D.new(), Polygon2D.new(), Polygon2D.new()]
-
-var top_building_poly = Polygon2D.new()
-var left_building_poly = Polygon2D.new()
-var right_building_poly = Polygon2D.new()
+var objects = []
 
 var coll = CollisionPolygon2D.new()
 
@@ -40,15 +30,18 @@ func _ready():
 func _draw():
 	update_polygons()
 	
+	var tile = Global.tileMap[i][j]
+		
 	var baseColor = get_cube_colors()
-	var waterColor = Global.WATER
+	var waterColor = Tile.WATER_COLOR
+	var buildingColor = get_building_colors()
 	
-	if Global.tileMap[i][j].baseHeight > 0:
+	if tile.get_base_height() > 0:
 		draw_polygon(base_cube[1].get_polygon(), PoolColorArray([baseColor[1]]))
 		draw_polygon(base_cube[2].get_polygon(), PoolColorArray([baseColor[2]]))
 
 	# If water exists on tile, draw the water cube - otherwise draw the top of the base cube
-	if Global.tileMap[i][j].waterHeight > 0:
+	if tile.get_water_height() > 0:
 		draw_polygon(water_cube[1].get_polygon(), PoolColorArray([waterColor[1]]))
 		draw_polygon(water_cube[2].get_polygon(), PoolColorArray([waterColor[2]]))
 		draw_polygon(water_cube[0].get_polygon(), PoolColorArray([waterColor[0]]))
@@ -57,32 +50,13 @@ func _draw():
 		draw_polygon(base_cube[0].get_polygon(), PoolColorArray([baseColor[0]]))
 		draw_polyline(base_cube[0].get_polygon(), baseColor[3])
 
-	# Draw building if present
-	if Global.tileMap[i][j].inf == 3 && building_visible:
-		draw_polygon(left_building_poly.get_polygon(), PoolColorArray([Color("ff777777")]))
-		draw_polygon(right_building_poly.get_polygon(), PoolColorArray([Color("ff888888")]))
-		draw_polygon(top_building_poly.get_polygon(), PoolColorArray([Color("ff999999")]))
-		draw_polyline(top_building_poly.get_polygon(), Color("ff666666"))
-
-	#draw_polygon(h1[1].get_polygon(), PoolColorArray([Color("ff777777")]))
-	#draw_polygon(h1[2].get_polygon(), PoolColorArray([Color("ff888888")]))
-	#draw_polygon(h1[0].get_polygon(), PoolColorArray([Color("ff999999")]))
-	#draw_polyline(h1[0].get_polygon(), Color("ff666666"))
-
-	#draw_polygon(h2[1].get_polygon(), PoolColorArray([Color("ff777777")]))
-	#draw_polygon(h2[2].get_polygon(), PoolColorArray([Color("ff888888")]))
-	#draw_polygon(h2[0].get_polygon(), PoolColorArray([Color("ff999999")]))
-	#draw_polyline(h2[0].get_polygon(), Color("ff666666"))
-
-	#draw_polygon(h3[1].get_polygon(), PoolColorArray([Color("ff777777")]))
-	#draw_polygon(h3[2].get_polygon(), PoolColorArray([Color("ff888888")]))
-	#draw_polygon(h3[0].get_polygon(), PoolColorArray([Color("ff999999")]))
-	#draw_polyline(h3[0].get_polygon(), Color("ff666666"))
-
-	#draw_polygon(h4[1].get_polygon(), PoolColorArray([Color("ff777777")]))
-	#draw_polygon(h4[2].get_polygon(), PoolColorArray([Color("ff888888")]))
-	#draw_polygon(h4[0].get_polygon(), PoolColorArray([Color("ff999999")]))
-	#draw_polyline(h4[0].get_polygon(), Color("ff666666"))
+	# Draw building(s) if present
+	if tile.has_building() && building_visible:
+		for b in objects:
+			draw_polygon(b[1].get_polygon(), PoolColorArray([Color("ff777777")]))
+			draw_polygon(b[2].get_polygon(), PoolColorArray([Color("ff888888")]))
+			draw_polygon(b[0].get_polygon(), PoolColorArray([Color("ff999999")]))
+			draw_polyline(b[0].get_polygon(), Color("ff666666"))
 
 func update_polygons():
 	var tile = Global.tileMap[i][j]
@@ -92,29 +66,64 @@ func update_polygons():
 	update_cube(base_cube, x, y, Global.TILE_WIDTH, Global.TILE_HEIGHT, h, 0)
 	update_cube(water_cube, x, y, Global.TILE_WIDTH, Global.TILE_HEIGHT, h + w, h)
 	
-	if tile.get_number_of_buildings() > 0:
-		pass
+	if tile.has_building():
+		objects.clear()
+		var num_buildings = tile.get_number_of_buildings()
 		
-	var house_width = Global.TILE_WIDTH / 4.0
-	var house_depth = house_width / 2.0
-	var house_height = 5
-	
-	var h1_x = x
-	var h1_y = y - h + ((Global.TILE_HEIGHT / 2.0) - house_depth) / 2.0
-	
-	var h2_x = x
-	var h2_y = y - h + ((Global.TILE_HEIGHT / 2.0) - house_depth) / 2.0 + (Global.TILE_HEIGHT / 2.0)
-	
-	var h3_x = x - (((Global.TILE_WIDTH / 2.0) - house_width) / 2.0) - (house_width / 2.0)
-	var h3_y = y - h + ((Global.TILE_HEIGHT / 2.0)) - (house_depth / 2.0)
-	
-	var h4_x = x + (((Global.TILE_WIDTH / 2.0) - house_width) / 2.0) + (house_width / 2.0)
-	var h4_y = y - h + ((Global.TILE_HEIGHT / 2.0)) - (house_depth / 2.0)
-	
-	update_cube(h1, h1_x, h1_y, house_width, house_depth, house_height, w)
-	update_cube(h2, h2_x, h2_y, house_width, house_depth, house_height, w)
-	update_cube(h3, h3_x, h3_y, house_width, house_depth, house_height, w)
-	update_cube(h4, h4_x, h4_y, house_width, house_depth, house_height, w)
+		var building_width = 0
+		var building_depth = 0
+		var building_height = 0
+		var building_x = 0
+		var building_y = 0
+
+		if tile.is_light_zoned():
+			building_width = Global.TILE_WIDTH / 4.0
+			building_depth = building_width / 2.0
+			building_height = 5
+			
+			if w > building_height:
+				building_visible = false
+			else:
+				building_visible = true
+			
+			for z in num_buildings:
+				var b = [Polygon2D.new(), Polygon2D.new(), Polygon2D.new()]
+				
+				match z:
+					0:
+						building_x = x
+						building_y = y - h + ((Global.TILE_HEIGHT / 2.0) - building_depth) / 2.0
+					1:
+						building_x = x
+						building_y = y - h + ((Global.TILE_HEIGHT / 2.0) - building_depth) / 2.0 + (Global.TILE_HEIGHT / 2.0)
+					2:
+						building_x = x - (((Global.TILE_WIDTH / 2.0) - building_width) / 2.0) - (building_width / 2.0)
+						building_y = y - h + ((Global.TILE_HEIGHT / 2.0)) - (building_depth / 2.0)
+					3:
+						building_x = x + (((Global.TILE_WIDTH / 2.0) - building_width) / 2.0) + (building_width / 2.0)
+						building_y = y - h + ((Global.TILE_HEIGHT / 2.0)) - (building_depth / 2.0)
+			
+				update_cube(b, building_x, building_y, building_width, building_depth, building_height, w)
+				objects.append(b)
+			
+		# Draws a single buildings, scaled to number of buildings
+		elif tile.is_heavy_zoned():
+			building_width = (Global.TILE_WIDTH / 2.0) + (2 * num_buildings) 
+			building_depth = building_width / 2.0
+			building_height = 10 + (3 * num_buildings)
+
+			if w > building_height:
+				building_visible = false
+			else:
+				building_visible = true
+			
+			var b = [Polygon2D.new(), Polygon2D.new(), Polygon2D.new()]
+			
+			building_x = x
+			building_y = y - h + ((Global.TILE_HEIGHT / 2.0) - (building_depth / 2.0))
+
+			update_cube(b, building_x, building_y, building_width, building_depth, building_height, w)
+			objects.append(b)
 	
 	# Set the clickable area of the polygon (the entire base cube)
 	coll.set_polygon(PoolVector2Array([
@@ -127,59 +136,42 @@ func update_polygons():
 		Vector2(x, y - h)
 		]))
 
-	if Global.tileMap[i][j].zone == 1 && Global.tileMap[i][j].inf == 3:
-		var b_width = 8 + (2 * Global.tileMap[i][j].data[0])
-		var b_height = 4 + (2 * Global.tileMap[i][j].data[0])
-		
-		if w > b_height:
-			building_visible = false
-		else:
-			building_visible = true
+# Returns a buildings color based on tile status (occupied, damaged, etc.)
+func get_building_colors():
+	return [Color("ffc59d76"), Color("ffbb8d5d"), Color("ff9e7758"), Color("ff666666")]
 
-		top_building_poly.set_polygon( PoolVector2Array([
-				Vector2(x, y - h + (Global.TILE_HEIGHT / 2.0) - (b_width / 2.0) - b_height),
-				Vector2(x + b_width, y - h + (Global.TILE_HEIGHT / 2.0) - b_height), 
-				Vector2(x, y - h + (Global.TILE_HEIGHT / 2.0) + (b_width / 2.0) - b_height),
-				Vector2(x - b_width, y - h + (Global.TILE_HEIGHT / 2.0) - b_height),
-				Vector2(x, y - h + (Global.TILE_HEIGHT / 2.0) - (b_width / 2.0) - b_height)
-				]))
-
-		left_building_poly.set_polygon( PoolVector2Array([
-				Vector2(x - b_width, y - h + (Global.TILE_HEIGHT / 2.0) - b_height),
-				Vector2(x, y - h + (Global.TILE_HEIGHT / 2.0) + (b_width / 2.0) - b_height),
-				Vector2(x, y - h + (Global.TILE_HEIGHT / 2.0) + (b_width / 2.0) - w),
-				Vector2(x - b_width, y - h + (Global.TILE_HEIGHT / 2.0) - w)
-				]))
-
-		right_building_poly.set_polygon( PoolVector2Array([
-				Vector2(x + b_width, y - h + (Global.TILE_HEIGHT / 2.0) - b_height), 
-				Vector2(x, y - h + (Global.TILE_HEIGHT / 2.0) + (b_width / 2.0) - b_height),
-				Vector2(x, y - h + (Global.TILE_HEIGHT / 2.0) + (b_width / 2.0) - w),
-				Vector2(x + b_width, y - h + (Global.TILE_HEIGHT / 2.0) - w)
-				]))
-
+# Returns cube colors for base cube
 func get_cube_colors():
-	match Global.tileMap[i][j].base:
-		Tile.TileBase.DIRT:
-			match Global.tileMap[i][j].inf:
-				1:
-					return Global.ROAD
-				2:
-					return Global.PARK
-					
-			match Global.tileMap[i][j].zone:
-				Tile.TileZone.RESIDENTIAL:
-					return Global.R_ZONE
-				Tile.TileZone.COMMERCIAL:
-					return Global.C_ZONE
-		Tile.TileBase.SAND:
-			return Global.SAND
-		Tile.TileBase.OCEAN:
-			return Global.WATER
-		Tile.TileBase.ROCK:
-			return Global.ROCK
+	var tile = Global.tileMap[i][j]
+	var colors = []
 	
-	return Global.DIRT
+	match tile.get_base():
+		Tile.TileBase.DIRT:
+			colors = Tile.DIRT_COLOR
+		Tile.TileBase.ROCK:
+			colors = Tile.ROCK_COLOR
+		Tile.TileBase.SAND:
+			colors = Tile.SAND_COLOR
+		Tile.TileBase.OCEAN:
+			colors = Tile.WATER_COLOR
+
+	# Change base top color and outline if tile is zoned
+	if tile.get_zone() != Tile.TileZone.NONE:
+		match tile.get_zone():
+			Tile.TileZone.LIGHT_RESIDENTIAL:
+				colors[0] = Tile.LT_RES_ZONE_COLOR[0]
+				colors[3] = Tile.LT_RES_ZONE_COLOR[1]
+			Tile.TileZone.HEAVY_RESIDENTIAL:
+				colors[0] = Tile.HV_RES_ZONE_COLOR[0]
+				colors[3] = Tile.HV_RES_ZONE_COLOR[1]
+			Tile.TileZone.LIGHT_COMMERCIAL:
+				colors[0] = Tile.LT_COM_ZONE_COLOR[0]
+				colors[3] = Tile.LT_COM_ZONE_COLOR[1]
+			Tile.TileZone.HEAVY_COMMERCIAL:
+				colors[0] = Tile.HV_COM_ZONE_COLOR[0]
+				colors[3] = Tile.HV_COM_ZONE_COLOR[1]
+
+	return colors
 	
 # Updates the provided cube [array of three polygons] given its starting point, width, depth, height, and height offset (for layers)
 func update_cube(cube, cube_x, cube_y, width, depth, height, offset):

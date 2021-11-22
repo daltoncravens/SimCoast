@@ -38,6 +38,16 @@ enum TileStatus {
 	HEAVY_DAMAGE
 }
 
+const DIRT_COLOR = [Color("ffc59d76"), Color("ffbb8d5d"), Color("ff9e7758"), Color("ff666666")]
+const SAND_COLOR = [Color("ffd9d3bf"), Color("ffc9bf99"), Color("ffaca075"), Color("ff867d5e")]
+const WATER_COLOR = [Color("ff9cd5e2"), Color("ff8bc4d1"), Color("ff83bcc9"), Color("ff5b8c97")]
+const ROCK_COLOR = [Color("ffc2c2c2"), Color("ffcacaca"), Color("ffaaaaaa"), Color("ff666666")]
+
+const LT_RES_ZONE_COLOR = [Color("ffbcd398"), Color("ff60822d")]
+const HV_RES_ZONE_COLOR = [Color("ffa7ba89"), Color("ff60822d")]
+const LT_COM_ZONE_COLOR = [Color("ff7797e2"), Color("ff1d346a")]
+const HV_COM_ZONE_COLOR = [Color("ff5b7dcd"), Color("ff1d346a")]
+
 var i
 var j
 var baseHeight = 0
@@ -106,6 +116,12 @@ func get_number_of_buildings():
 	else:
 		return 0
 
+func is_light_zoned():
+	return zone == TileZone.LIGHT_RESIDENTIAL || zone == TileZone.LIGHT_COMMERCIAL
+
+func is_heavy_zoned():
+	return zone == TileZone.HEAVY_RESIDENTIAL || zone == TileZone.HEAVY_COMMERCIAL
+
 func set_base_height(h):
 	if 0 <= h && h <= Global.MAX_HEIGHT:
 		baseHeight = h
@@ -113,6 +129,13 @@ func set_base_height(h):
 func set_water_height(w):
 	if 0 <= w && w <= Global.MAX_HEIGHT:
 		waterHeight = w
+
+func can_build():
+	if zone == TileZone.LIGHT_RESIDENTIAL || zone == TileZone.HEAVY_RESIDENTIAL:
+		return true
+	elif zone == TileZone.LIGHT_COMMERCIAL || zone == TileZone.HEAVY_COMMERCIAL:
+		return true
+	return false
 
 func is_ocean():
 	return base == TileBase.OCEAN
@@ -128,12 +151,15 @@ func is_ocean():
 func get_zone():
 	return zone
 
+func has_building():
+	return inf == TileInf.BUILDING
+
 func set_zone(type):
 	zone = type
 	data = [0, 4, 0, 0, 0]
 
 func add_building():		
-	inf = TileInf.HOUSE
+	inf = TileInf.BUILDING
 	if data[0] < data[1]:
 		data[0] += 1
 		data[3] += 4

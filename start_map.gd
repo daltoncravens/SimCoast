@@ -94,32 +94,27 @@ func _unhandled_input(event):
 						Global.Tool.ZONE_HV_COM:
 							if tile.get_zone() != Tile.TileZone.HEAVY_COMMERCIAL:
 								tile.clear_tile()
-								tile.set_zone(Tile.TileZone.HEAVY_COMMERCIAL)							
+								tile.set_zone(Tile.TileZone.HEAVY_COMMERCIAL)
+								
+				elif Input.is_action_pressed("right_click"):	
+					tile.clear_tile()					
 
 			# Add/Remove Buildings
 			Global.Tool.ADD_RES_BLDG:
-				if tile.get_zone() != Tile.TileZone.LIGHT_RESIDENTIAL || tile.get_zone() != Tile.TileZone.HEAVY_RESIDENTIAL:
-					return
-				else:
+				if tile.get_zone() == Tile.TileZone.LIGHT_RESIDENTIAL || tile.get_zone() == Tile.TileZone.HEAVY_RESIDENTIAL:
 					adjust_building_number(tile)
 
 			Global.Tool.ADD_COM_BLDG:
-				if tile.get_zone() != Tile.TileZone.LIGHT_COMMERCIAL || tile.get_zone() != Tile.TileZone.HEAVY_COMMERCIAL:
-					return
-				else:
+				if tile.get_zone() == Tile.TileZone.LIGHT_COMMERCIAL || tile.get_zone() == Tile.TileZone.HEAVY_COMMERCIAL:
 					adjust_building_number(tile)
 
 			# Add/Remove People
 			Global.Tool.ADD_RES_PERSON:
-				if tile.get_zone() != Tile.TileZone.LIGHT_RESIDENTIAL || tile.get_zone() != Tile.TileZone.HEAVY_RESIDENTIAL:
-					return
-				else:
+				if tile.get_zone() == Tile.TileZone.LIGHT_RESIDENTIAL || tile.get_zone() == Tile.TileZone.HEAVY_RESIDENTIAL:
 					adjust_people_number(tile)
 
 			Global.Tool.ADD_COM_PERSON:
-				if tile.get_zone() != Tile.TileZone.LIGHT_COMMERCIAL || tile.get_zone() != Tile.TileZone.HEAVY_COMMERCIAL:
-					return
-				else:
+				if tile.get_zone() == Tile.TileZone.LIGHT_COMMERCIAL || tile.get_zone() == Tile.TileZone.HEAVY_COMMERCIAL:
 					adjust_people_number(tile)
 
 			# Water Tool
