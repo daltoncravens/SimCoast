@@ -20,6 +20,8 @@ var building_visible = true
 var base_cube = [Polygon2D.new(), Polygon2D.new(), Polygon2D.new()]
 var water_cube = [Polygon2D.new(), Polygon2D.new(), Polygon2D.new()]
 
+var buildings = []
+
 var h1 = [Polygon2D.new(), Polygon2D.new(), Polygon2D.new()]
 var h2 = [Polygon2D.new(), Polygon2D.new(), Polygon2D.new()]
 var h3 = [Polygon2D.new(), Polygon2D.new(), Polygon2D.new()]
@@ -62,33 +64,37 @@ func _draw():
 		draw_polygon(top_building_poly.get_polygon(), PoolColorArray([Color("ff999999")]))
 		draw_polyline(top_building_poly.get_polygon(), Color("ff666666"))
 
-	draw_polygon(h1[1].get_polygon(), PoolColorArray([Color("ff777777")]))
-	draw_polygon(h1[2].get_polygon(), PoolColorArray([Color("ff888888")]))
-	draw_polygon(h1[0].get_polygon(), PoolColorArray([Color("ff999999")]))
-	draw_polyline(h1[0].get_polygon(), Color("ff666666"))
+	#draw_polygon(h1[1].get_polygon(), PoolColorArray([Color("ff777777")]))
+	#draw_polygon(h1[2].get_polygon(), PoolColorArray([Color("ff888888")]))
+	#draw_polygon(h1[0].get_polygon(), PoolColorArray([Color("ff999999")]))
+	#draw_polyline(h1[0].get_polygon(), Color("ff666666"))
 
-	draw_polygon(h2[1].get_polygon(), PoolColorArray([Color("ff777777")]))
-	draw_polygon(h2[2].get_polygon(), PoolColorArray([Color("ff888888")]))
-	draw_polygon(h2[0].get_polygon(), PoolColorArray([Color("ff999999")]))
-	draw_polyline(h2[0].get_polygon(), Color("ff666666"))
+	#draw_polygon(h2[1].get_polygon(), PoolColorArray([Color("ff777777")]))
+	#draw_polygon(h2[2].get_polygon(), PoolColorArray([Color("ff888888")]))
+	#draw_polygon(h2[0].get_polygon(), PoolColorArray([Color("ff999999")]))
+	#draw_polyline(h2[0].get_polygon(), Color("ff666666"))
 
-	draw_polygon(h3[1].get_polygon(), PoolColorArray([Color("ff777777")]))
-	draw_polygon(h3[2].get_polygon(), PoolColorArray([Color("ff888888")]))
-	draw_polygon(h3[0].get_polygon(), PoolColorArray([Color("ff999999")]))
-	draw_polyline(h3[0].get_polygon(), Color("ff666666"))
+	#draw_polygon(h3[1].get_polygon(), PoolColorArray([Color("ff777777")]))
+	#draw_polygon(h3[2].get_polygon(), PoolColorArray([Color("ff888888")]))
+	#draw_polygon(h3[0].get_polygon(), PoolColorArray([Color("ff999999")]))
+	#draw_polyline(h3[0].get_polygon(), Color("ff666666"))
 
-	draw_polygon(h4[1].get_polygon(), PoolColorArray([Color("ff777777")]))
-	draw_polygon(h4[2].get_polygon(), PoolColorArray([Color("ff888888")]))
-	draw_polygon(h4[0].get_polygon(), PoolColorArray([Color("ff999999")]))
-	draw_polyline(h4[0].get_polygon(), Color("ff666666"))
+	#draw_polygon(h4[1].get_polygon(), PoolColorArray([Color("ff777777")]))
+	#draw_polygon(h4[2].get_polygon(), PoolColorArray([Color("ff888888")]))
+	#draw_polygon(h4[0].get_polygon(), PoolColorArray([Color("ff999999")]))
+	#draw_polyline(h4[0].get_polygon(), Color("ff666666"))
 
 func update_polygons():
-	var h = Global.tileMap[i][j].baseHeight
-	var w = Global.tileMap[i][j].waterHeight
+	var tile = Global.tileMap[i][j]
+	var h = tile.get_base_height()
+	var w = tile.get_water_height()
 	
 	update_cube(base_cube, x, y, Global.TILE_WIDTH, Global.TILE_HEIGHT, h, 0)
 	update_cube(water_cube, x, y, Global.TILE_WIDTH, Global.TILE_HEIGHT, h + w, h)
 	
+	if tile.get_number_of_buildings() > 0:
+		pass
+		
 	var house_width = Global.TILE_WIDTH / 4.0
 	var house_depth = house_width / 2.0
 	var house_height = 5
@@ -166,8 +172,6 @@ func get_cube_colors():
 					return Global.R_ZONE
 				Tile.TileZone.COMMERCIAL:
 					return Global.C_ZONE
-				Tile.TileZone.INDUSTRIAL:
-					return Global.I_ZONE
 		Tile.TileBase.SAND:
 			return Global.SAND
 		Tile.TileBase.OCEAN:
@@ -177,7 +181,7 @@ func get_cube_colors():
 	
 	return Global.DIRT
 	
-# Updates the given cube (array of three polygons) given its starting point, width, depth, height, and height offset (for layers)
+# Updates the provided cube [array of three polygons] given its starting point, width, depth, height, and height offset (for layers)
 func update_cube(cube, cube_x, cube_y, width, depth, height, offset):
 	# Top of cube
 	cube[0].set_polygon(PoolVector2Array([

@@ -15,14 +15,27 @@ enum TileZone {
 	NONE,
 	RESIDENTIAL,
 	COMMERCIAL,
-	INDUSTRIAL
+	LIGHT_RESIDENTIAL,
+	HEAVY_RESIDENTIAL,
+	LIGHT_COMMERCIAL,
+	HEAVY_COMMERCIAL
 }
 
 enum TileInf {
 	NONE,
 	ROAD,
 	PARK,
-	HOUSE
+	HOUSE,
+	BUILDING
+}
+
+# Used to determine color of buildings
+enum TileStatus {
+	UNOCCUPIED,
+	OCCUPIED,
+	LIGHT_DAMAGE,
+	MEDIUM_DAMAGE,
+	HEAVY_DAMAGE
 }
 
 var i
@@ -48,18 +61,17 @@ func _init(a, b, c, d, e, f, g):
 func clear_tile():
 	zone = TileZone.NONE
 	inf = TileInf.NONE
+	data = [0, 0, 0, 0, 0]
 
 func raise_tile():
 	baseHeight += 1
 	if baseHeight > Global.MAX_HEIGHT:
 		baseHeight = Global.MAX_HEIGHT
-	cube.update_polygons()
 
 func lower_tile():
 	baseHeight -= 1
 	if baseHeight < 0:
 		baseHeight = 0
-	cube.update_polygons()
 
 func raise_water():
 	waterHeight += 1
@@ -73,28 +85,37 @@ func lower_water():
 		waterHeight = 0
 	cube.update_polygons()
 
-func is_dirt():
-	return base == TileBase.DIRT
+func can_zone():
+	return base == TileBase.DIRT || base == TileBase.ROCK
 
-func is_sand():
-	return base == TileBase.SAND
-	
-func is_ocean():
-	return base == TileBase.OCEAN
-
-func is_rock():
-	return base == TileBase.ROCK
+func get_base():
+	return base
 
 func set_base(b):
-	match b:
-		"DIRT":
-			base = TileBase.DIRT
-		"SAND":
-			base = TileBase.SAND
-		"OCEAN":
-			base = TileBase.OCEAN
-		"ROCK":
-			base = TileBase.ROCK
+	base = b
+
+func get_base_height():
+	return baseHeight
+
+func get_water_height():
+	return waterHeight
+
+func get_number_of_buildings():
+	if inf == TileInf.BUILDING:
+		return data[0]
+	else:
+		return 0
+
+func set_base_height(h):
+	if 0 <= h && h <= Global.MAX_HEIGHT:
+		baseHeight = h
+
+func set_water_height(w):
+	if 0 <= w && w <= Global.MAX_HEIGHT:
+		waterHeight = w
+
+func is_ocean():
+	return base == TileBase.OCEAN
 
 # Data is a generic array that stores values based on the type of infrastructure present
 # For housing, the data stores and array of the following values:
@@ -103,25 +124,22 @@ func set_base(b):
 # - [2] People living there
 # - [3] Maximum people
 # - [4] Status of tile (0: unoccupied, 1: Occupied, 2: Damaged, 3: Severe Damage, 4: Abandonded)
-func zone_for_residential():
-	zone = TileZone.RESIDENTIAL
+
+func get_zone():
+	return zone
+
+func set_zone(type):
+	zone = type
 	data = [0, 4, 0, 0, 0]
 
-func add_house():
-	if zone != TileZone.RESIDENTIAL:
-		return
-		
+func add_building():		
 	inf = TileInf.HOUSE
 	if data[0] < data[1]:
 		data[0] += 1
 		data[3] += 4
 
-
-func remove_house():
-	if zone != TileZone.RESIDENTIAL:
-		return
-		
-	elif data[0] <= 1:
+func remove_building():		
+	if data[0] <= 1:
 		data = [0, 4, 0, 0, 0]
 		inf = TileInf.NONE
 	
@@ -131,18 +149,12 @@ func remove_house():
 		if data[2] > data[3]:
 			data[2] = data[3]
 
-func add_residents(n):
-	if zone != TileZone.RESIDENTIAL:
-		return
-	
+func add_people(n):	
 	data[2] += n
 	if data[2] > data[3]:
 		data[2] = data[3]
 
-func remove_residents(n):
-	if zone != TileZone.RESIDENTIAL:
-		return
-		
+func remove_people(n):		
 	data[2] -= n
 	if data[2] <= 0:
 		data[2] = 0

@@ -37,83 +37,98 @@ func initCamera(width, height):
 func _unhandled_input(event):
 	if event is InputEventMouseButton and event.pressed:
 		var cube = $VectorMap.get_tile_at(get_global_mouse_position())
+		var tile
 	
 		# If the click was not on a valid tile, do nothing
 		if not cube:
 			return
+		else:
+			tile = Global.tileMap[cube.i][cube.j]
 		
 		# Perform action based on current tool selected
 		match Global.mapTool:
-			1: # Dirt Base Tool
-				if !Global.tileMap[cube.i][cube.j].is_dirt():
-					Global.tileMap[cube.i][cube.j].set_base("DIRT")
+			# Change Base or (if same base) raise/lower tile height
+			Global.Tool.BASE_DIRT:
+				if tile.get_base() != Tile.TileBase.DIRT:
+					tile.set_base(Tile.TileBase.DIRT)
 				else:
-					adjust_tile_height(cube)
-				cube.update()
-			2: # Sand Base Tool
-				if !Global.tileMap[cube.i][cube.j].is_sand():
-					Global.tileMap[cube.i][cube.j].set_base("SAND")
-				else:
-					adjust_tile_height(cube)
-				cube.update()
-			3: # Ocean Base Tool
-				if !Global.tileMap[cube.i][cube.j].is_ocean():
-					Global.tileMap[cube.i][cube.j].set_base("OCEAN")
-					Global.tileMap[cube.i][cube.j].baseHeight = Global.oceanHeight
-					Global.tileMap[cube.i][cube.j].waterHeight = 0
-					cube.update_polygons()
-				cube.update()
+					adjust_tile_height(tile)
 				
-			# Zoning and Infrasturcture
-			4, 5, 6, 7, 8:
-				if !Global.tileMap[cube.i][cube.j].is_dirt():
+			Global.Tool.BASE_ROCK:
+				if tile.get_base() != Tile.TileBase.ROCK:
+					tile.set_base(Tile.TileBase.ROCK)
+				else:
+					adjust_tile_height(tile)
+
+			Global.Tool.BASE_SAND:
+				if tile.get_base() != Tile.TileBase.SAND:
+					tile.set_base(Tile.TileBase.SAND)
+				else:
+					adjust_tile_height(tile)
+			
+			Global.Tool.BASE_OCEAN:
+				if tile.get_base() != Tile.TileBase.OCEAN:
+					tile.set_base(Tile.TileBase.OCEAN)
+					tile.set_base_height(Global.oceanHeight)
+					tile.set_water_height(0)
+	
+			# Clear and zone a tile (if it is not already of the same zone)
+			Global.Tool.ZONE_LT_RES, Global.Tool.ZONE_HV_RES, Global.Tool.ZONE_LT_COM, Global.Tool.ZONE_HV_COM:
+				if !tile.can_zone():
 					return
-				
-				Global.tileMap[cube.i][cube.j].clear_tile()
-				
+
 				if Input.is_action_pressed("left_click"):
 					match Global.mapTool:
-						4:
-							Global.tileMap[cube.i][cube.j].zone_for_residential()
-						5:
-							Global.tileMap[cube.i][cube.j].zone = Tile.TileZone.COMMERCIAL
-						6:
-							Global.tileMap[cube.i][cube.j].zone = Tile.TileZone.INDUSTRIAL
-						7:
-							Global.tileMap[cube.i][cube.j].inf = Tile.TileInf.PARK
-						8:
-							Global.tileMap[cube.i][cube.j].inf = Tile.TileInf.ROAD
+						Global.Tool.ZONE_LT_RES:
+							if tile.get_zone() != Tile.TileZone.LIGHT_RESIDENTIAL:
+								tile.clear_tile()
+								tile.set_zone(Tile.TileZone.LIGHT_RESIDENTIAL)
+						Global.Tool.ZONE_HV_RES:
+							if tile.get_zone() != Tile.TileZone.HEAVY_RESIDENTIAL:
+								tile.clear_tile()
+								tile.set_zone(Tile.TileZone.HEAVY_RESIDENTIAL)
+						Global.Tool.ZONE_LT_COM:
+							if tile.get_zone() != Tile.TileZone.LIGHT_COMMERCIAL:
+								tile.clear_tile()
+								tile.set_zone(Tile.TileZone.LIGHT_COMMERCIAL)
+						Global.Tool.ZONE_HV_COM:
+							if tile.get_zone() != Tile.TileZone.HEAVY_COMMERCIAL:
+								tile.clear_tile()
+								tile.set_zone(Tile.TileZone.HEAVY_COMMERCIAL)							
 
-				cube.update()
-				
-			# Water Tool
-			9:
-				if !Global.tileMap[cube.i][cube.j].is_ocean():
-					adjust_tile_water(cube)
-					cube.update()
-			10: # Rock Base Tool
-				if !Global.tileMap[cube.i][cube.j].is_rock():
-					Global.tileMap[cube.i][cube.j].set_base("ROCK")
+			# Add/Remove Buildings
+			Global.Tool.ADD_RES_BLDG:
+				if tile.get_zone() != Tile.TileZone.LIGHT_RESIDENTIAL || tile.get_zone() != Tile.TileZone.HEAVY_RESIDENTIAL:
+					return
 				else:
-					adjust_tile_height(cube)
-				cube.update()
-			11: # Add/Remove Houses
-				if Global.tileMap[cube.i][cube.j].zone != 1:
-					return		
-				if Input.is_action_pressed("left_click"):
-					Global.tileMap[cube.i][cube.j].add_house()
-				elif Input.is_action_pressed("right_click"):
-					Global.tileMap[cube.i][cube.j].remove_house()
-				cube.update()
-			12: # Add/Remove Residents
-				if Global.tileMap[cube.i][cube.j].zone != 1:
-					return		
-				if Input.is_action_pressed("left_click"):
-					Global.tileMap[cube.i][cube.j].add_residents(1)
-				elif Input.is_action_pressed("right_click"):
-					Global.tileMap[cube.i][cube.j].remove_residents(1)
-				cube.update()
-		
+					adjust_building_number(tile)
+
+			Global.Tool.ADD_COM_BLDG:
+				if tile.get_zone() != Tile.TileZone.LIGHT_COMMERCIAL || tile.get_zone() != Tile.TileZone.HEAVY_COMMERCIAL:
+					return
+				else:
+					adjust_building_number(tile)
+
+			# Add/Remove People
+			Global.Tool.ADD_RES_PERSON:
+				if tile.get_zone() != Tile.TileZone.LIGHT_RESIDENTIAL || tile.get_zone() != Tile.TileZone.HEAVY_RESIDENTIAL:
+					return
+				else:
+					adjust_people_number(tile)
+
+			Global.Tool.ADD_COM_PERSON:
+				if tile.get_zone() != Tile.TileZone.LIGHT_COMMERCIAL || tile.get_zone() != Tile.TileZone.HEAVY_COMMERCIAL:
+					return
+				else:
+					adjust_people_number(tile)
+
+			# Water Tool
+			Global.Tool.LAYER_WATER:
+				if tile.get_base() != Tile.TileBase.OCEAN:
+					adjust_tile_water(tile)
+				
+		# Refresh graphics for cube and status bar text
+		cube.update()
 		$HUD.update_tile_display(cube.i, cube.j, Global.tileMap[cube.i][cube.j].baseHeight, Global.tileMap[cube.i][cube.j].waterHeight)
 
 	elif event is InputEventKey && event.pressed:
@@ -161,19 +176,31 @@ func _unhandled_input(event):
 	
 		$HUD.update_mouse(get_global_mouse_position())
 
-# Changes a tile's height depending on type of click
-func adjust_tile_height(cube):	
+func adjust_building_number(tile):
 	if Input.is_action_pressed("left_click"):
-		Global.tileMap[cube.i][cube.j].raise_tile()
+		tile.add_building()
 	elif Input.is_action_pressed("right_click"):
-		Global.tileMap[cube.i][cube.j].lower_tile()
+		tile.remove_building()
+
+func adjust_people_number(tile):
+	if Input.is_action_pressed("left_click"):
+		tile.add_people(1)
+	elif Input.is_action_pressed("right_click"):
+		tile.remove_people(1)
+		
+# Changes a tile's height depending on type of click
+func adjust_tile_height(tile):	
+	if Input.is_action_pressed("left_click"):
+		tile.raise_tile()
+	elif Input.is_action_pressed("right_click"):
+		tile.lower_tile()
 
 # Change water height of tile
-func adjust_tile_water(cube):
+func adjust_tile_water(tile):
 	if Input.is_action_pressed("left_click"):
-		Global.tileMap[cube.i][cube.j].raise_water()
+		tile.raise_water()
 	elif Input.is_action_just_pressed("right_click"):
-		Global.tileMap[cube.i][cube.j].lower_water()
+		tile.lower_water()
 
 # Called whenever there is a visual change in ocean level
 func updateOceanHeight(dir):

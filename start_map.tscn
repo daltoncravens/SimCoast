@@ -1,4 +1,4 @@
-[gd_scene load_steps=68 format=2]
+[gd_scene load_steps=74 format=2]
 
 [ext_resource path="res://HUD.gd" type="Script" id=1]
 [ext_resource path="res://assets/buttons/add_water_hover.png" type="Texture" id=2]
@@ -20,15 +20,9 @@
 [ext_resource path="res://assets/buttons/clear_active.png" type="Texture" id=18]
 [ext_resource path="res://assets/buttons/rotate_camera_normal.png" type="Texture" id=19]
 [ext_resource path="res://assets/buttons/hv_res_zone_hover.png" type="Texture" id=20]
-[ext_resource path="res://assets/buttons/czone_normal.png" type="Texture" id=21]
-[ext_resource path="res://assets/buttons/czone_hover.png" type="Texture" id=22]
-[ext_resource path="res://assets/buttons/czone_active.png" type="Texture" id=23]
 [ext_resource path="res://assets/buttons/park_hover.png" type="Texture" id=24]
 [ext_resource path="res://assets/buttons/park_active.png" type="Texture" id=25]
-[ext_resource path="res://assets/buttons/izone_normal.png" type="Texture" id=26]
 [ext_resource path="res://assets/buttons/park_normal.png" type="Texture" id=27]
-[ext_resource path="res://assets/buttons/izone_hover.png" type="Texture" id=28]
-[ext_resource path="res://assets/buttons/izone_active.png" type="Texture" id=29]
 [ext_resource path="res://assets/buttons/ocean_hover.png" type="Texture" id=30]
 [ext_resource path="res://assets/buttons/ocean_normal.png" type="Texture" id=31]
 [ext_resource path="res://assets/buttons/rock_normal.png" type="Texture" id=32]
@@ -61,6 +55,18 @@
 [ext_resource path="res://assets/buttons/save_active.png" type="Texture" id=59]
 [ext_resource path="res://assets/buttons/save_hover.png" type="Texture" id=60]
 [ext_resource path="res://assets/buttons/save_normal.png" type="Texture" id=61]
+[ext_resource path="res://assets/buttons/add_building_hover.png" type="Texture" id=62]
+[ext_resource path="res://assets/buttons/hv_com_zone_hover.png" type="Texture" id=63]
+[ext_resource path="res://assets/buttons/lt_com_zone_hover.png" type="Texture" id=64]
+[ext_resource path="res://assets/buttons/add_building_normal.png" type="Texture" id=65]
+[ext_resource path="res://assets/buttons/lt_com_zone_normal.png" type="Texture" id=66]
+[ext_resource path="res://assets/buttons/add_employee_hover.png" type="Texture" id=67]
+[ext_resource path="res://assets/buttons/add_employee_normal.png" type="Texture" id=68]
+[ext_resource path="res://assets/buttons/add_employee_active.png" type="Texture" id=69]
+[ext_resource path="res://assets/buttons/hv_com_zone_normal.png" type="Texture" id=70]
+[ext_resource path="res://assets/buttons/add_building_active.png" type="Texture" id=71]
+[ext_resource path="res://assets/buttons/lt_com_zone_active.png" type="Texture" id=72]
+[ext_resource path="res://assets/buttons/hv_com_zone_active.png" type="Texture" id=73]
 
 [sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 0.133333, 0.886275, 0.129412, 1 )
@@ -227,7 +233,7 @@ margin_top = 72.0
 margin_right = 68.0
 margin_bottom = 104.0
 
-[node name="lr_zone_button" type="TextureButton" parent="HUD/Control/VBoxContainer/HBoxR3"]
+[node name="lt_res_zone_button" type="TextureButton" parent="HUD/Control/VBoxContainer/HBoxR3"]
 margin_right = 32.0
 margin_bottom = 32.0
 hint_tooltip = "Light Residential Zoning"
@@ -239,7 +245,7 @@ texture_pressed = ExtResource( 53 )
 texture_hover = ExtResource( 50 )
 texture_focused = ExtResource( 53 )
 
-[node name="hr_zone_button" type="TextureButton" parent="HUD/Control/VBoxContainer/HBoxR3"]
+[node name="hv_res_zone_button" type="TextureButton" parent="HUD/Control/VBoxContainer/HBoxR3"]
 margin_left = 36.0
 margin_right = 68.0
 margin_bottom = 32.0
@@ -280,10 +286,70 @@ texture_normal = ExtResource( 41 )
 texture_pressed = ExtResource( 9 )
 texture_hover = ExtResource( 45 )
 
-[node name="HBoxR5" type="HBoxContainer" parent="HUD/Control/VBoxContainer"]
+[node name="HBoxR8" type="HBoxContainer" parent="HUD/Control/VBoxContainer"]
 margin_top = 144.0
 margin_right = 68.0
 margin_bottom = 176.0
+
+[node name="lt_com_zone_button" type="TextureButton" parent="HUD/Control/VBoxContainer/HBoxR8"]
+margin_right = 32.0
+margin_bottom = 32.0
+hint_tooltip = "Light Commercial Zoning"
+toggle_mode = true
+keep_pressed_outside = true
+group = ExtResource( 16 )
+texture_normal = ExtResource( 66 )
+texture_pressed = ExtResource( 72 )
+texture_hover = ExtResource( 64 )
+texture_focused = ExtResource( 72 )
+
+[node name="hv_com_zone_button" type="TextureButton" parent="HUD/Control/VBoxContainer/HBoxR8"]
+margin_left = 36.0
+margin_right = 68.0
+margin_bottom = 32.0
+hint_tooltip = "Heavy Commercial Zoning"
+toggle_mode = true
+keep_pressed_outside = true
+group = ExtResource( 16 )
+texture_normal = ExtResource( 70 )
+texture_pressed = ExtResource( 73 )
+texture_hover = ExtResource( 63 )
+texture_focused = ExtResource( 73 )
+
+[node name="HBoxR9" type="HBoxContainer" parent="HUD/Control/VBoxContainer"]
+margin_top = 180.0
+margin_right = 68.0
+margin_bottom = 212.0
+
+[node name="add_building_button" type="TextureButton" parent="HUD/Control/VBoxContainer/HBoxR9"]
+margin_right = 32.0
+margin_bottom = 32.0
+hint_tooltip = "Add Building"
+toggle_mode = true
+keep_pressed_outside = true
+group = ExtResource( 16 )
+texture_normal = ExtResource( 65 )
+texture_pressed = ExtResource( 71 )
+texture_hover = ExtResource( 62 )
+texture_focused = ExtResource( 71 )
+
+[node name="add_employee_button" type="TextureButton" parent="HUD/Control/VBoxContainer/HBoxR9"]
+margin_left = 36.0
+margin_right = 68.0
+margin_bottom = 32.0
+hint_tooltip = "Add Employee"
+toggle_mode = true
+keep_pressed_outside = true
+group = ExtResource( 16 )
+texture_normal = ExtResource( 68 )
+texture_pressed = ExtResource( 69 )
+texture_hover = ExtResource( 67 )
+texture_focused = ExtResource( 69 )
+
+[node name="HBoxR5" type="HBoxContainer" parent="HUD/Control/VBoxContainer"]
+margin_top = 216.0
+margin_right = 68.0
+margin_bottom = 248.0
 
 [node name="park_button" type="TextureButton" parent="HUD/Control/VBoxContainer/HBoxR5"]
 margin_right = 32.0
@@ -311,9 +377,9 @@ texture_hover = ExtResource( 34 )
 texture_focused = ExtResource( 36 )
 
 [node name="HBoxR6" type="HBoxContainer" parent="HUD/Control/VBoxContainer"]
-margin_top = 180.0
+margin_top = 252.0
 margin_right = 68.0
-margin_bottom = 212.0
+margin_bottom = 284.0
 
 [node name="clear_button" type="TextureButton" parent="HUD/Control/VBoxContainer/HBoxR6"]
 margin_right = 32.0
@@ -341,9 +407,9 @@ texture_hover = ExtResource( 2 )
 texture_focused = ExtResource( 44 )
 
 [node name="HBoxR7" type="HBoxContainer" parent="HUD/Control/VBoxContainer"]
-margin_top = 216.0
+margin_top = 288.0
 margin_right = 68.0
-margin_bottom = 248.0
+margin_bottom = 320.0
 
 [node name="lower_ocean_button" type="TextureButton" parent="HUD/Control/VBoxContainer/HBoxR7"]
 margin_right = 32.0
@@ -366,38 +432,10 @@ texture_normal = ExtResource( 42 )
 texture_pressed = ExtResource( 49 )
 texture_hover = ExtResource( 5 )
 
-[node name="czone_button" type="TextureButton" parent="HUD/Control/VBoxContainer"]
-visible = false
-margin_top = 112.0
-margin_right = 68.0
-margin_bottom = 144.0
-hint_tooltip = "Commercial Zoning"
-toggle_mode = true
-keep_pressed_outside = true
-group = ExtResource( 16 )
-texture_normal = ExtResource( 21 )
-texture_pressed = ExtResource( 23 )
-texture_hover = ExtResource( 22 )
-texture_focused = ExtResource( 23 )
-
-[node name="izone_button" type="TextureButton" parent="HUD/Control/VBoxContainer"]
-visible = false
-margin_top = 112.0
-margin_right = 68.0
-margin_bottom = 144.0
-hint_tooltip = "Industrial Zoning"
-toggle_mode = true
-keep_pressed_outside = true
-group = ExtResource( 16 )
-texture_normal = ExtResource( 26 )
-texture_pressed = ExtResource( 29 )
-texture_hover = ExtResource( 28 )
-texture_focused = ExtResource( 29 )
-
 [node name="HBoxContainer" type="HBoxContainer" parent="HUD/Control/VBoxContainer"]
-margin_top = 252.0
+margin_top = 324.0
 margin_right = 68.0
-margin_bottom = 284.0
+margin_bottom = 356.0
 
 [node name="rotate_camera_button" type="TextureButton" parent="HUD/Control/VBoxContainer/HBoxContainer"]
 margin_right = 32.0

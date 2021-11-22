@@ -36,6 +36,26 @@ func initTileMap():
 	
 	return tm
 
+# Map Tool Buttons to use for setting map tool
+enum Tool {
+	BASE_DIRT,
+	BASE_ROCK,
+	BASE_SAND,
+	BASE_OCEAN,
+	ZONE_LT_RES,
+	ZONE_HV_RES,
+	ADD_RES_BLDG,
+	ADD_RES_PERSON,
+	ZONE_LT_COM,
+	ZONE_HV_COM,
+	ADD_COM_BLDG,
+	ADD_COM_PERSON,
+	INF_PARK,
+	INF_ROAD,
+	CLEAR,
+	LAYER_WATER
+}
+
 # Colors for each type of tile cube (Top/Left/Right/Outline)
 const DIRT = [Color("ffc59d76"), Color("ffbb8d5d"), Color("ff9e7758"), Color("ff666666")]
 const SAND = [Color("ffd9d3bf"), Color("ffc9bf99"), Color("ffaca075"), Color("ff867d5e")]
@@ -44,7 +64,6 @@ const ROCK = [Color("ffc2c2c2"), Color("ffcacaca"), Color("ffaaaaaa"), Color("ff
 
 const R_ZONE = [Color("ffbcd398"), Color("ffbb8d5d"), Color("ff9e7758"), Color("ff60822d")]
 const C_ZONE = [Color("ff7797e2"), Color("ffbb8d5d"), Color("ff9e7758"), Color("ff1d346a")]
-const I_ZONE = [Color("ffe6de65"), Color("ffbb8d5d"), Color("ff9e7758"), Color("ff938b0e")]
 
 const ROAD = [Color("ff6a6a6a"), Color("ffbb8d5d"), Color("ff9e7758"), Color("ff999999")]
 const PARK = [Color("ff8bb54a"), Color("ffbb8d5d"), Color("ff9e7758"), Color("ff60822d")]
