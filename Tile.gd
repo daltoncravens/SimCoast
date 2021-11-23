@@ -31,8 +31,7 @@ enum TileInf {
 
 # Used to determine color of buildings
 enum TileStatus {
-	UNOCCUPIED,
-	OCCUPIED,
+	NONE,
 	LIGHT_DAMAGE,
 	MEDIUM_DAMAGE,
 	HEAVY_DAMAGE
@@ -47,6 +46,9 @@ const LT_RES_ZONE_COLOR = [Color("ffbcd398"), Color("ff60822d")]
 const HV_RES_ZONE_COLOR = [Color("ffa7ba89"), Color("ff60822d")]
 const LT_COM_ZONE_COLOR = [Color("ff7797e2"), Color("ff1d346a")]
 const HV_COM_ZONE_COLOR = [Color("ff5b7dcd"), Color("ff1d346a")]
+
+const PARK_COLOR = [Color("ff8bb54a"), Color("ff60822d")]
+const TREE_COLOR = [Color("ff4a8a7d"), Color("ff286f61")]
 
 var i
 var j
@@ -100,6 +102,9 @@ func can_zone():
 
 func get_base():
 	return base
+
+func get_status():
+	return data[4]
 
 func set_base(b):
 	base = b

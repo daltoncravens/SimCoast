@@ -1,6 +1,13 @@
 # To Do
 # - Fix time overflow value
 # - Change time to be month per turn (rather than day)
+# - Update ocean height method
+# - Create a storm method to:
+#   - Raise a storm surge
+#   - Calculate damage and erosion for each square
+#   - Restore ocean level with updated information for each square
+# - Create a way to call storm (flood next month, restore month after)
+
 
 extends Node2D
 
@@ -121,7 +128,12 @@ func _unhandled_input(event):
 			Global.Tool.LAYER_WATER:
 				if tile.get_base() != Tile.TileBase.OCEAN:
 					adjust_tile_water(tile)
-				
+			
+			Global.Tool.INF_PARK:
+				if tile.get_base() == Tile.TileBase.DIRT:
+					tile.clear_tile()
+					tile.inf = Tile.TileInf.PARK
+			
 		# Refresh graphics for cube and status bar text
 		cube.update()
 		$HUD.update_tile_display(cube.i, cube.j, Global.tileMap[cube.i][cube.j].baseHeight, Global.tileMap[cube.i][cube.j].waterHeight)
