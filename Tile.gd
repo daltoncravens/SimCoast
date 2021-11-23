@@ -42,13 +42,21 @@ const SAND_COLOR = [Color("ffd9d3bf"), Color("ffc9bf99"), Color("ffaca075"), Col
 const WATER_COLOR = [Color("ff9cd5e2"), Color("ff8bc4d1"), Color("ff83bcc9"), Color("ff5b8c97")]
 const ROCK_COLOR = [Color("ffc2c2c2"), Color("ffcacaca"), Color("ffaaaaaa"), Color("ff666666")]
 
-const LT_RES_ZONE_COLOR = [Color("ffbcd398"), Color("ff60822d")]
-const HV_RES_ZONE_COLOR = [Color("ffa7ba89"), Color("ff60822d")]
-const LT_COM_ZONE_COLOR = [Color("ff7797e2"), Color("ff1d346a")]
-const HV_COM_ZONE_COLOR = [Color("ff5b7dcd"), Color("ff1d346a")]
+const LT_RES_ZONE_COLOR = [Color("ffbdd0a0"), Color("ff60822d")]
+const HV_RES_ZONE_COLOR = [Color("ffa5bf7d"), Color("ff60822d")]
+const LT_COM_ZONE_COLOR = [Color("ffa0b4d0"), Color("ff2d5b82")]
+const HV_COM_ZONE_COLOR = [Color("ff7d9bbf"), Color("ff2d5b82")]
+
+const BUILDING_COLOR = [Color("ffaaaaaa"), Color("ff999999"), Color("ff888888"), Color("ff777777")]
+
+const LIGHT_DAMAGE_COLOR = [Color("fff2c926"), Color("ffd8bf09"), Color("ffc4ae00"), Color("ffae9a00")]
+const MEDIUM_DAMAGE_COLOR = [Color("fff28b26"), Color("ffd86909"), Color("ffac5100"), Color("ffac5100")]
+const HEAVY_DAMAGE_COLOR = [Color("fff22627"), Color("ffd80909"), Color("ff7c0000"), Color("ff590000")]
 
 const PARK_COLOR = [Color("ff8bb54a"), Color("ff60822d")]
 const TREE_COLOR = [Color("ff4a8a7d"), Color("ff286f61")]
+
+const ROAD_COLOR = [Color("ff6a6a6a"), Color("ff999999")]
 
 var i
 var j

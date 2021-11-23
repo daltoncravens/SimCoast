@@ -8,14 +8,13 @@
 #   - Restore ocean level with updated information for each square
 # - Create a way to call storm (flood next month, restore month after)
 
-
 extends Node2D
 
 var mapName = "test1"
 var vectorMap
 var camera
 
-var gameTime = {"month": 1, "day": 1, "year": 2000}
+var gameTime = {"month": 1, "year": 2000}
 var gameTime_since_update = 0.0
 
 var gameSpeed = 10000
@@ -300,35 +299,11 @@ func updateGameTime(delta):
 	gameTime_since_update += delta * gameSpeed
 
 	while gameTime_since_update > 60000:
-		if gameTime.month == 1 || gameTime.month == 3 || gameTime.month == 5 || gameTime.month == 7 || gameTime.month == 8 || gameTime.month == 10 || gameTime.month == 12:
-			if gameTime.day < 31:
-				gameTime.day += 1
-			else:
-				gameTime.day = 1
-				if gameTime.month < 12:
-					gameTime.month += 1
-				else:
-					gameTime.month = 1
-					gameTime.year += 1
-		elif gameTime.month == 2:
-			if gameTime.year % 4 == 0:
-				if gameTime.day < 29:
-					gameTime.day += 1
-				else:
-					gameTime.day = 1
-					gameTime.month += 1
-			else:
-				if gameTime.day < 28:
-					gameTime.day += 1
-				else:
-					gameTime.day = 1
-					gameTime.month += 1
+		if gameTime.month == 12:
+			gameTime.month = 1
+			gameTime.year += 1
 		else:
-			if gameTime.day < 30:
-				gameTime.day += 1
-			else:
-				gameTime.day = 1
-				gameTime.month += 1
+			gameTime.month += 1
 		
 		gameTime_since_update -= 60000
 		

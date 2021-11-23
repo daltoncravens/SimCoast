@@ -14,8 +14,7 @@ func update_mouse(pos):
 	$StatusBar/MousePosition.text = "Mouse Position: (%s, %s)" % [pos.x, pos.y]
 
 func update_time(date):
-	$Date.text = "Date: %s" % "{month}-{day}-{year}".format ({
+	$Date.text = "Date: %s" % "{month}-{year}".format ({
 		month = str(date.month).pad_zeros(2),
-		day = str(date.day).pad_zeros(2),
 		year = str(date.year).pad_zeros(2)
 		})

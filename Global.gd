@@ -16,8 +16,10 @@ var mapHeight = 10
 var mapTool = 0
 var tileMap = initTileMap()
 
+var seaLevel = 2
 var oceanHeight = 0
 
+# Values by Camera2D to rotate camera and VectorMap to draw tiles
 var camDirection = 0
 var rowRange = range(0, mapWidth, 1)
 var colRange = range(0, mapHeight, 1)
@@ -55,15 +57,3 @@ enum Tool {
 	CLEAR,
 	LAYER_WATER
 }
-
-# Colors for each type of tile cube (Top/Left/Right/Outline)
-#const DIRT = [Color("ffc59d76"), Color("ffbb8d5d"), Color("ff9e7758"), Color("ff666666")]
-#const SAND = [Color("ffd9d3bf"), Color("ffc9bf99"), Color("ffaca075"), Color("ff867d5e")]
-#const WATER = [Color("ff9cd5e2"), Color("ff8bc4d1"), Color("ff83bcc9"), Color("ff5b8c97")]
-#const ROCK = [Color("ffc2c2c2"), Color("ffcacaca"), Color("ffaaaaaa"), Color("ff666666")]
-
-#const R_ZONE = [Color("ffbcd398"), Color("ffbb8d5d"), Color("ff9e7758"), Color("ff60822d")]
-#const C_ZONE = [Color("ff7797e2"), Color("ffbb8d5d"), Color("ff9e7758"), Color("ff1d346a")]
-
-#const ROAD = [Color("ff6a6a6a"), Color("ffbb8d5d"), Color("ff9e7758"), Color("ff999999")]
-#const PARK = [Color("ff8bb54a"), Color("ffbb8d5d"), Color("ff9e7758"), Color("ff60822d")]

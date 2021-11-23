@@ -184,16 +184,14 @@ func get_building_colors():
 	# If damaged, return status color 
 	match Global.tileMap[i][j].get_status():
 		Tile.TileStatus.LIGHT_DAMAGE:
-			return [Color("ff999999"), Color("ff777777"), Color("ff888888"), Color("ff666666")]
+			return Tile.LIGHT_DAMAGE_COLOR
 		Tile.TileStatus.MEDIUM_DAMAGE:
-			return [Color("ff999999"), Color("ff777777"), Color("ff888888"), Color("ff666666")]
+			return Tile.MEDIUM_DAMAGE_COLOR
 		Tile.TileStatus.HEAVY_DAMAGE:
-			return [Color("ff999999"), Color("ff777777"), Color("ff888888"), Color("ff666666")]
+			return Tile.HEAVY_DAMAGE_COLOR
 
-	# Occupied and Unoccupied for res and com buildings
-	# What colors for buildings? Ground already indicates zoning type
-	# Use color to indicate number of residents/employees?
-	return [Color("ff999999"), Color("ff777777"), Color("ff888888"), Color("ff666666")]
+	# Return building color based on zone
+	return Tile.BUILDING_COLOR
 
 # Returns cube colors for base cube
 func get_cube_colors():
