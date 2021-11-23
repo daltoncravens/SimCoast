@@ -161,6 +161,9 @@ func is_ocean():
 # - [3] Maximum people
 # - [4] Status of tile (0: unoccupied, 1: Occupied, 2: Damaged, 3: Severe Damage, 4: Abandonded)
 
+func set_damage(n):
+	data[4] = n
+
 func get_zone():
 	return zone
 

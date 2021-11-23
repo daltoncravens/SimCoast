@@ -1,6 +1,4 @@
-# To Do
-# - Fix time overflow value
-# - Change time to be month per turn (rather than day)
+# To Do:
 # - Update ocean height method
 # - Create a storm method to:
 #   - Raise a storm surge
@@ -171,6 +169,9 @@ func _unhandled_input(event):
 		elif event.scancode == KEY_3:
 			print("Game Speed: Fast")
 			gameSpeed = 60000
+		elif event.scancode == KEY_Z:
+			print("Determining damage")
+			calculate_damage()
 
 	elif event is InputEventMouseMotion:		
 		var cube = $VectorMap.get_tile_at(get_global_mouse_position())
@@ -259,6 +260,33 @@ func updateOceanHeight(dir):
 					if Global.tileMap[n[0]][n[1]].waterHeight >= 1:
 						queue.append(Global.tileMap[n[0]][n[1]])
 
+func calculate_damage():
+	for i in Global.mapWidth:
+		for j in Global.mapHeight:
+			var tile = Global.tileMap[i][j]
+			
+			# If buildings present, determine damage based on water height
+			if tile.get_water_height() > 0 && tile.has_building():
+				tile.set_damage(Tile.TileStatus.HEAVY_DAMAGE)
+	
+	# Restore ocean height to sea level and refresh map
+	while Global.oceanHeight > Global.seaLevel:
+		Global.oceanHeight -= 1
+		updateOceanHeight(-1)
+	
+	# For each tile in map
+	# If buildings:
+	# Get water height
+	# Apply damage staus depending on tile type
+	# For roads:
+	# Remove road depending on water height and probability
+	# For sand:
+	# Get difference between oceanHeight and seaLevel:
+	# If section is flooded, apply erosion based on water height
+	# For normal ocean tiles, do nothing?
+	# Once done, restore oceanHeight to seaLevel and refresh map
+	
+
 func tile_out_of_bounds(cube):
 	return cube.i < 0 || Global.mapWidth <= cube.i || cube.j < 0 || Global.mapHeight <= cube.j
 			
@@ -339,5 +367,6 @@ func loadMapData():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta):
-	if !gamePaused:
-		updateGameTime(_delta)
+	pass
+#	if !gamePaused:
+#		updateGameTime(_delta)
