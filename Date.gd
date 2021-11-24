@@ -5,7 +5,7 @@ var time_lapse = 0;
 var time_on = false;
 
 var gameSpeed = 5000;
-var gameTime = _parse_date(OS.get_datetime() );
+# var gameTime = _parse_date(OS.get_datetime() );
 var elapsedGameTime;
 
 func _ready():

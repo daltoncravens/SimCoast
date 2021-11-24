@@ -6,9 +6,78 @@ export(ButtonGroup) var group
 func _ready():
 	for i in group.get_buttons():
 		i.connect("pressed", self, "button_pressed")
+		i.connect("mouse_entered", self, "button_hover", [i])
+		i.connect("mouse_exited", self, "button_exit")
+
+func button_exit():
+	get_node("../BottomBar/HoverText").text = ""
+
+# Displays detailed tool information when hovering
+func button_hover(button):
+	var toolInfo = get_node("../BottomBar/HoverText")
+
+	match button.get_name():
+		'extend_grid_button':
+			toolInfo.text = "Add a row/column to the map"
+		'reduce_grid_button':
+			toolInfo.text = "Remove a row/column from the map"
+		'dirt_button':
+			toolInfo.text = "Replace base tile with dirt / Raise dirt base tile height  (Right Click: Lower dirt base tile height)"
+		'rock_button':
+			toolInfo.text = "Replace base tile with rock / Raise rock base tile height  (Right Click: Lower rock base tile height)"
+		'sand_button':
+			toolInfo.text = "Replace base tile with sand / Raise and base tile height  (Right Click: Lower sand base tile height)"
+		'ocean_button':
+			toolInfo.text = "Replace base tile with ocean"
+		'lt_res_zone_button':
+			toolInfo.text = "Light Residential Zone  (Right Click: Remove zoning)"
+		'hv_res_zone_button':
+			toolInfo.text = "Heavy Residential Zone  (Right Click: Remove zoning)"
+		'add_house_button':
+			toolInfo.text = "Add building to residential zone  (Right Click: Remove building)"
+		'add_resident_button':
+			toolInfo.text = "Add resident to residential zone  (Right Click: Remove person)"
+		'lt_com_zone_button':
+			toolInfo.text = "Light Commercial Zone  (Right Click: Remove zoning)"
+		'hv_com_zone_button':
+			toolInfo.text = "Heavy Commercial Zone  (Right Click: Remove zoning)"
+		'add_building_button':
+			toolInfo.text = "Add building to commercial zone  (Right Click: Remove building)"
+		'add_employee_button':
+			toolInfo.text = "Add employee to commercial zone  (Right Click: Remove employee)"
+		'park_button':
+			toolInfo.text = "Park tile  (Right Click: Remove park)"
+		'road_button':
+			toolInfo.text = "Infrastructure (road/power/water) tile  (Right Click: Remove infrastructure)"
+		'clear_button':
+			toolInfo.text = "Clear tile"
+		'repair_button':
+			toolInfo.text = "Repair damaged buildings"
+		'add_water_button':
+			toolInfo.text = "Increase tile water height  (Right Click: Lower tile water height)"
+		'clear_water_button':
+			toolInfo.text = "Remove all water from tile"
+		'raise_ocean_button':
+			toolInfo.text = "Increase the height of the ocean"
+		'lower_ocean_button':
+			toolInfo.text = "Decrease the height of the ocean"
+		'damage_button':
+			toolInfo.text = "Evaluate current flooding and erosion damage from ocean"
+		'satisfaction_button':
+			toolInfo.text = "Evaluate current resident city satisfaction"
+		'rotate_camera_button':
+			toolInfo.text = "Rotate camera 1/4 turn"
+		'quicksave_button':
+			toolInfo.text = "Quicksave current map"
 
 func button_pressed():
+	var mapNode = get_node("../../")
+	
 	match group.get_pressed_button().get_name():
+		'extend_grid_button':
+			mapNode.extend_map()
+		'reduce_grid_button':
+			pass
 		'dirt_button':
 			Global.mapTool = Global.Tool.BASE_DIRT
 		'rock_button':
@@ -39,17 +108,30 @@ func button_pressed():
 			Global.mapTool = Global.Tool.INF_ROAD
 		'clear_button':
 			Global.mapTool = Global.Tool.CLEAR
-		'water_button':
+		'repair_button':
+			pass
+		'add_water_button':
 			Global.mapTool = Global.Tool.LAYER_WATER
-		'lower_ocean_button':
-			if Global.oceanHeight > 0:
-				Global.oceanHeight -= 1
-				get_node("../../").updateOceanHeight(-1)
+		'clear_water_button':
+			pass
 		'raise_ocean_button':
+			Global.mapTool = Global.Tool.NONE
 			if Global.oceanHeight < Global.MAX_HEIGHT:
 				Global.oceanHeight += 1
 				get_node("../../").updateOceanHeight(1)
+		'lower_ocean_button':
+			Global.mapTool = Global.Tool.NONE
+			if Global.oceanHeight > 0:
+				Global.oceanHeight -= 1
+				get_node("../../").updateOceanHeight(-1)
+		'damage_button':
+			pass
+		'satisfaction_button':
+			pass
 		'rotate_camera_button':
-			print("Rotate Camera")
+			Global.mapTool = Global.Tool.NONE
+			get_node("../../Camera2D").rotateCamera(1)
+			get_node("../../VectorMap").rotate_map()
 		'quicksave_button':
-			print("Quicksave")
+			Global.mapTool = Global.Tool.NONE
+			get_node("../../").saveMapData()

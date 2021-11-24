@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/czone_hover.png-00c46b1d39ba1a83e6a5bcc9ddfdde34.stex"
+path="res://.import/add_grid_active.png-ca0ad56ba83346018e07030ac6d1ef13.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/buttons/czone_hover.png"
-dest_files=[ "res://.import/czone_hover.png-00c46b1d39ba1a83e6a5bcc9ddfdde34.stex" ]
+source_file="res://assets/buttons/add_grid_active.png"
+dest_files=[ "res://.import/add_grid_active.png-ca0ad56ba83346018e07030ac6d1ef13.stex" ]
 
 [params]
 

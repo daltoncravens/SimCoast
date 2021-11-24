@@ -9,11 +9,13 @@ const TILE_WIDTH = 64
 const TILE_HEIGHT = 32
 
 const MAX_HEIGHT = 30
+const MIN_MAP_SIZE = 8
+const MAX_MAP_SIZE = 64
 
 var mapWidth = 10
 var mapHeight = 10
 
-var mapTool = 0
+var mapTool = Tool.NONE
 var tileMap = initTileMap()
 
 var seaLevel = 2
@@ -32,14 +34,17 @@ func initTileMap():
 		row.resize(mapHeight)
 		tm.append(row)
 
-	for x in mapHeight:
-		for y in mapWidth:
-			tm[x][y] = Tile.new(x, y, 0, 0, 0, 0, 0)
+	for i in mapHeight:
+		for j in mapWidth:
+			tm[i][j] = Tile.new(i, j, 0, 0, 0, 0, 0)
 	
 	return tm
 
 # Map Tool Buttons to use for setting map tool
 enum Tool {
+	NONE,
+	EXTEND_MAP,
+	REDUCE_MAP,
 	BASE_DIRT,
 	BASE_ROCK,
 	BASE_SAND,

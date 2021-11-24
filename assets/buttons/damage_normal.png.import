@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/izone_active.png-4e41ce064405cd38252cb53b7887b9e6.stex"
+path="res://.import/damage_normal.png-a92ab8b67b92638486bc773f1db04e70.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/buttons/izone_active.png"
-dest_files=[ "res://.import/izone_active.png-4e41ce064405cd38252cb53b7887b9e6.stex" ]
+source_file="res://assets/buttons/damage_normal.png"
+dest_files=[ "res://.import/damage_normal.png-a92ab8b67b92638486bc773f1db04e70.stex" ]
 
 [params]
 

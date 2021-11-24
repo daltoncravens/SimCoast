@@ -4,7 +4,6 @@
 #   - Raise a storm surge
 #   - Calculate damage and erosion for each square
 #   - Restore ocean level with updated information for each square
-# - Create a way to call storm (flood next month, restore month after)
 
 extends Node2D
 
@@ -39,6 +38,8 @@ func initCamera(width, height):
 
 # Handle inputs (clicks, keys)
 func _unhandled_input(event):
+	var actionText = get_node("HUD/TopBar/ActionText")
+	
 	if event is InputEventMouseButton and event.pressed:
 		var cube = $VectorMap.get_tile_at(get_global_mouse_position())
 		var tile
@@ -131,44 +132,22 @@ func _unhandled_input(event):
 					tile.clear_tile()
 					tile.inf = Tile.TileInf.PARK
 			
+			Global.Tool.INF_ROAD:
+				if tile.get_base() == Tile.TileBase.DIRT || tile.get_base() == Tile.TileBase.ROCK:
+					tile.clear_tile()
+					tile.inf = Tile.TileInf.ROAD
+
 		# Refresh graphics for cube and status bar text
 		cube.update()
 		$HUD.update_tile_display(cube.i, cube.j, Global.tileMap[cube.i][cube.j].baseHeight, Global.tileMap[cube.i][cube.j].waterHeight)
 
 	elif event is InputEventKey && event.pressed:
-		if event.scancode == KEY_O and Global.oceanHeight > 0:
-			Global.oceanHeight -= 1
-			updateOceanHeight(-1)
-		elif event.scancode == KEY_P and Global.oceanHeight < Global.MAX_HEIGHT:
-			Global.oceanHeight += 1
-			updateOceanHeight(1)
-		elif event.scancode == KEY_Q:
-			camera.rotateCamera(-1)
-			$VectorMap.rotate_map()
-		elif event.scancode == KEY_W:
-			camera.rotateCamera(1)
-			$VectorMap.rotate_map()
-		elif event.scancode == KEY_S:
+		if event.scancode == KEY_S:
 			saveMapData()
-			print("Map Data Saved")
+			actionText.text = "Map Data Saved"
 		elif event.scancode == KEY_L:
 			loadMapData()
-			print("Loading map data...")
-		elif event.scancode == KEY_SPACE:
-			if gamePaused:
-				print("Resuming game")
-			else:
-				print("Pausing game")
-			gamePaused = !gamePaused
-		elif event.scancode == KEY_1:
-			print("Game Speed: Slow")
-			gameSpeed = 5000
-		elif event.scancode == KEY_2:
-			print("Game Speed: Normel")
-			gameSpeed = 20000
-		elif event.scancode == KEY_3:
-			print("Game Speed: Fast")
-			gameSpeed = 60000
+			actionText.text = "Map Data Loaded"
 		elif event.scancode == KEY_Z:
 			print("Determining damage")
 			calculate_damage()
@@ -209,12 +188,42 @@ func adjust_tile_water(tile):
 	elif Input.is_action_just_pressed("right_click"):
 		tile.lower_water()
 
+func extend_map():
+	print(Global.tileMap.size())
+	var new_row = []
+	new_row.resize(Global.mapWidth)
+	Global.tileMap.append(new_row)
+	print(Global.tileMap.size())
+
+	for j in Global.mapWidth:
+		Global.tileMap[Global.mapHeight][j] = Tile.new(Global.mapHeight, j, 0, 0, 0, 0, 0)
+		$VectorMap.add_tile(Global.mapHeight, j)
+	
+	Global.mapHeight += 1
+		
+	for i in Global.mapHeight:
+		Global.tileMap[i].append(Tile.new(i, Global.mapWidth, 0, 0, 0, 0, 0))
+		$VectorMap.add_tile(i, Global.mapWidth)
+	
+	Global.mapWidth += 1
+
+	get_node("HUD/TopBar/ActionText").text = "Map extended one row/column"
+	
+func reduce_map():
+	# For last row: Erase tile from visual map, delete array element
+	# Reduce mapWidth
+	# For last column: Erase tile from visual map, delete array element
+	# Reduce mapHeight
+	
+	# 2D_Dic.erase(vector2(0, 0))
+	pass
+
 # Called whenever there is a visual change in ocean level
 func updateOceanHeight(dir):
 	# Update value in display
 	$HUD.update_ocean_display()
 	
-	# Keeps track of which map tiles have been checked
+	# 2D array to keep track of which map tiles have been checked
 	var visited = []
 	for x in range(Global.mapWidth):
 		visited.append([])
@@ -260,19 +269,41 @@ func updateOceanHeight(dir):
 					if Global.tileMap[n[0]][n[1]].waterHeight >= 1:
 						queue.append(Global.tileMap[n[0]][n[1]])
 
+# When flooding occurs, determine damage to infrastructure and perform tile erosion
 func calculate_damage():
 	for i in Global.mapWidth:
 		for j in Global.mapHeight:
 			var tile = Global.tileMap[i][j]
-			
 			# If buildings present, determine damage based on water height
-			if tile.get_water_height() > 0 && tile.has_building():
-				tile.set_damage(Tile.TileStatus.HEAVY_DAMAGE)
-	
-	# Restore ocean height to sea level and refresh map
-	while Global.oceanHeight > Global.seaLevel:
-		Global.oceanHeight -= 1
-		updateOceanHeight(-1)
+			if tile.get_water_height() > 0:
+				if tile.has_building() && tile.is_light_zoned():
+					if tile.get_water_height() <= 1:
+						tile.set_damage(Tile.TileStatus.LIGHT_DAMAGE)
+					elif tile.get_water_height() <= 3:
+						tile.set_damage(Tile.TileStatus.MEDIUM_DAMAGE)
+					else:
+						tile.set_damage(Tile.TileStatus.HEAVY_DAMAGE)
+				elif tile.has_building() && tile.is_heavy_zoned():
+					if tile.get_water_height() <= 3:
+						tile.set_damage(Tile.TileStatus.LIGHT_DAMAGE)
+					elif tile.get_water_height() <= 6:
+						tile.set_damage(Tile.TileStatus.MEDIUM_DAMAGE)
+					else:
+						tile.set_damage(Tile.TileStatus.HEAVY_DAMAGE)
+				elif tile.inf == Tile.TileInf.ROAD:
+					if tile.get_water_height() >= 5:
+						tile.clear_tile()
+				elif tile.get_base() == Tile.TileBase.SAND:
+					if tile.get_water_height() >= 5:
+						tile.lower_tile()
+				tile.remove_water()
+				tile.cube.update()
+
+	# Restore ocean height to sea level
+	Global.oceanHeight = 0
+	while Global.oceanHeight < Global.seaLevel:
+		Global.oceanHeight += 1
+		updateOceanHeight(1)
 	
 	# For each tile in map
 	# If buildings:

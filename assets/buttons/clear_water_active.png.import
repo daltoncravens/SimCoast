@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/izone_hover.png-c595e19a6e7499f66a09097497f51c75.stex"
+path="res://.import/clear_water_active.png-bacd3c87290050893976e634ee015a8a.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/buttons/izone_hover.png"
-dest_files=[ "res://.import/izone_hover.png-c595e19a6e7499f66a09097497f51c75.stex" ]
+source_file="res://assets/buttons/clear_water_active.png"
+dest_files=[ "res://.import/clear_water_active.png-bacd3c87290050893976e634ee015a8a.stex" ]
 
 [params]
 

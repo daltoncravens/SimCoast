@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/czone_active.png-846434df129e84c5c0398eb2c6bf1dfc.stex"
+path="res://.import/repair_active.png-32cb876ca40e43a89d9fc5df0dabd5cc.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/buttons/czone_active.png"
-dest_files=[ "res://.import/czone_active.png-846434df129e84c5c0398eb2c6bf1dfc.stex" ]
+source_file="res://assets/buttons/repair_active.png"
+dest_files=[ "res://.import/repair_active.png-32cb876ca40e43a89d9fc5df0dabd5cc.stex" ]
 
 [params]
 
