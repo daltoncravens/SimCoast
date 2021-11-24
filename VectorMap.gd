@@ -16,7 +16,7 @@ func add_tile(i, j):
 	self.add_child(Global.tileMap[i][j].cube)
 
 func remove_tile(i, j):
-	self.get_child(Global.tileMap[i][j].cube).queue_free()
+	Global.tileMap[i][j].cube.queue_free()
 
 func clearAllNodes():
 	for x in get_children():

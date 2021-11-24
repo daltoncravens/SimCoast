@@ -188,12 +188,14 @@ func adjust_tile_water(tile):
 	elif Input.is_action_just_pressed("right_click"):
 		tile.lower_water()
 
+# Add a new row and column of empty tiles
 func extend_map():
-	print(Global.tileMap.size())
+	if Global.mapHeight >= Global.MAX_MAP_SIZE || Global.mapWidth >= Global.MAX_MAP_SIZE:
+		return
+	
 	var new_row = []
 	new_row.resize(Global.mapWidth)
 	Global.tileMap.append(new_row)
-	print(Global.tileMap.size())
 
 	for j in Global.mapWidth:
 		Global.tileMap[Global.mapHeight][j] = Tile.new(Global.mapHeight, j, 0, 0, 0, 0, 0)
@@ -207,16 +209,29 @@ func extend_map():
 	
 	Global.mapWidth += 1
 
-	get_node("HUD/TopBar/ActionText").text = "Map extended one row/column"
-	
+	get_node("HUD/TopBar/ActionText").text = "Map size extended to (%s x %s)" % [Global.mapWidth, Global.mapHeight]
+
+# Delete the last row and column of the map
 func reduce_map():
-	# For last row: Erase tile from visual map, delete array element
-	# Reduce mapWidth
-	# For last column: Erase tile from visual map, delete array element
-	# Reduce mapHeight
+	if Global.mapHeight <= Global.MIN_MAP_SIZE || Global.mapWidth <= Global.MIN_MAP_SIZE:
+		return
 	
-	# 2D_Dic.erase(vector2(0, 0))
-	pass
+	Global.mapHeight -= 1
+	
+	for j in Global.mapWidth:
+		$VectorMap.remove_tile(Global.mapHeight, j)
+	
+	Global.mapWidth -= 1
+	
+	for i in Global.mapHeight:
+		$VectorMap.remove_tile(i, Global.mapWidth)
+	
+	Global.tileMap.pop_back()
+	
+	for i in Global.tileMap.size():
+		Global.tileMap[i].pop_back()
+	
+	get_node("HUD/TopBar/ActionText").text = "Map size reduced to (%s x %s)" % [Global.mapWidth, Global.mapHeight]
 
 # Called whenever there is a visual change in ocean level
 func updateOceanHeight(dir):

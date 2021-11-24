@@ -77,7 +77,7 @@ func button_pressed():
 		'extend_grid_button':
 			mapNode.extend_map()
 		'reduce_grid_button':
-			pass
+			mapNode.reduce_map()
 		'dirt_button':
 			Global.mapTool = Global.Tool.BASE_DIRT
 		'rock_button':
