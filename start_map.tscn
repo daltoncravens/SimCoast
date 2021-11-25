@@ -182,32 +182,6 @@ margin_right = 1270.0
 margin_bottom = 24.0
 align = 1
 
-[node name="TileDisplay" type="Label" parent="HUD/BottomBar"]
-visible = false
-margin_left = 10.0
-margin_top = 10.0
-margin_right = 1270.0
-margin_bottom = 24.0
-text = "Tile: (0, 0)"
-
-[node name="OceanHeight" type="Label" parent="HUD/BottomBar"]
-visible = false
-margin_left = 10.0
-margin_top = 10.0
-margin_right = 1270.0
-margin_bottom = 24.0
-text = "Ocean Level: "
-align = 1
-
-[node name="MousePosition" type="Label" parent="HUD/BottomBar"]
-visible = false
-margin_left = 10.0
-margin_top = 10.0
-margin_right = 1270.0
-margin_bottom = 24.0
-text = "Mouse: "
-align = 2
-
 [node name="ToolsBG" type="Panel" parent="HUD"]
 anchor_bottom = 1.0
 margin_right = 90.0

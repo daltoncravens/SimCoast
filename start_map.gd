@@ -1,10 +1,3 @@
-# To Do:
-# - Update ocean height method
-# - Create a storm method to:
-#   - Raise a storm surge
-#   - Calculate damage and erosion for each square
-#   - Restore ocean level with updated information for each square
-
 extends Node2D
 
 var mapName = "test1"
@@ -139,7 +132,7 @@ func _unhandled_input(event):
 
 		# Refresh graphics for cube and status bar text
 		cube.update()
-		$HUD.update_tile_display(cube.i, cube.j, Global.tileMap[cube.i][cube.j].baseHeight, Global.tileMap[cube.i][cube.j].waterHeight)
+		$HUD.update_tile_display(cube.i, cube.j)
 
 	elif event is InputEventKey && event.pressed:
 		if event.scancode == KEY_S:
@@ -156,11 +149,9 @@ func _unhandled_input(event):
 		var cube = $VectorMap.get_tile_at(get_global_mouse_position())
 		
 		if cube:
-			$HUD.update_tile_display(cube.i, cube.j, Global.tileMap[cube.i][cube.j].baseHeight, Global.tileMap[cube.i][cube.j].waterHeight)
+			$HUD.update_tile_display(cube.i, cube.j)
 		else:
-			$HUD.update_tile_display('', '', '', '')
-	
-		$HUD.update_mouse(get_global_mouse_position())
+			get_node("HUD/BottomBar/HoverText").text = ""
 
 func adjust_building_number(tile):
 	if Input.is_action_pressed("left_click"):
@@ -234,10 +225,7 @@ func reduce_map():
 	get_node("HUD/TopBar/ActionText").text = "Map size reduced to (%s x %s)" % [Global.mapWidth, Global.mapHeight]
 
 # Called whenever there is a visual change in ocean level
-func updateOceanHeight(dir):
-	# Update value in display
-	$HUD.update_ocean_display()
-	
+func updateOceanHeight(dir):	
 	# 2D array to keep track of which map tiles have been checked
 	var visited = []
 	for x in range(Global.mapWidth):
@@ -254,7 +242,6 @@ func updateOceanHeight(dir):
 			if Global.tileMap[i][j].is_ocean():
 				Global.tileMap[i][j].baseHeight = Global.oceanHeight
 				Global.tileMap[i][j].waterHeight = 0
-				Global.tileMap[i][j].cube.update_polygons()
 				Global.tileMap[i][j].cube.update()
 				visited[i][j] = 1
 				queue.append(Global.tileMap[i][j])
@@ -266,7 +253,6 @@ func updateOceanHeight(dir):
 		# Adjust water height to match ocean height
 		if !tile.is_ocean():
 			tile.waterHeight = Global.oceanHeight - tile.baseHeight
-			Global.tileMap[tile.i][tile.j].cube.update_polygons()
 			Global.tileMap[tile.i][tile.j].cube.update()
 
 		# Check each orthogonal neighbor to determine if it will flood
@@ -319,19 +305,6 @@ func calculate_damage():
 	while Global.oceanHeight < Global.seaLevel:
 		Global.oceanHeight += 1
 		updateOceanHeight(1)
-	
-	# For each tile in map
-	# If buildings:
-	# Get water height
-	# Apply damage staus depending on tile type
-	# For roads:
-	# Remove road depending on water height and probability
-	# For sand:
-	# Get difference between oceanHeight and seaLevel:
-	# If section is flooded, apply erosion based on water height
-	# For normal ocean tiles, do nothing?
-	# Once done, restore oceanHeight to seaLevel and refresh map
-	
 
 func tile_out_of_bounds(cube):
 	return cube.i < 0 || Global.mapWidth <= cube.i || cube.j < 0 || Global.mapHeight <= cube.j
@@ -369,19 +342,18 @@ func saveMapData():
 	file.store_line(to_json(data))
 	file.close()
 
-func updateGameTime(delta):
-	gameTime_since_update += delta * gameSpeed
+#func updateGameTime(delta):
+#	gameTime_since_update += delta * gameSpeed
+#
+#	while gameTime_since_update > 60000:
+#		if gameTime.month == 12:
+#			gameTime.month = 1
+#			gameTime.year += 1
+#		else:
+#			gameTime.month += 1
+#		
+#		gameTime_since_update -= 60000
 
-	while gameTime_since_update > 60000:
-		if gameTime.month == 12:
-			gameTime.month = 1
-			gameTime.year += 1
-		else:
-			gameTime.month += 1
-		
-		gameTime_since_update -= 60000
-		
-	$HUD.update_time(gameTime)
 
 func loadMapData():
 	var file = File.new()

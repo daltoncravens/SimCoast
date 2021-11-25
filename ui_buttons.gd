@@ -107,31 +107,33 @@ func button_pressed():
 		'road_button':
 			Global.mapTool = Global.Tool.INF_ROAD
 		'clear_button':
-			Global.mapTool = Global.Tool.CLEAR
+			Global.mapTool = Global.Tool.CLEAR_TILE
 		'repair_button':
-			pass
+			Global.mapTool = Global.Tool.REPAIR
 		'add_water_button':
 			Global.mapTool = Global.Tool.LAYER_WATER
 		'clear_water_button':
-			pass
+			Global.mapTool = Global.Tool.CLEAR_WATER
 		'raise_ocean_button':
 			Global.mapTool = Global.Tool.NONE
 			if Global.oceanHeight < Global.MAX_HEIGHT:
 				Global.oceanHeight += 1
-				get_node("../../").updateOceanHeight(1)
+				mapNode.updateOceanHeight(1)
+				get_node("../TopBar/ActionText").text = "Ocean height raised to %s" % [Global.oceanHeight]
 		'lower_ocean_button':
 			Global.mapTool = Global.Tool.NONE
 			if Global.oceanHeight > 0:
 				Global.oceanHeight -= 1
-				get_node("../../").updateOceanHeight(-1)
+				mapNode.updateOceanHeight(-1)
+				get_node("../TopBar/ActionText").text = "Ocean height lowered to %s" % [Global.oceanHeight]
 		'damage_button':
-			pass
+			Global.mapTool = Global.Tool.NONE
 		'satisfaction_button':
-			pass
+			Global.mapTool = Global.Tool.NONE
 		'rotate_camera_button':
 			Global.mapTool = Global.Tool.NONE
 			get_node("../../Camera2D").rotateCamera(1)
 			get_node("../../VectorMap").rotate_map()
 		'quicksave_button':
 			Global.mapTool = Global.Tool.NONE
-			get_node("../../").saveMapData()
+			mapNode.saveMapData()

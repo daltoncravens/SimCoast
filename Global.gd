@@ -3,12 +3,13 @@
 
 extends Node
 
-const MAP_EDGE_BUFFER = 150
+const MAP_EDGE_BUFFER = 150			# Space beyond map for camera
 
 const TILE_WIDTH = 64
 const TILE_HEIGHT = 32
 
-const MAX_HEIGHT = 30
+const MAX_HEIGHT = 30				# Maximum vertical height for any tile
+
 const MIN_MAP_SIZE = 8
 const MAX_MAP_SIZE = 64
 
@@ -18,8 +19,8 @@ var mapHeight = 10
 var mapTool = Tool.NONE
 var tileMap = initTileMap()
 
-var seaLevel = 2
-var oceanHeight = 0
+var seaLevel = 2       # World value that ocean resets to after a storm surge
+var oceanHeight = 0    # Current ocean level on map
 
 # Values by Camera2D to rotate camera and VectorMap to draw tiles
 var camDirection = 0
@@ -40,7 +41,7 @@ func initTileMap():
 	
 	return tm
 
-# Map Tool Buttons to use for setting map tool
+# Map Tool Buttons that are used on map tiles
 enum Tool {
 	NONE,
 	EXTEND_MAP,
@@ -59,6 +60,8 @@ enum Tool {
 	ADD_COM_PERSON,
 	INF_PARK,
 	INF_ROAD,
-	CLEAR,
-	LAYER_WATER
+	CLEAR_TILE,
+	REPAIR,
+	LAYER_WATER,
+	CLEAR_WATER,
 }
