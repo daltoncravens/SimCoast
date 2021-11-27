@@ -59,7 +59,7 @@ func _draw():
 			draw_polygon(r[0].get_polygon(), PoolColorArray([Tile.BEACH_ROCK_COLOR[0]]))
 	elif tile.inf == Tile.TileInf.BEACH_GRASS:
 		for g in objects:
-			draw_line(g[0], g[1], Tile.TREE_COLOR[0])
+			draw_polyline(g, Tile.TREE_COLOR[0])
 
 func update_polygons():
 	var tile = Global.tileMap[i][j]
@@ -120,16 +120,35 @@ func update_polygons():
 	elif tile.inf == Tile.TileInf.BEACH_GRASS:
 		objects.clear()
 		
-		var grass_x = x
-		var grass_y = y - h + ((Global.TILE_HEIGHT / 2.0) - 1.0) / 2.0
-					
-		objects.append([Vector2(grass_x, grass_y), Vector2(grass_x, grass_y - 1)])
-	
-		grass_x = x
-		grass_y = y - h + ((Global.TILE_HEIGHT / 2.0) - 1.0) / 2.0 + (Global.TILE_HEIGHT / 2.0)
-	
-		objects.append([Vector2(grass_x, grass_y), Vector2(grass_x, grass_y - 1)])
-	
+		if w == 0:
+			var grass_x = 0
+			var grass_y = 0
+			
+			for g in 5:
+				match g:
+					0:
+						grass_x = x
+						grass_y = y - h + (Global.TILE_HEIGHT / 2.0) / 2.0
+					1:
+						grass_x = x
+						grass_y = y - h + ((Global.TILE_HEIGHT / 2.0) / 2.0 + (Global.TILE_HEIGHT / 2.0))
+					2:
+						grass_x = x - ((Global.TILE_WIDTH / 2.0) / 2.0)
+						grass_y = y - h + (Global.TILE_HEIGHT / 2.0)
+					3:
+						grass_x = x + ((Global.TILE_WIDTH / 2.0) / 2.0)
+						grass_y = y - h + (Global.TILE_HEIGHT / 2.0)
+				
+					4:
+						grass_x = x
+						grass_y = y - h + (Global.TILE_HEIGHT / 2.0)
+			
+				objects.append(PoolVector2Array([
+					Vector2(grass_x, grass_y), Vector2(grass_x - 2, grass_y - 2),
+					Vector2(grass_x, grass_y), Vector2(grass_x, grass_y - 2),
+					Vector2(grass_x, grass_y), Vector2(grass_x + 2, grass_y - 2)
+				]))
+			
 	# Create simple rocks to display beach rocks
 	elif tile.inf == Tile.TileInf.BEACH_ROCKS:
 		objects.clear()
