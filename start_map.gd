@@ -126,7 +126,9 @@ func _unhandled_input(event):
 					tile.inf = Tile.TileInf.PARK
 			
 			Global.Tool.INF_ROAD:
-				if tile.get_base() == Tile.TileBase.DIRT || tile.get_base() == Tile.TileBase.ROCK:
+				if tile.inf == Tile.TileInf.ROAD:
+					tile.data[0] = (tile.data[0] + 1) % 3
+				elif tile.get_base() == Tile.TileBase.DIRT || tile.get_base() == Tile.TileBase.ROCK:
 					tile.clear_tile()
 					tile.inf = Tile.TileInf.ROAD
 

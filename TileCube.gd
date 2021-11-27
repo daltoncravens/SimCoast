@@ -60,6 +60,9 @@ func _draw():
 	elif tile.inf == Tile.TileInf.BEACH_GRASS:
 		for g in objects:
 			draw_polyline(g, Tile.TREE_COLOR[0])
+	elif tile.inf == Tile.TileInf.ROAD:
+		for r in objects:
+			draw_polygon(r, PoolColorArray([Tile.ROAD_COLOR[0]]))
 
 func update_polygons():
 	var tile = Global.tileMap[i][j]
@@ -148,7 +151,28 @@ func update_polygons():
 					Vector2(grass_x, grass_y), Vector2(grass_x, grass_y - 2),
 					Vector2(grass_x, grass_y), Vector2(grass_x + 2, grass_y - 2)
 				]))
-			
+	
+	elif tile.inf == Tile.TileInf.ROAD:
+		objects.clear()
+		
+		if w == 0:
+			match tile.data[0]:
+				0, 2:
+					objects.append(PoolVector2Array([
+						Vector2(x - (Global.TILE_WIDTH * (1.0 / 8.0)), y - h + (Global.TILE_HEIGHT * (1.0 / 8.0))),
+						Vector2(x - (Global.TILE_WIDTH * (3.0 / 8.0)), y - h + (Global.TILE_HEIGHT * (3.0 / 8.0))),
+						Vector2(x + (Global.TILE_WIDTH * (1.0 / 8.0)), y - h + (Global.TILE_HEIGHT * (7.0 / 8.0))),
+						Vector2(x + (Global.TILE_WIDTH * (3.0 / 8.0)), y - h + (Global.TILE_HEIGHT * (5.0 / 8.0)))
+					]))
+					continue
+				1,2 :
+					objects.append(PoolVector2Array([
+						Vector2(x + (Global.TILE_WIDTH * (1.0 / 8.0)), y - h + (Global.TILE_HEIGHT * (1.0 / 8.0))),
+						Vector2(x + (Global.TILE_WIDTH * (3.0 / 8.0)), y - h + (Global.TILE_HEIGHT * (3.0 / 8.0))),
+						Vector2(x - (Global.TILE_WIDTH * (1.0 / 8.0)), y - h + (Global.TILE_HEIGHT * (7.0 / 8.0))),
+						Vector2(x - (Global.TILE_WIDTH * (3.0 / 8.0)), y - h + (Global.TILE_HEIGHT * (5.0 / 8.0)))
+					]))
+	
 	# Create simple rocks to display beach rocks
 	elif tile.inf == Tile.TileInf.BEACH_ROCKS:
 		objects.clear()
@@ -307,8 +331,8 @@ func get_cube_colors():
 			colors[0] = Tile.PARK_COLOR[0]
 			colors[3] = Tile.PARK_COLOR[1]
 		Tile.TileInf.ROAD:
-			colors[0] = Tile.ROAD_COLOR[0]
-			colors[3] = Tile.ROAD_COLOR[1]
+			colors[0] = Tile.ROCK_COLOR[0]
+			#colors[3] = Tile.ROCK_COLOR[1]
 
 	return colors
 
