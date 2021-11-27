@@ -41,18 +41,25 @@ func _draw():
 		draw_polygon(base_cube[0].get_polygon(), PoolColorArray([baseColor[0]]))
 		draw_polyline(base_cube[0].get_polygon(), baseColor[3])
 
-	# Draw building(s) if present
+	# Draw objects (buildings, infrastructure) if present
 	if tile.has_building() && building_visible:
 		for b in objects:
 			draw_polygon(b[1].get_polygon(), PoolColorArray([buildingColor[1]]))
 			draw_polygon(b[2].get_polygon(), PoolColorArray([buildingColor[2]]))
 			draw_polygon(b[0].get_polygon(), PoolColorArray([buildingColor[0]]))
 			draw_polyline(b[0].get_polygon(), buildingColor[3])
-
-	if tile.inf == Tile.TileInf.PARK:
+	elif tile.inf == Tile.TileInf.PARK:
 		for t in objects:
 			draw_polygon(t[0].get_polygon(), PoolColorArray([Tile.TREE_COLOR[0]]))
 			draw_polygon(t[1].get_polygon(), PoolColorArray([Tile.TREE_COLOR[1]]))
+	elif tile.inf == Tile.TileInf.BEACH_ROCKS:
+		for r in objects:
+			draw_polygon(r[1].get_polygon(), PoolColorArray([Tile.BEACH_ROCK_COLOR[1]]))
+			draw_polygon(r[2].get_polygon(), PoolColorArray([Tile.BEACH_ROCK_COLOR[2]]))
+			draw_polygon(r[0].get_polygon(), PoolColorArray([Tile.BEACH_ROCK_COLOR[0]]))
+	elif tile.inf == Tile.TileInf.BEACH_GRASS:
+		for g in objects:
+			draw_line(g[0], g[1], Tile.TREE_COLOR[0])
 
 func update_polygons():
 	var tile = Global.tileMap[i][j]
@@ -109,7 +116,60 @@ func update_polygons():
 			update_tree(t, tree_x, tree_y, tree_width, tree_depth, tree_height, w)
 			objects.append(t)
 	
-	if tile.has_building():
+	# Create some one pixel high blades of grass
+	elif tile.inf == Tile.TileInf.BEACH_GRASS:
+		objects.clear()
+		
+		var grass_x = x
+		var grass_y = y - h + ((Global.TILE_HEIGHT / 2.0) - 1.0) / 2.0
+					
+		objects.append([Vector2(grass_x, grass_y), Vector2(grass_x, grass_y - 1)])
+	
+		grass_x = x
+		grass_y = y - h + ((Global.TILE_HEIGHT / 2.0) - 1.0) / 2.0 + (Global.TILE_HEIGHT / 2.0)
+	
+		objects.append([Vector2(grass_x, grass_y), Vector2(grass_x, grass_y - 1)])
+	
+	# Create simple rocks to display beach rocks
+	elif tile.inf == Tile.TileInf.BEACH_ROCKS:
+		objects.clear()
+		var rock_width = Global.TILE_WIDTH / 6.0
+		var rock_depth = rock_width / 2.0
+		var rock_height = 2
+		var rock_x = 0
+		var rock_y = 0
+		
+		if w >= rock_height:
+			rock_width = 0
+			rock_depth = 0
+			rock_height = 0
+						
+		for z in 5:
+			var r = [Polygon2D.new(), Polygon2D.new(), Polygon2D.new()]
+				
+			match z:
+				0:
+					rock_x = x
+					rock_y = y - h + ((Global.TILE_HEIGHT / 2.0) - rock_depth) / 2.0
+				1:
+					rock_x = x
+					rock_y = y - h + ((Global.TILE_HEIGHT / 2.0) - rock_depth) / 2.0 + (Global.TILE_HEIGHT / 2.0)
+				2:
+					rock_x = x - (((Global.TILE_WIDTH / 2.0) - rock_width) / 2.0) - (rock_width / 2.0)
+					rock_y = y - h + ((Global.TILE_HEIGHT / 2.0)) - (rock_depth / 2.0)
+				3:
+					rock_x = x + (((Global.TILE_WIDTH / 2.0) - rock_width) / 2.0) + (rock_width / 2.0)
+					rock_y = y - h + ((Global.TILE_HEIGHT / 2.0)) - (rock_depth / 2.0)
+			
+				4:
+					rock_x = x
+					rock_y = y - h + ((Global.TILE_HEIGHT / 2.0)) - (rock_depth / 2.0)
+			
+			update_rock(r, rock_x, rock_y, rock_width, rock_depth, rock_height, w)
+			objects.append(r)
+	
+	# Generate building polygons depending on density and water height
+	elif tile.has_building():
 		objects.clear()
 		var num_buildings = tile.get_number_of_buildings()
 		
@@ -232,7 +292,7 @@ func get_cube_colors():
 			colors[3] = Tile.ROAD_COLOR[1]
 
 	return colors
-	
+
 # Update the given tree based on its starting coordintes and properties
 func update_tree(tree, tree_x, tree_y, width, depth, height, offset):
 	# Left side of tree
@@ -246,6 +306,33 @@ func update_tree(tree, tree_x, tree_y, width, depth, height, offset):
 		Vector2(tree_x, tree_y - height + (depth / 2.0)), 
 		Vector2(tree_x, tree_y - offset + depth), 
 		Vector2(tree_x + (width / 2.0), tree_y - offset + (depth / 2.0))
+		]))
+
+# Updates the provided rock [array of three polygons] given its starting point, width, depth, height, and height offset (for layers)
+func update_rock(cube, cube_x, cube_y, width, depth, height, offset):
+	# Top of cube
+	cube[0].set_polygon(PoolVector2Array([
+		Vector2(cube_x, cube_y - height), 
+		Vector2(cube_x + (width / 2.0), cube_y - height + (depth / 2.0)), 
+		Vector2(cube_x, cube_y - height + depth), 
+		Vector2(cube_x - (width / 2.0), cube_y - height + (depth / 2.0)), 
+		Vector2(cube_x, cube_y - height)
+		]))
+	
+	# Left side of cube
+	cube[1].set_polygon(PoolVector2Array([
+		Vector2(cube_x, cube_y - offset + depth),
+		Vector2(cube_x, cube_y - height + depth),
+		Vector2(cube_x - (width / 2.0), cube_y - height + (depth / 2.0)),
+		Vector2(cube_x - (width / 2.0), cube_y - offset + (depth / 2.0))
+		]))
+	
+	# Right side of cube
+	cube[2].set_polygon(PoolVector2Array([
+		Vector2(cube_x, cube_y - height + depth), 
+		Vector2(cube_x, cube_y - offset + depth), 
+		Vector2(cube_x + (width / 2.0), cube_y - offset + (depth / 2.0)), 
+		Vector2(cube_x + (width / 2.0), cube_y - height + (depth / 2.0))
 		]))
 
 # Updates the provided cube [array of three polygons] given its starting point, width, depth, height, and height offset (for layers)

@@ -26,7 +26,9 @@ enum TileInf {
 	ROAD,
 	PARK,
 	HOUSE,
-	BUILDING
+	BUILDING,
+	BEACH_ROCKS,
+	BEACH_GRASS
 }
 
 # Used to determine color of buildings
@@ -55,6 +57,7 @@ const HEAVY_DAMAGE_COLOR = [Color("fff22627"), Color("ffd80909"), Color("ff7c000
 
 const PARK_COLOR = [Color("ff8bb54a"), Color("ff60822d")]
 const TREE_COLOR = [Color("ff4a8a7d"), Color("ff286f61")]
+const BEACH_ROCK_COLOR = [Color("ffb8c5d4"), Color("ffa0b3cc"), Color("ff8ca4c0")]
 
 const ROAD_COLOR = [Color("ff6a6a6a"), Color("ff999999")]
 

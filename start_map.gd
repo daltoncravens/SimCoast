@@ -130,6 +130,17 @@ func _unhandled_input(event):
 					tile.clear_tile()
 					tile.inf = Tile.TileInf.ROAD
 
+			Global.Tool.INF_BEACH_ROCKS:
+				if tile.get_base() == Tile.TileBase.SAND:
+					tile.clear_tile()
+					tile.inf = Tile.TileInf.BEACH_ROCKS
+
+			Global.Tool.INF_BEACH_GRASS:
+				if tile.get_base() == Tile.TileBase.SAND:
+					tile.clear_tile()
+					tile.inf = Tile.TileInf.BEACH_GRASS
+
+
 		# Refresh graphics for cube and status bar text
 		cube.update()
 		$HUD.update_tile_display(cube.i, cube.j)
