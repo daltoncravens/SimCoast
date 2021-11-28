@@ -126,25 +126,17 @@ func _unhandled_input(event):
 					tile.inf = Tile.TileInf.PARK
 			
 			Global.Tool.INF_ROAD:
-				if tile.inf == Tile.TileInf.ROAD:
-					tile.data[0] += 1
-					if tile.data[0] == 2:
-						tile.data[0] = 0
-						tile.data[1] += 1
-						if tile.data[1] == 2:
-							tile.data[1] = 0
-							tile.data[2] += 1
-							if tile.data[2] == 2:
-								tile.data[2] = 0
-								tile.data[3] += 1
-								if tile.data[3] == 2:
-									tile.data[3] = 0
-									tile.data[2] = 0
-									tile.data[1] = 0
-									tile.data[0] = 0
-				elif tile.get_base() == Tile.TileBase.DIRT || tile.get_base() == Tile.TileBase.ROCK:
-					tile.clear_tile()
-					tile.inf = Tile.TileInf.ROAD
+				if Input.is_action_pressed("left_click"):
+					if tile.get_base() == Tile.TileBase.DIRT || tile.get_base() == Tile.TileBase.ROCK:
+						tile.clear_tile()
+						tile.inf = Tile.TileInf.ROAD
+						connectRoads(tile)
+					else:
+						print("Road not buildable on tile base type")
+				elif Input.is_action_pressed("right_click"):
+					if tile.inf == Tile.TileInf.ROAD:
+						tile.clear_tile()
+						connectRoads(tile)
 
 			Global.Tool.INF_BEACH_ROCKS:
 				if tile.get_base() == Tile.TileBase.SAND:
@@ -250,6 +242,41 @@ func reduce_map():
 		Global.tileMap[i].pop_back()
 	
 	get_node("HUD/TopBar/ActionText").text = "Map size reduced to (%s x %s)" % [Global.mapWidth, Global.mapHeight]
+
+# Check tile for neighboring road connections, and create connections from any connecting roads to tile
+func connectRoads(tile):
+	var queue = [tile]
+	var neighbors = [[tile.i-1, tile.j], [tile.i+1, tile.j], [tile.i, tile.j-1], [tile.i, tile.j+1]]
+	var maxHeightDiff = 3
+	
+	for n in neighbors:
+		if roadConnected(tile, n, maxHeightDiff):
+			queue.append(Global.tileMap[n[0]][n[1]])
+	
+	while !queue.empty():
+		var road = queue.pop_front()
+		road.data = 	[0, 0, 0, 0, 0]
+		
+		if roadConnected(road, [road.i-1, road.j], maxHeightDiff):
+			road.data[0] = 1
+		if roadConnected(road, [road.i, road.j-1], maxHeightDiff):
+			road.data[1] = 1
+		if roadConnected(road, [road.i+1, road.j], maxHeightDiff):
+			road.data[2] = 1
+		if roadConnected(road, [road.i, road.j+1], maxHeightDiff):
+			road.data[3] = 1
+
+		road.cube.update()
+
+func roadConnected(tile, n, diff):
+	if !is_tile_inbounds(n[0], n[1]):
+		return false
+	if Global.tileMap[n[0]][n[1]].inf != Tile.TileInf.ROAD:
+		return false
+	if abs(tile.get_base_height() - Global.tileMap[n[0]][n[1]].get_base_height()) > diff:
+		return false
+	
+	return true
 
 # Called whenever there is a visual change in ocean level
 func updateOceanHeight(dir):	
