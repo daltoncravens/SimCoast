@@ -51,6 +51,8 @@ const HV_COM_ZONE_COLOR = [Color("ff7d9bbf"), Color("ff2d5b82")]
 
 const BUILDING_COLOR = [Color("ffaaaaaa"), Color("ff999999"), Color("ff888888"), Color("ff777777")]
 
+const RES_OCCUPANCY_COLOR = [Color("aa4a8a7d"), Color("aa286f61")]
+
 const LIGHT_DAMAGE_COLOR = [Color("fff2c926"), Color("ffd8bf09"), Color("ffc4ae00"), Color("ffae9a00")]
 const MEDIUM_DAMAGE_COLOR = [Color("fff28b26"), Color("ffd86909"), Color("ffac5100"), Color("ffac5100")]
 const HEAVY_DAMAGE_COLOR = [Color("fff22627"), Color("ffd80909"), Color("ff7c0000"), Color("ff590000")]

@@ -22,37 +22,37 @@ func button_hover(button):
 		'reduce_grid_button':
 			toolInfo.text = "Remove a row/column from the map"
 		'dirt_button':
-			toolInfo.text = "Replace base tile with dirt / Raise dirt base tile height  (Right Click: Lower dirt base tile height)"
+			toolInfo.text = "Replace base tile with dirt / Raise dirt base tile height   (Right Click: Lower dirt base tile height)"
 		'rock_button':
-			toolInfo.text = "Replace base tile with rock / Raise rock base tile height  (Right Click: Lower rock base tile height)"
+			toolInfo.text = "Replace base tile with rock / Raise rock base tile height   (Right Click: Lower rock base tile height)"
 		'sand_button':
-			toolInfo.text = "Replace base tile with sand / Raise and base tile height  (Right Click: Lower sand base tile height)"
+			toolInfo.text = "Replace base tile with sand / Raise and base tile height   (Right Click: Lower sand base tile height)"
 		'ocean_button':
 			toolInfo.text = "Replace base tile with ocean"
 		'lt_res_zone_button':
-			toolInfo.text = "Light Residential Zone  (Right Click: Remove zoning)"
+			toolInfo.text = "Light Residential Zone   (Right Click: Remove zoning)"
 		'hv_res_zone_button':
-			toolInfo.text = "Heavy Residential Zone  (Right Click: Remove zoning)"
+			toolInfo.text = "Heavy Residential Zone   (Right Click: Remove zoning)"
 		'add_house_button':
-			toolInfo.text = "Add building to residential zone  (Right Click: Remove building)"
+			toolInfo.text = "Add building to residential zone   (Right Click: Remove building)"
 		'add_resident_button':
-			toolInfo.text = "Add resident to residential zone  (Right Click: Remove person)"
+			toolInfo.text = "Add resident to residential zone   (Right Click: Remove person)"
 		'lt_com_zone_button':
-			toolInfo.text = "Light Commercial Zone  (Right Click: Remove zoning)"
+			toolInfo.text = "Light Commercial Zone   (Right Click: Remove zoning)"
 		'hv_com_zone_button':
-			toolInfo.text = "Heavy Commercial Zone  (Right Click: Remove zoning)"
+			toolInfo.text = "Heavy Commercial Zone   (Right Click: Remove zoning)"
 		'add_building_button':
-			toolInfo.text = "Add building to commercial zone  (Right Click: Remove building)"
+			toolInfo.text = "Add building to commercial zone   (Right Click: Remove building)"
 		'add_employee_button':
-			toolInfo.text = "Add employee to commercial zone  (Right Click: Remove employee)"
+			toolInfo.text = "Add employee to commercial zone   (Right Click: Remove employee)"
 		'park_button':
 			toolInfo.text = "Park tile  (Right Click: Remove park)"
 		'road_button':
-			toolInfo.text = "Infrastructure (road/power/water) tile  (Right Click: Remove infrastructure)"
+			toolInfo.text = "Built infrastructure (road/power/water) tile   (Right Click: Remove infrastructure)"
 		'beach_rocks_button':
-			toolInfo.text = "Add beach rocks to sand tile  (Right Click: Remove rocks)"
+			toolInfo.text = "Add beach rocks to sand tile   (Right Click: Remove rocks)"
 		'beach_grass_button':
-			toolInfo.text = "Add beach grass to sand tile  (Right Click: Remove rocks)"			
+			toolInfo.text = "Add beach grass to sand tile   (Right Click: Remove rocks)"			
 		'clear_button':
 			toolInfo.text = "Clear tile"
 		'repair_button':

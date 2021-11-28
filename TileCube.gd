@@ -8,8 +8,8 @@ var y = 0
 
 var building_visible = true
 
-var base_cube = [Polygon2D.new(), Polygon2D.new(), Polygon2D.new()]
-var water_cube = [Polygon2D.new(), Polygon2D.new(), Polygon2D.new()]
+var base_cube = [Polygon2D.new(), Polygon2D.new(), Polygon2D.new(), Polygon2D.new(), Polygon2D.new()]
+var water_cube = [Polygon2D.new(), Polygon2D.new(), Polygon2D.new(), Polygon2D.new(), Polygon2D.new()]
 var objects = []
 
 var coll = CollisionPolygon2D.new()
@@ -27,6 +27,7 @@ func _draw():
 	var waterColor = Tile.WATER_COLOR
 	var buildingColor = get_building_colors()
 	
+	# Draw the sides of the base of the tile cube
 	if tile.get_base_height() > 0:
 		draw_polygon(base_cube[1].get_polygon(), PoolColorArray([baseColor[1]]))
 		draw_polygon(base_cube[2].get_polygon(), PoolColorArray([baseColor[2]]))
@@ -46,6 +47,15 @@ func _draw():
 		for b in objects:
 			draw_polygon(b[1].get_polygon(), PoolColorArray([buildingColor[1]]))
 			draw_polygon(b[2].get_polygon(), PoolColorArray([buildingColor[2]]))
+			
+			# Draw occupancy percentage colors on the sides of the buildings
+			if tile.get_zone() == Tile.TileZone.LIGHT_RESIDENTIAL || tile.get_zone() == Tile.TileZone.HEAVY_RESIDENTIAL:
+				draw_polygon(b[3].get_polygon(), PoolColorArray([Tile.RES_OCCUPANCY_COLOR[0]]))
+				draw_polygon(b[4].get_polygon(), PoolColorArray([Tile.RES_OCCUPANCY_COLOR[1]]))
+			elif tile.get_zone() == Tile.TileZone.LIGHT_COMMERCIAL || tile.get_zone() == Tile.TileZone.HEAVY_COMMERCIAL:
+				draw_polygon(b[3].get_polygon(), PoolColorArray([Tile.TREE_COLOR[0]]))
+				draw_polygon(b[4].get_polygon(), PoolColorArray([Tile.TREE_COLOR[1]]))
+			
 			draw_polygon(b[0].get_polygon(), PoolColorArray([buildingColor[0]]))
 			draw_polyline(b[0].get_polygon(), buildingColor[3])
 	elif tile.inf == Tile.TileInf.PARK:
@@ -69,8 +79,8 @@ func update_polygons():
 	var h = tile.get_base_height()
 	var w = tile.get_water_height()
 	
-	update_cube(base_cube, x, y, Global.TILE_WIDTH, Global.TILE_HEIGHT, h, 0)
-	update_cube(water_cube, x, y, Global.TILE_WIDTH, Global.TILE_HEIGHT, h + w, h)
+	update_cube(base_cube, x, y, Global.TILE_WIDTH, Global.TILE_HEIGHT, h, 0, 0)
+	update_cube(water_cube, x, y, Global.TILE_WIDTH, Global.TILE_HEIGHT, h + w, h, 0)
 	
 	# Create simple trees so landscape not so boring
 	if tile.inf == Tile.TileInf.PARK:
@@ -152,6 +162,7 @@ func update_polygons():
 					Vector2(grass_x, grass_y), Vector2(grass_x + 2, grass_y - 2)
 				]))
 	
+	# Draws roads depending on data values, which indicate which neighbords tile is connected to
 	elif tile.inf == Tile.TileInf.ROAD:
 		objects.clear()
 		
@@ -252,7 +263,7 @@ func update_polygons():
 				building_visible = true
 			
 			for z in num_buildings:
-				var b = [Polygon2D.new(), Polygon2D.new(), Polygon2D.new()]
+				var b = [Polygon2D.new(), Polygon2D.new(), Polygon2D.new(), Polygon2D.new(), Polygon2D.new()]
 				
 				match z:
 					0:
@@ -268,10 +279,10 @@ func update_polygons():
 						building_x = x + (((Global.TILE_WIDTH / 2.0) - building_width) / 2.0) + (building_width / 2.0)
 						building_y = y - h + ((Global.TILE_HEIGHT / 2.0)) - (building_depth / 2.0)
 			
-				update_cube(b, building_x, building_y, building_width, building_depth, building_height, w)
+				update_cube(b, building_x, building_y, building_width, building_depth, building_height, w, 0)
 				objects.append(b)
 
-		# Draws a single buildings, scaled to number of buildings
+		# Draws a single building whose size is scaled to number of buildings
 		elif tile.is_heavy_zoned():
 			building_width = (Global.TILE_WIDTH / 2.0) + (2 * num_buildings) 
 			building_depth = building_width / 2.0
@@ -282,12 +293,17 @@ func update_polygons():
 			else:
 				building_visible = true
 			
-			var b = [Polygon2D.new(), Polygon2D.new(), Polygon2D.new()]
+			var occupancy = 0
+			if tile.data[3] != 0:
+				occupancy = float(tile.data[2]) / float(tile.data[3])
+			
+			var b = [Polygon2D.new(), Polygon2D.new(), Polygon2D.new(), Polygon2D.new(), Polygon2D.new()]
 			
 			building_x = x
 			building_y = y - h + ((Global.TILE_HEIGHT / 2.0) - (building_depth / 2.0))
 
-			update_cube(b, building_x, building_y, building_width, building_depth, building_height, w)
+			update_cube(b, building_x, building_y, building_width, building_depth, building_height, w, occupancy)
+
 			objects.append(b)
 	
 	# Set the clickable area of the polygon (the entire base cube)
@@ -398,7 +414,7 @@ func update_rock(cube, cube_x, cube_y, width, depth, height, offset):
 		]))
 
 # Updates the provided cube [array of three polygons] given its starting point, width, depth, height, and height offset (for layers)
-func update_cube(cube, cube_x, cube_y, width, depth, height, offset):
+func update_cube(cube, cube_x, cube_y, width, depth, height, offset, occupancy):
 	# Top of cube
 	cube[0].set_polygon(PoolVector2Array([
 		Vector2(cube_x, cube_y - height), 
@@ -422,6 +438,27 @@ func update_cube(cube, cube_x, cube_y, width, depth, height, offset):
 		Vector2(cube_x, cube_y - offset + depth), 
 		Vector2(cube_x + (width / 2.0), cube_y - offset + (depth / 2.0)), 
 		Vector2(cube_x + (width / 2.0), cube_y - height + (depth / 2.0))
+		]))
+
+	# If the height of the offset is higher, set cube heights to 0
+	if offset >= (height * occupancy):
+		height = 0
+		offset = 0
+
+	# Left side of cube (occupancy percentage)
+	cube[3].set_polygon(PoolVector2Array([
+		Vector2(cube_x, cube_y - offset + depth),
+		Vector2(cube_x, cube_y - (height * occupancy) + depth),
+		Vector2(cube_x - (width / 2.0), cube_y - (height * occupancy) + (depth / 2.0)),
+		Vector2(cube_x - (width / 2.0), cube_y - offset + (depth / 2.0))
+		]))
+
+	# Right side of cube (occupancy percentage)
+	cube[4].set_polygon(PoolVector2Array([
+		Vector2(cube_x, cube_y - (height * occupancy) + depth), 
+		Vector2(cube_x, cube_y - offset + depth), 
+		Vector2(cube_x + (width / 2.0), cube_y - offset + (depth / 2.0)), 
+		Vector2(cube_x + (width / 2.0), cube_y - (height * occupancy) + (depth / 2.0))
 		]))
 
 func set_index(a, b):

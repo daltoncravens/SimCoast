@@ -33,8 +33,6 @@ func update_tile_display(i, j):
 	var tile = Global.tileMap[i][j]
 	$BottomBar/HoverText.text = "(%s, %s)" % [i, j]
 	$BottomBar/HoverText.text += "     BASE: %s" % [base_values[tile.get_base()]]
-	$BottomBar/HoverText.text += "     ZONE: %s" % [zone_values[tile.get_zone()]]
-	
-	#if Global.tileMap[int(i)][int(j)].get_zone() != Tile.TileZone.NONE:
-	#	var data = Global.tileMap[int(i)][int(j)].get_data()
-	#	$BottomBar/HoverText.text = "Zone: Residential, Buildings: %s / %s, People: %s / %s" % [data[0], data[1], data[2], data[3]]
+	if tile.get_zone() != Tile.TileZone.NONE:
+		$BottomBar/HoverText.text += "     Zone: Residential, Buildings: %s / %s, People: %s / %s" % [tile.data[0], tile.data[1], tile.data[2], tile.data[3]]
+
