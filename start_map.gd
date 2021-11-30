@@ -1,39 +1,34 @@
 extends Node2D
 
-var mapName = "test1"
-var vectorMap
-var camera
-
-var gameTime = {"month": 1, "year": 2000}
-var gameTime_since_update = 0.0
-
-var gameSpeed = 10000
-var gamePaused = false
+var mapName = "test2"
+var powerPlants = []   	# Keep track of power plant tiles for power distribution
+var copyTile
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	camera = get_node("Camera2D")
-	initCamera(Global.mapWidth, Global.mapHeight)
+	initCamera()
 
 # Set camera to start at middle of map, and set camera edge limits
 # Width/height is number of map tiles
-func initCamera(width, height):
-	var mid_x = (width / 2) * Global.TILE_WIDTH
-	var mid_y = (height / 2) * Global.TILE_HEIGHT
+func initCamera():
+	var mid_x = (Global.mapWidth / 2) * Global.TILE_WIDTH
+	var mid_y = (Global.mapHeight / 2) * Global.TILE_HEIGHT
 	
 	# Use the player starting tile to calculate camera position
-	camera.position.y = mid_y
+	$Camera2D.position.y = mid_y
 	
-	camera.limit_left = (mid_x * -1) - Global.MAP_EDGE_BUFFER
-	camera.limit_top = -Global.MAP_EDGE_BUFFER
-	camera.limit_right = mid_x + Global.MAP_EDGE_BUFFER
-	camera.limit_bottom = Global.mapHeight * Global.TILE_HEIGHT + Global.MAP_EDGE_BUFFER
+	$Camera2D.limit_left = (mid_x * -1) - Global.MAP_EDGE_BUFFER
+	$Camera2D.limit_top = -Global.MAP_EDGE_BUFFER
+	$Camera2D.limit_right = mid_x + Global.MAP_EDGE_BUFFER
+	$Camera2D.limit_bottom = Global.mapHeight * Global.TILE_HEIGHT + Global.MAP_EDGE_BUFFER
 
 # Handle inputs (clicks, keys)
 func _unhandled_input(event):
 	var actionText = get_node("HUD/TopBar/ActionText")
 	
 	if event is InputEventMouseButton and event.pressed:
+		actionText.text = ""
+		
 		var cube = $VectorMap.get_tile_at(get_global_mouse_position())
 		var tile
 	
@@ -120,10 +115,19 @@ func _unhandled_input(event):
 				if tile.get_base() != Tile.TileBase.OCEAN:
 					adjust_tile_water(tile)
 			
+			Global.Tool.INF_POWER_PLANT:
+				if tile.get_base() == Tile.TileBase.DIRT || tile.get_base() == Tile.TileBase.ROCK:
+					tile.clear_tile()
+					tile.inf = Tile.TileInf.POWER_PLANT
+					Global.powerPlants.append(tile)
+					connectPower()
+			
 			Global.Tool.INF_PARK:
 				if tile.get_base() == Tile.TileBase.DIRT:
 					tile.clear_tile()
 					tile.inf = Tile.TileInf.PARK
+				else:
+					actionText.text = "Park must be built on a dirt base"
 			
 			Global.Tool.INF_ROAD:
 				if Input.is_action_pressed("left_click"):
@@ -132,7 +136,7 @@ func _unhandled_input(event):
 						tile.inf = Tile.TileInf.ROAD
 						connectRoads(tile)
 					else:
-						print("Road not buildable on tile base type")
+						actionText.text = "Road not buildable on tile base type"
 				elif Input.is_action_pressed("right_click"):
 					if tile.inf == Tile.TileInf.ROAD:
 						tile.clear_tile()
@@ -148,7 +152,13 @@ func _unhandled_input(event):
 					tile.clear_tile()
 					tile.inf = Tile.TileInf.BEACH_GRASS
 
-
+			Global.Tool.COPY_TILE:
+				copyTile = tile
+				actionText.text = "Tile copy saved"
+				
+			Global.Tool.PASTE_TILE:
+				tile.paste_tile(copyTile)
+				
 		# Refresh graphics for cube and status bar text
 		cube.update()
 		$HUD.update_tile_display(cube.i, cube.j)
@@ -156,13 +166,21 @@ func _unhandled_input(event):
 	elif event is InputEventKey && event.pressed:
 		if event.scancode == KEY_S:
 			saveMapData()
-			actionText.text = "Map Data Saved"
 		elif event.scancode == KEY_L:
 			loadMapData()
-			actionText.text = "Map Data Loaded"
+			initCamera()
 		elif event.scancode == KEY_Z:
-			print("Determining damage")
+			actionText.text = "Flood and erosion damange calculated"
 			calculate_damage()
+		elif event.scancode == KEY_P:
+			actionText.text = "Power grid recalculated"
+			connectPower()
+		elif event.scancode == KEY_C:
+			actionText.text = "Select tile to copy"
+			Global.mapTool = Global.Tool.COPY_TILE
+		elif event.scancode == KEY_V:
+			actionText.text = "Paste tool selected"
+			Global.mapTool = Global.Tool.PASTE_TILE
 
 	elif event is InputEventMouseMotion:		
 		var cube = $VectorMap.get_tile_at(get_global_mouse_position())
@@ -208,13 +226,13 @@ func extend_map():
 	Global.tileMap.append(new_row)
 
 	for j in Global.mapWidth:
-		Global.tileMap[Global.mapHeight][j] = Tile.new(Global.mapHeight, j, 0, 0, 0, 0, 0)
+		Global.tileMap[Global.mapHeight][j] = Tile.new(Global.mapHeight, j, 0, 0, 0, 0, 0, [0, 0, 0, 0, 0])
 		$VectorMap.add_tile(Global.mapHeight, j)
 	
 	Global.mapHeight += 1
 		
 	for i in Global.mapHeight:
-		Global.tileMap[i].append(Tile.new(i, Global.mapWidth, 0, 0, 0, 0, 0))
+		Global.tileMap[i].append(Tile.new(i, Global.mapWidth, 0, 0, 0, 0, 0, [0, 0, 0, 0, 0]))
 		$VectorMap.add_tile(i, Global.mapWidth)
 	
 	Global.mapWidth += 1
@@ -243,11 +261,48 @@ func reduce_map():
 	
 	get_node("HUD/TopBar/ActionText").text = "Map size reduced to (%s x %s)" % [Global.mapWidth, Global.mapHeight]
 
+# Starting from each power plant, trace power distribution and power tiles if they are connected
+func connectPower():
+	# De-power every tile on the map
+	for i in Global.mapWidth:
+		for j in Global.mapHeight:
+			Global.tileMap[i][j].powered = false
+
+	for plant in Global.powerPlants:
+		plant.powered = true
+
+		var queue = []
+		var neighbors = [[plant.i-1, plant.j], [plant.i+1, plant.j], [plant.i, plant.j-1], [plant.i, plant.j+1]]
+		
+		for n in neighbors:
+			if roadConnected(plant, n, Global.MAX_CONNECTION_HEIGHT):
+				queue.append(Global.tileMap[n[0]][n[1]])
+		
+		while !queue.empty():
+			var road = queue.pop_front()
+			
+			if !road.powered:
+				road.powered = true
+			
+				# Check neighbors: if a zone, power it; if a connected road, add it to the queue
+				neighbors = [[road.i-1, road.j], [road.i+1, road.j], [road.i, road.j-1], [road.i, road.j+1]]
+
+				for n in neighbors:
+					if is_tile_inbounds(n[0], n[1]):
+						if Global.tileMap[n[0]][n[1]].inf == Tile.TileInf.ROAD:
+							if roadConnected(road, n, Global.MAX_CONNECTION_HEIGHT):
+								if Global.tileMap[n[0]][n[1]].powered == false:
+									queue.append(Global.tileMap[n[0]][n[1]])
+						elif Global.tileMap[n[0]][n[1]].is_zoned():
+							Global.tileMap[n[0]][n[1]].powered = true
+							Global.tileMap[n[0]][n[1]].cube.update()
+
+
 # Check tile for neighboring road connections, and create connections from any connecting roads to tile
 func connectRoads(tile):
 	var queue = [tile]
 	var neighbors = [[tile.i-1, tile.j], [tile.i+1, tile.j], [tile.i, tile.j-1], [tile.i, tile.j+1]]
-	var maxHeightDiff = 3
+	var maxHeightDiff = Global.MAX_CONNECTION_HEIGHT
 	
 	for n in neighbors:
 		if roadConnected(tile, n, maxHeightDiff):
@@ -372,6 +427,7 @@ func is_tile_inbounds(i, j):
 	
 	return true
 
+# Saves global variables and map data to a JSON file
 func saveMapData():
 	var filePath = str("res://maps/", mapName, ".json")
 	
@@ -379,14 +435,14 @@ func saveMapData():
 			
 	for i in Global.mapWidth:
 		for j in Global.mapHeight:
-			tileData.append([i, j, Global.tileMap[i][j].baseHeight, Global.tileMap[i][j].waterHeight, Global.tileMap[i][j].base, Global.tileMap[i][j].zone, Global.tileMap[i][j].inf])
+			tileData.append(Global.tileMap[i][j].get_save_tile_data())
 			
 	var data = {
 		"name": mapName,
 		"mapWidth": Global.mapWidth,
 		"mapHeight": Global.mapHeight,
 		"oceanHeight": Global.oceanHeight,
-		"date": gameTime,
+		"seaLevel": Global.seaLevel,
 		"tiles": tileData
 	}
 	
@@ -395,26 +451,15 @@ func saveMapData():
 	file.open(filePath, File.WRITE)
 	file.store_line(to_json(data))
 	file.close()
-
-#func updateGameTime(delta):
-#	gameTime_since_update += delta * gameSpeed
-#
-#	while gameTime_since_update > 60000:
-#		if gameTime.month == 12:
-#			gameTime.month = 1
-#			gameTime.year += 1
-#		else:
-#			gameTime.month += 1
-#		
-#		gameTime_since_update -= 60000
-
+	
+	get_node("HUD/TopBar/ActionText").text = "Map file '%s'.json saved" % [mapName]
 
 func loadMapData():
 	var file = File.new()
 	var filePath = str("res://maps/", mapName, ".json")
 		
 	if not file.file_exists(filePath):
-		print("Error: Unable to find map file")
+		get_node("HUD/TopBar/ActionText").text = "Error: Unable to find map file '%s'.json" % [mapName]
 		return
 	file.open(filePath, File.READ)
 	var mapData = parse_json(file.get_as_text())
@@ -423,7 +468,7 @@ func loadMapData():
 	Global.mapWidth = mapData.mapWidth
 	Global.mapHeight = mapData.mapHeight
 	Global.oceanHeight = mapData.oceanHeight
-	gameTime = mapData.date
+	Global.seaLevel = mapData.seaLevel
 		
 	Global.tileMap.clear()
 	
@@ -433,12 +478,11 @@ func loadMapData():
 		Global.tileMap.append(row)
 
 	for tileData in mapData.tiles:
-		Global.tileMap[tileData[0]][tileData[1]] = Tile.new(int(tileData[0]), int(tileData[1]), int(tileData[2]), int(tileData[3]), int(tileData[4]), int(tileData[5]), int(tileData[6]))
+		Global.tileMap[tileData[0]][tileData[1]] = Tile.new(int(tileData[0]), int(tileData[1]), int(tileData[2]), int(tileData[3]), int(tileData[4]), int(tileData[5]), int(tileData[6]), tileData[7])
 
 	$VectorMap.loadMap()
+	get_node("HUD/TopBar/ActionText").text = "Map file '%s'.json loaded" % [mapName]
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta):
 	pass
-#	if !gamePaused:
-#		updateGameTime(_delta)

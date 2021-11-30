@@ -8,10 +8,12 @@ const MAP_EDGE_BUFFER = 150			# Space beyond map for camera
 const TILE_WIDTH = 64
 const TILE_HEIGHT = 32
 
-const MAX_HEIGHT = 30				# Maximum vertical height for any tile
+const MAX_HEIGHT = 40				# Maximum vertical height for any tile
 
 const MIN_MAP_SIZE = 8
 const MAX_MAP_SIZE = 64
+
+const MAX_CONNECTION_HEIGHT = 3		# Largest amount of height allowed to consider tiles connected
 
 var mapWidth = 10
 var mapHeight = 10
@@ -37,7 +39,7 @@ func initTileMap():
 
 	for i in mapHeight:
 		for j in mapWidth:
-			tm[i][j] = Tile.new(i, j, 0, 0, 0, 0, 0)
+			tm[i][j] = Tile.new(i, j, 0, 0, 0, 0, 0, [0, 0, 0, 0, 0])
 	
 	return tm
 
@@ -60,10 +62,13 @@ enum Tool {
 	ADD_COM_PERSON,
 	INF_PARK,
 	INF_ROAD,
+	INF_POWER_PLANT,
 	INF_BEACH_ROCKS,
 	INF_BEACH_GRASS,
 	CLEAR_TILE,
 	REPAIR,
 	LAYER_WATER,
 	CLEAR_WATER,
+	COPY_TILE,
+	PASTE_TILE
 }

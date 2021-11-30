@@ -45,10 +45,12 @@ func button_hover(button):
 			toolInfo.text = "Add building to commercial zone   (Right Click: Remove building)"
 		'add_employee_button':
 			toolInfo.text = "Add employee to commercial zone   (Right Click: Remove employee)"
-		'park_button':
-			toolInfo.text = "Park tile  (Right Click: Remove park)"
+		'power_plant_button':
+			toolInfo.text = "Build Power Plant"
 		'road_button':
 			toolInfo.text = "Built infrastructure (road/power/water) tile   (Right Click: Remove infrastructure)"
+		'park_button':
+			toolInfo.text = "Built Park   (Right Click: Remove park)"	
 		'beach_rocks_button':
 			toolInfo.text = "Add beach rocks to sand tile   (Right Click: Remove rocks)"
 		'beach_grass_button':
@@ -80,8 +82,10 @@ func button_pressed():
 	match group.get_pressed_button().get_name():
 		'extend_grid_button':
 			mapNode.extend_map()
+			mapNode.initCamera()
 		'reduce_grid_button':
 			mapNode.reduce_map()
+			mapNode.initCamera()
 		'dirt_button':
 			Global.mapTool = Global.Tool.BASE_DIRT
 		'rock_button':
@@ -106,6 +110,8 @@ func button_pressed():
 			Global.mapTool = Global.Tool.ADD_COM_BLDG
 		'add_employee_button':
 			Global.mapTool = Global.Tool.ADD_COM_PERSON
+		'power_plant_button':
+			Global.mapTool = Global.Tool.INF_POWER_PLANT
 		'park_button':
 			Global.mapTool = Global.Tool.INF_PARK
 		'road_button':
@@ -122,26 +128,47 @@ func button_pressed():
 			Global.mapTool = Global.Tool.LAYER_WATER
 		'clear_water_button':
 			Global.mapTool = Global.Tool.CLEAR_WATER
+		
 		'raise_ocean_button':
 			Global.mapTool = Global.Tool.NONE
 			if Global.oceanHeight < Global.MAX_HEIGHT:
 				Global.oceanHeight += 1
 				mapNode.updateOceanHeight(1)
 				get_node("../TopBar/ActionText").text = "Ocean height raised to %s" % [Global.oceanHeight]
+		
 		'lower_ocean_button':
 			Global.mapTool = Global.Tool.NONE
 			if Global.oceanHeight > 0:
 				Global.oceanHeight -= 1
 				mapNode.updateOceanHeight(-1)
 				get_node("../TopBar/ActionText").text = "Ocean height lowered to %s" % [Global.oceanHeight]
+		
 		'damage_button':
 			Global.mapTool = Global.Tool.NONE
+		
 		'satisfaction_button':
 			Global.mapTool = Global.Tool.NONE
+		
+		'quicksave_button':
+			Global.mapTool = Global.Tool.NONE
+			mapNode.saveMapData()
+		
 		'rotate_camera_button':
 			Global.mapTool = Global.Tool.NONE
 			get_node("../../Camera2D").rotateCamera(1)
 			get_node("../../VectorMap").rotate_map()
-		'quicksave_button':
+
+		'zoom_out_button':
 			Global.mapTool = Global.Tool.NONE
-			mapNode.saveMapData()
+		
+		'zoom_in_button':
+			Global.mapTool = Global.Tool.NONE
+		
+		'save_button':
+			print("Save Button Pressed")
+
+		'load_button':
+			print("Load Button Pressed")
+			
+		'exit_button':
+			print("Exit Button Pressed")

@@ -32,7 +32,15 @@ var damage_values = {
 func update_tile_display(i, j):
 	var tile = Global.tileMap[i][j]
 	$BottomBar/HoverText.text = "(%s, %s)" % [i, j]
-	$BottomBar/HoverText.text += "     BASE: %s" % [base_values[tile.get_base()]]
+	$BottomBar/HoverText.text += "     BASE: %s     HEIGHT: %s" % [base_values[tile.get_base()], tile.get_base_height()]
 	if tile.get_zone() != Tile.TileZone.NONE:
 		$BottomBar/HoverText.text += "     Zone: Residential, Buildings: %s / %s, People: %s / %s" % [tile.data[0], tile.data[1], tile.data[2], tile.data[3]]
-
+		if tile.powered:
+			$BottomBar/HoverText.text += "     Power: ON"
+		else:
+			$BottomBar/HoverText.text += "     Power: OFF"
+	elif tile.inf == Tile.TileInf.ROAD:
+		if tile.powered:
+			$BottomBar/HoverText.text += "     Power: ON"
+		else:
+			$BottomBar/HoverText.text += "     Power: OFF"

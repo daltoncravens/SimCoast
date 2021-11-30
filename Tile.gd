@@ -13,8 +13,6 @@ enum TileBase {
 
 enum TileZone {
 	NONE,
-	RESIDENTIAL,
-	COMMERCIAL,
 	LIGHT_RESIDENTIAL,
 	HEAVY_RESIDENTIAL,
 	LIGHT_COMMERCIAL,
@@ -28,10 +26,11 @@ enum TileInf {
 	HOUSE,
 	BUILDING,
 	BEACH_ROCKS,
-	BEACH_GRASS
+	BEACH_GRASS,
+	POWER_PLANT
 }
 
-# Used to determine color of buildings
+# Flooding damage levels that can affect tiles
 enum TileStatus {
 	NONE,
 	LIGHT_DAMAGE,
@@ -52,6 +51,7 @@ const HV_COM_ZONE_COLOR = [Color("ff7d9bbf"), Color("ff2d5b82")]
 const BUILDING_COLOR = [Color("ffaaaaaa"), Color("ff999999"), Color("ff888888"), Color("ff777777")]
 
 const RES_OCCUPANCY_COLOR = [Color("aa4a8a7d"), Color("aa286f61")]
+const COM_OCCUPANCY_COLOR = [Color("aa4a8a7d"), Color("aa286f61")]
 
 const LIGHT_DAMAGE_COLOR = [Color("fff2c926"), Color("ffd8bf09"), Color("ffc4ae00"), Color("ffae9a00")]
 const MEDIUM_DAMAGE_COLOR = [Color("fff28b26"), Color("ffd86909"), Color("ffac5100"), Color("ffac5100")]
@@ -67,13 +67,14 @@ var i
 var j
 var baseHeight = 0
 var waterHeight = 0
-var zone = 0
 var base = 0
+var zone = 0
 var inf = 0
 var cube = Area2D.new()
 var data = [0, 0, 0, 0, 0]
+var powered = false
 
-func _init(a, b, c, d, e, f, g):
+func _init(a, b, c, d, e, f, g, h):
 	self.i = a
 	self.j = b
 
@@ -82,6 +83,18 @@ func _init(a, b, c, d, e, f, g):
 	base = e
 	zone = f
 	inf = g
+	data = h
+
+func get_save_tile_data():
+	return [i, j, baseHeight, waterHeight, base, zone, inf, data]
+
+func paste_tile(tile):
+	baseHeight = tile.baseHeight
+	waterHeight = tile.waterHeight
+	base = tile.base
+	zone = tile.zone
+	inf = tile.inf
+	data = tile.data
 
 func clear_tile():
 	zone = TileZone.NONE
@@ -133,6 +146,9 @@ func get_number_of_buildings():
 		return data[0]
 	else:
 		return 0
+
+func is_zoned():
+	return is_light_zoned() || is_heavy_zoned()
 
 func is_light_zoned():
 	return zone == TileZone.LIGHT_RESIDENTIAL || zone == TileZone.LIGHT_COMMERCIAL

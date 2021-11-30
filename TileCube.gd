@@ -53,23 +53,39 @@ func _draw():
 				draw_polygon(b[3].get_polygon(), PoolColorArray([Tile.RES_OCCUPANCY_COLOR[0]]))
 				draw_polygon(b[4].get_polygon(), PoolColorArray([Tile.RES_OCCUPANCY_COLOR[1]]))
 			elif tile.get_zone() == Tile.TileZone.LIGHT_COMMERCIAL || tile.get_zone() == Tile.TileZone.HEAVY_COMMERCIAL:
-				draw_polygon(b[3].get_polygon(), PoolColorArray([Tile.TREE_COLOR[0]]))
-				draw_polygon(b[4].get_polygon(), PoolColorArray([Tile.TREE_COLOR[1]]))
+				draw_polygon(b[3].get_polygon(), PoolColorArray([Tile.COM_OCCUPANCY_COLOR[0]]))
+				draw_polygon(b[4].get_polygon(), PoolColorArray([Tile.COM_OCCUPANCY_COLOR[1]]))
 			
 			draw_polygon(b[0].get_polygon(), PoolColorArray([buildingColor[0]]))
 			draw_polyline(b[0].get_polygon(), buildingColor[3])
+			
 	elif tile.inf == Tile.TileInf.PARK:
 		for t in objects:
 			draw_polygon(t[0].get_polygon(), PoolColorArray([Tile.TREE_COLOR[0]]))
 			draw_polygon(t[1].get_polygon(), PoolColorArray([Tile.TREE_COLOR[1]]))
+			
+	elif tile.inf == Tile.TileInf.POWER_PLANT:
+		var b = objects.pop_front()
+		draw_polygon(b[1].get_polygon(), PoolColorArray([Tile.BUILDING_COLOR[1]]))
+		draw_polygon(b[2].get_polygon(), PoolColorArray([Tile.BUILDING_COLOR[2]]))
+		draw_polygon(b[0].get_polygon(), PoolColorArray([Tile.BUILDING_COLOR[0]]))
+		draw_polyline(b[0].get_polygon(), Tile.BUILDING_COLOR[3])
+		
+		for s in objects:
+			draw_polygon(s[1].get_polygon(), PoolColorArray([Tile.BUILDING_COLOR[1]]))
+			draw_polygon(s[2].get_polygon(), PoolColorArray([Tile.BUILDING_COLOR[2]]))
+			draw_polygon(s[0].get_polygon(), PoolColorArray([Color("ff000000")]))
+			
 	elif tile.inf == Tile.TileInf.BEACH_ROCKS:
 		for r in objects:
 			draw_polygon(r[1].get_polygon(), PoolColorArray([Tile.BEACH_ROCK_COLOR[1]]))
 			draw_polygon(r[2].get_polygon(), PoolColorArray([Tile.BEACH_ROCK_COLOR[2]]))
 			draw_polygon(r[0].get_polygon(), PoolColorArray([Tile.BEACH_ROCK_COLOR[0]]))
+			
 	elif tile.inf == Tile.TileInf.BEACH_GRASS:
 		for g in objects:
 			draw_polyline(g, Tile.TREE_COLOR[0])
+			
 	elif tile.inf == Tile.TileInf.ROAD:
 		for r in objects:
 			draw_polygon(r, PoolColorArray([Tile.ROAD_COLOR[0]]))
@@ -161,7 +177,54 @@ func update_polygons():
 					Vector2(grass_x, grass_y), Vector2(grass_x, grass_y - 2),
 					Vector2(grass_x, grass_y), Vector2(grass_x + 2, grass_y - 2)
 				]))
-	
+
+	elif tile.inf == Tile.TileInf.POWER_PLANT:	
+		objects.clear()
+		
+		var building_width = Global.TILE_WIDTH
+		var building_depth = building_width / 2.0
+		var building_height = 10
+
+		if w > building_height:
+			building_visible = false
+		else:
+			building_visible = true
+		
+		var b = [Polygon2D.new(), Polygon2D.new(), Polygon2D.new(), Polygon2D.new(), Polygon2D.new()]
+			
+		var building_x = x
+		var building_y = y - h + ((Global.TILE_HEIGHT / 2.0) - (building_depth / 2.0))
+
+		update_cube(b, building_x, building_y, building_width, building_depth, building_height, w, 0)
+		objects.append(b)
+		
+		if true:
+			var stack_width = Global.TILE_WIDTH / 6.0
+			var stack_depth = stack_width / 2.0
+			var stack_height = 20
+			
+			for z in 4:
+				var s = [Polygon2D.new(), Polygon2D.new(), Polygon2D.new(), Polygon2D.new(), Polygon2D.new()]
+				var stack_x = 0
+				var stack_y = 0
+				
+				match z:
+					0:
+						stack_x = x
+						stack_y = y - h + ((Global.TILE_HEIGHT / 2.0) - stack_depth) / 2.0
+					1:
+						stack_x = x
+						stack_y = y - h + ((Global.TILE_HEIGHT / 2.0) - stack_depth) / 2.0 + (Global.TILE_HEIGHT / 2.0)
+					2:
+						stack_x = x - (((Global.TILE_WIDTH / 2.0) - stack_width) / 2.0) - (stack_width / 2.0)
+						stack_y = y - h + ((Global.TILE_HEIGHT / 2.0)) - (stack_depth / 2.0)
+					3:
+						stack_x = x + (((Global.TILE_WIDTH / 2.0) - stack_width) / 2.0) + (stack_width / 2.0)
+						stack_y = y - h + ((Global.TILE_HEIGHT / 2.0)) - (stack_depth / 2.0)
+			
+				update_cube(s, stack_x, stack_y, stack_width, stack_depth, stack_height, building_height, 0)
+				objects.append(s)
+				
 	# Draws roads depending on data values, which indicate which neighbords tile is connected to
 	elif tile.inf == Tile.TileInf.ROAD:
 		objects.clear()
