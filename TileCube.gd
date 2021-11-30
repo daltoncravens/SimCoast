@@ -66,15 +66,15 @@ func _draw():
 			
 	elif tile.inf == Tile.TileInf.POWER_PLANT:
 		var b = objects.pop_front()
-		draw_polygon(b[1].get_polygon(), PoolColorArray([Tile.BUILDING_COLOR[1]]))
-		draw_polygon(b[2].get_polygon(), PoolColorArray([Tile.BUILDING_COLOR[2]]))
-		draw_polygon(b[0].get_polygon(), PoolColorArray([Tile.BUILDING_COLOR[0]]))
-		draw_polyline(b[0].get_polygon(), Tile.BUILDING_COLOR[3])
+		draw_polygon(b[1].get_polygon(), PoolColorArray([Tile.POWER_PLANT_COLOR[1]]))
+		draw_polygon(b[2].get_polygon(), PoolColorArray([Tile.POWER_PLANT_COLOR[2]]))
+		draw_polygon(b[0].get_polygon(), PoolColorArray([Tile.POWER_PLANT_COLOR[0]]))
+		draw_polyline(b[0].get_polygon(), Tile.POWER_PLANT_COLOR[3])
 		
 		for s in objects:
-			draw_polygon(s[1].get_polygon(), PoolColorArray([Tile.BUILDING_COLOR[1]]))
-			draw_polygon(s[2].get_polygon(), PoolColorArray([Tile.BUILDING_COLOR[2]]))
-			draw_polygon(s[0].get_polygon(), PoolColorArray([Color("ff000000")]))
+			draw_polygon(s[1].get_polygon(), PoolColorArray([Tile.POWER_STACK_COLOR[1]]))
+			draw_polygon(s[2].get_polygon(), PoolColorArray([Tile.POWER_STACK_COLOR[2]]))
+			draw_polygon(s[0].get_polygon(), PoolColorArray([Tile.POWER_STACK_COLOR[0]]))
 			
 	elif tile.inf == Tile.TileInf.BEACH_ROCKS:
 		for r in objects:
@@ -199,7 +199,7 @@ func update_polygons():
 		objects.append(b)
 		
 		if true:
-			var stack_width = Global.TILE_WIDTH / 6.0
+			var stack_width = Global.TILE_WIDTH / 10.0
 			var stack_depth = stack_width / 2.0
 			var stack_height = 20
 			
@@ -327,22 +327,31 @@ func update_polygons():
 			
 			for z in num_buildings:
 				var b = [Polygon2D.new(), Polygon2D.new(), Polygon2D.new(), Polygon2D.new(), Polygon2D.new()]
+				var occupancy = 0.0
 				
 				match z:
 					0:
 						building_x = x
 						building_y = y - h + ((Global.TILE_HEIGHT / 2.0) - building_depth) / 2.0
+						if tile.data[2] > 0:
+							occupancy = 1.0
 					1:
 						building_x = x
 						building_y = y - h + ((Global.TILE_HEIGHT / 2.0) - building_depth) / 2.0 + (Global.TILE_HEIGHT / 2.0)
+						if tile.data[2] > 4:
+							occupancy = 1.0
 					2:
 						building_x = x - (((Global.TILE_WIDTH / 2.0) - building_width) / 2.0) - (building_width / 2.0)
 						building_y = y - h + ((Global.TILE_HEIGHT / 2.0)) - (building_depth / 2.0)
+						if tile.data[2] > 8:
+							occupancy = 1.0
 					3:
 						building_x = x + (((Global.TILE_WIDTH / 2.0) - building_width) / 2.0) + (building_width / 2.0)
 						building_y = y - h + ((Global.TILE_HEIGHT / 2.0)) - (building_depth / 2.0)
+						if tile.data[2] > 12:
+							occupancy = 1.0
 			
-				update_cube(b, building_x, building_y, building_width, building_depth, building_height, w, 0)
+				update_cube(b, building_x, building_y, building_width, building_depth, building_height, w, occupancy)
 				objects.append(b)
 
 		# Draws a single building whose size is scaled to number of buildings
@@ -391,6 +400,10 @@ func get_building_colors():
 		Tile.TileStatus.HEAVY_DAMAGE:
 			return Tile.HEAVY_DAMAGE_COLOR
 
+	# If building does not have power
+	if !Global.tileMap[i][j].powered:
+		return Tile.UNPOWERED_BUILDING_COLOR
+
 	# Return building color based on zone
 	return Tile.BUILDING_COLOR
 
@@ -430,7 +443,6 @@ func get_cube_colors():
 			colors[3] = Tile.PARK_COLOR[1]
 		Tile.TileInf.ROAD:
 			colors[0] = Tile.ROCK_COLOR[0]
-			#colors[3] = Tile.ROCK_COLOR[1]
 
 	return colors
 

@@ -115,11 +115,14 @@ func _unhandled_input(event):
 				if tile.get_base() != Tile.TileBase.OCEAN:
 					adjust_tile_water(tile)
 			
+			Global.Tool.CLEAR_TILE:
+				tile.clear_tile()
+				
 			Global.Tool.INF_POWER_PLANT:
 				if tile.get_base() == Tile.TileBase.DIRT || tile.get_base() == Tile.TileBase.ROCK:
 					tile.clear_tile()
 					tile.inf = Tile.TileInf.POWER_PLANT
-					Global.powerPlants.append(tile)
+					powerPlants.append(tile)
 					connectPower()
 			
 			Global.Tool.INF_PARK:
@@ -135,12 +138,14 @@ func _unhandled_input(event):
 						tile.clear_tile()
 						tile.inf = Tile.TileInf.ROAD
 						connectRoads(tile)
+						connectPower()
 					else:
 						actionText.text = "Road not buildable on tile base type"
 				elif Input.is_action_pressed("right_click"):
 					if tile.inf == Tile.TileInf.ROAD:
 						tile.clear_tile()
 						connectRoads(tile)
+						connectPower()
 
 			Global.Tool.INF_BEACH_ROCKS:
 				if tile.get_base() == Tile.TileBase.SAND:
@@ -155,6 +160,7 @@ func _unhandled_input(event):
 			Global.Tool.COPY_TILE:
 				copyTile = tile
 				actionText.text = "Tile copy saved"
+				Global.mapTool = Global.Tool.NONE
 				
 			Global.Tool.PASTE_TILE:
 				tile.paste_tile(copyTile)
@@ -267,8 +273,9 @@ func connectPower():
 	for i in Global.mapWidth:
 		for j in Global.mapHeight:
 			Global.tileMap[i][j].powered = false
+			Global.tileMap[i][j].cube.update()
 
-	for plant in Global.powerPlants:
+	for plant in powerPlants:
 		plant.powered = true
 
 		var queue = []

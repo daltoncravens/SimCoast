@@ -15,8 +15,8 @@ const MAX_MAP_SIZE = 64
 
 const MAX_CONNECTION_HEIGHT = 3		# Largest amount of height allowed to consider tiles connected
 
-var mapWidth = 10
-var mapHeight = 10
+var mapWidth = 16
+var mapHeight = 16
 
 var mapTool = Tool.NONE
 var tileMap = initTileMap()

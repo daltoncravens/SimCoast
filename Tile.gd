@@ -49,9 +49,13 @@ const LT_COM_ZONE_COLOR = [Color("ffa0b4d0"), Color("ff2d5b82")]
 const HV_COM_ZONE_COLOR = [Color("ff7d9bbf"), Color("ff2d5b82")]
 
 const BUILDING_COLOR = [Color("ffaaaaaa"), Color("ff999999"), Color("ff888888"), Color("ff777777")]
+const UNPOWERED_BUILDING_COLOR = [Color("ff555555"), Color("ff444444"), Color("ff333333"), Color("ff333333")]
 
-const RES_OCCUPANCY_COLOR = [Color("aa4a8a7d"), Color("aa286f61")]
-const COM_OCCUPANCY_COLOR = [Color("aa4a8a7d"), Color("aa286f61")]
+const POWER_PLANT_COLOR = [Color("ff777777"), Color("ff888888"), Color("ff999999"), Color("ff999999")]
+const POWER_STACK_COLOR = [Color("ff333333"), Color("ff950000"), Color("ff6a0000"), Color("ff333333")]
+
+const RES_OCCUPANCY_COLOR = [Color("aa2a9d2d"), Color("aa1d851f")]
+const COM_OCCUPANCY_COLOR = [Color("aa3779a2"), Color("aa26648b")]
 
 const LIGHT_DAMAGE_COLOR = [Color("fff2c926"), Color("ffd8bf09"), Color("ffc4ae00"), Color("ffae9a00")]
 const MEDIUM_DAMAGE_COLOR = [Color("fff28b26"), Color("ffd86909"), Color("ffac5100"), Color("ffac5100")]
