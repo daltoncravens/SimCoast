@@ -12,7 +12,6 @@
 [ext_resource path="res://ui/title_scrn/StartMenu.gd" type="Script" id=10]
 [ext_resource path="res://assets/music/english-chorus.mp3" type="AudioStream" id=11]
 
-
 [sub_resource type="DynamicFont" id=1]
 size = 140
 font_data = ExtResource( 2 )
@@ -162,94 +161,100 @@ margin_left = 321.0
 margin_right = 397.0
 margin_bottom = 40.0
 
-[node name="MasterVolume" type="HBoxContainer" parent="OptionsPopup/VBoxContainer"]
+[node name="VolumeTable" type="HBoxContainer" parent="OptionsPopup/VBoxContainer"]
 margin_top = 45.0
 margin_right = 484.0
-margin_bottom = 85.0
-custom_constants/separation = 20
+margin_bottom = 173.0
+alignment = 1
 
-[node name="MasterLabel" type="Label" parent="OptionsPopup/VBoxContainer/MasterVolume"]
-margin_top = 9.0
+[node name="VolumeLabels" type="VBoxContainer" parent="OptionsPopup/VBoxContainer/VolumeTable"]
+margin_left = 34.0
+margin_right = 215.0
+margin_bottom = 128.0
+custom_constants/separation = 25
+alignment = 1
+
+[node name="MasterLabel" type="Label" parent="OptionsPopup/VBoxContainer/VolumeTable/VolumeLabels"]
+margin_top = 6.0
 margin_right = 181.0
-margin_bottom = 31.0
+margin_bottom = 28.0
 custom_fonts/font = ExtResource( 1 )
 text = "Master Volume"
 align = 1
 
-[node name="MasterVolSlider" type="HSlider" parent="OptionsPopup/VBoxContainer/MasterVolume"]
-margin_left = 201.0
-margin_right = 351.0
-margin_bottom = 30.0
-rect_min_size = Vector2( 150, 30 )
-min_value = -50.0
-max_value = 50.0
-
-[node name="MasterMute" type="CheckButton" parent="OptionsPopup/VBoxContainer/MasterVolume"]
-margin_left = 400.0
-margin_right = 447.0
-margin_bottom = 40.0
-pressed = true
-
-[node name="MusicVolume" type="HBoxContainer" parent="OptionsPopup/VBoxContainer"]
-margin_top = 90.0
-margin_right = 484.0
-margin_bottom = 130.0
-custom_constants/separation = 30
-
-[node name="MusicLabel" type="Label" parent="OptionsPopup/VBoxContainer/MusicVolume"]
-margin_top = 9.0
-margin_right = 167.0
-margin_bottom = 31.0
+[node name="MusicLabel" type="Label" parent="OptionsPopup/VBoxContainer/VolumeTable/VolumeLabels"]
+margin_top = 53.0
+margin_right = 181.0
+margin_bottom = 75.0
 custom_fonts/font = ExtResource( 1 )
 text = "Music Volume"
 align = 1
 
-[node name="MusicVolSlider" type="HSlider" parent="OptionsPopup/VBoxContainer/MusicVolume"]
-margin_left = 197.0
-margin_right = 347.0
-margin_bottom = 30.0
-rect_min_size = Vector2( 150, 30 )
-min_value = -50.0
-max_value = 50.0
-
-[node name="MusicMute" type="CheckButton" parent="OptionsPopup/VBoxContainer/MusicVolume"]
-margin_left = 400.0
-margin_right = 453.0
-margin_bottom = 40.0
-pressed = true
-
-[node name="SFXVolume" type="HBoxContainer" parent="OptionsPopup/VBoxContainer"]
-margin_top = 135.0
-margin_right = 484.0
-margin_bottom = 175.0
-custom_constants/separation = 60
-
-[node name="SFXLabel" type="Label" parent="OptionsPopup/VBoxContainer/SFXVolume"]
-margin_top = 9.0
-margin_right = 137.0
-margin_bottom = 31.0
+[node name="SFXLabel" type="Label" parent="OptionsPopup/VBoxContainer/VolumeTable/VolumeLabels"]
+margin_top = 100.0
+margin_right = 181.0
+margin_bottom = 122.0
 custom_fonts/font = ExtResource( 1 )
 text = "SFX Volume"
 align = 1
 
-[node name="SFXVolSlider" type="HSlider" parent="OptionsPopup/VBoxContainer/SFXVolume"]
-margin_left = 197.0
-margin_right = 347.0
-margin_bottom = 30.0
+[node name="VolumeSliders" type="VBoxContainer" parent="OptionsPopup/VBoxContainer/VolumeTable"]
+margin_left = 219.0
+margin_right = 369.0
+margin_bottom = 128.0
+custom_constants/separation = 15
+alignment = 1
+
+[node name="MasterVolSlider" type="HSlider" parent="OptionsPopup/VBoxContainer/VolumeTable/VolumeSliders"]
+margin_top = 4.0
+margin_right = 150.0
+margin_bottom = 34.0
 rect_min_size = Vector2( 150, 30 )
 min_value = -50.0
 max_value = 50.0
 
-[node name="SFXMute" type="CheckButton" parent="OptionsPopup/VBoxContainer/SFXVolume"]
-margin_left = 407.0
-margin_right = 483.0
+[node name="MusicVolSlider" type="HSlider" parent="OptionsPopup/VBoxContainer/VolumeTable/VolumeSliders"]
+margin_top = 49.0
+margin_right = 150.0
+margin_bottom = 79.0
+rect_min_size = Vector2( 150, 30 )
+min_value = -50.0
+max_value = 50.0
+
+[node name="SFXVolSlider" type="HSlider" parent="OptionsPopup/VBoxContainer/VolumeTable/VolumeSliders"]
+margin_top = 94.0
+margin_right = 150.0
+margin_bottom = 124.0
+rect_min_size = Vector2( 150, 30 )
+min_value = -50.0
+max_value = 50.0
+
+[node name="VolumeToggles" type="VBoxContainer" parent="OptionsPopup/VBoxContainer/VolumeTable"]
+margin_left = 373.0
+margin_right = 449.0
+margin_bottom = 128.0
+
+[node name="MasterMute" type="CheckButton" parent="OptionsPopup/VBoxContainer/VolumeTable/VolumeToggles"]
+margin_right = 76.0
 margin_bottom = 40.0
 pressed = true
 
+[node name="MusicMute" type="CheckButton" parent="OptionsPopup/VBoxContainer/VolumeTable/VolumeToggles"]
+margin_top = 44.0
+margin_right = 76.0
+margin_bottom = 84.0
+pressed = true
+
+[node name="SFXMute" type="CheckButton" parent="OptionsPopup/VBoxContainer/VolumeTable/VolumeToggles"]
+margin_top = 88.0
+margin_right = 76.0
+margin_bottom = 128.0
+pressed = true
+
 [node name="DeleteSaveButton" type="Button" parent="OptionsPopup/VBoxContainer"]
-margin_top = 180.0
+margin_top = 178.0
 margin_right = 484.0
-margin_bottom = 208.0
+margin_bottom = 206.0
 flat = true
 
 [node name="Label" type="Label" parent="OptionsPopup/VBoxContainer/DeleteSaveButton"]
@@ -291,10 +296,10 @@ autowrap = true
 [connection signal="pressed" from="MenuLayout/Buttons/OptionsButton" to="OptionsPopup" method="_on_OptionsButton_pressed"]
 [connection signal="pressed" from="MenuLayout/Buttons/QuitButton" to="." method="_on_QuitButton_pressed"]
 [connection signal="pressed" from="OptionsPopup/VBoxContainer/FullScreen/FullScreenToggle" to="." method="_on_FullScreenToggle_pressed"]
-[connection signal="value_changed" from="OptionsPopup/VBoxContainer/MasterVolume/MasterVolSlider" to="." method="_on_MasterVolSlider_value_changed"]
-[connection signal="toggled" from="OptionsPopup/VBoxContainer/MasterVolume/MasterMute" to="." method="_on_MasterMute_toggled"]
-[connection signal="value_changed" from="OptionsPopup/VBoxContainer/MusicVolume/MusicVolSlider" to="." method="_on_MusicVolSlider_value_changed"]
-[connection signal="toggled" from="OptionsPopup/VBoxContainer/MusicVolume/MusicMute" to="." method="_on_MusicMute_toggled"]
-[connection signal="value_changed" from="OptionsPopup/VBoxContainer/SFXVolume/SFXVolSlider" to="." method="_on_SFXVolSlider_value_changed"]
-[connection signal="toggled" from="OptionsPopup/VBoxContainer/SFXVolume/SFXMute" to="." method="_on_SFXMute_toggled"]
+[connection signal="value_changed" from="OptionsPopup/VBoxContainer/VolumeTable/VolumeSliders/MasterVolSlider" to="." method="_on_MasterVolSlider_value_changed"]
+[connection signal="value_changed" from="OptionsPopup/VBoxContainer/VolumeTable/VolumeSliders/MusicVolSlider" to="." method="_on_MusicVolSlider_value_changed"]
+[connection signal="value_changed" from="OptionsPopup/VBoxContainer/VolumeTable/VolumeSliders/SFXVolSlider" to="." method="_on_SFXVolSlider_value_changed"]
+[connection signal="toggled" from="OptionsPopup/VBoxContainer/VolumeTable/VolumeToggles/MasterMute" to="." method="_on_MasterMute_toggled"]
+[connection signal="toggled" from="OptionsPopup/VBoxContainer/VolumeTable/VolumeToggles/MusicMute" to="." method="_on_MusicMute_toggled"]
+[connection signal="toggled" from="OptionsPopup/VBoxContainer/VolumeTable/VolumeToggles/SFXMute" to="." method="_on_SFXMute_toggled"]
 [connection signal="pressed" from="OptionsPopup/VBoxContainer/DeleteSaveButton" to="OptionsPopup/DeleteSaveConfirm" method="_on_DeleteSaveButton_pressed"]
