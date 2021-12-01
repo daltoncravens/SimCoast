@@ -119,12 +119,18 @@ func _unhandled_input(event):
 				tile.clear_tile()
 				
 			Global.Tool.INF_POWER_PLANT:
-				if tile.get_base() == Tile.TileBase.DIRT || tile.get_base() == Tile.TileBase.ROCK:
-					tile.clear_tile()
-					tile.inf = Tile.TileInf.POWER_PLANT
-					powerPlants.append(tile)
-					connectPower()
-			
+				if Input.is_action_pressed("left_click"):
+					if tile.get_base() == Tile.TileBase.DIRT || tile.get_base() == Tile.TileBase.ROCK:
+						tile.clear_tile()
+						tile.inf = Tile.TileInf.POWER_PLANT
+						powerPlants.append(tile)
+						connectPower()
+				elif Input.is_action_pressed("right_click"):
+					if tile.inf == Tile.TileInf.POWER_PLANT:
+						tile.clear_tile()
+						powerPlants.erase(tile)
+						connectPower()
+						
 			Global.Tool.INF_PARK:
 				if tile.get_base() == Tile.TileBase.DIRT:
 					tile.clear_tile()
