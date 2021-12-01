@@ -1,8 +1,7 @@
 extends Node2D
 
-var mapName = "test2"
-var powerPlants = []   	# Keep track of power plant tiles for power distribution
-var copyTile
+var mapName = "test2"	# File name for quick savings/loading
+var copyTile				# Stores tile to use when copy/pasting tiles on the map
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -123,12 +122,10 @@ func _unhandled_input(event):
 					if tile.get_base() == Tile.TileBase.DIRT || tile.get_base() == Tile.TileBase.ROCK:
 						tile.clear_tile()
 						tile.inf = Tile.TileInf.POWER_PLANT
-						powerPlants.append(tile)
 						connectPower()
 				elif Input.is_action_pressed("right_click"):
 					if tile.inf == Tile.TileInf.POWER_PLANT:
 						tile.clear_tile()
-						powerPlants.erase(tile)
 						connectPower()
 						
 			Global.Tool.INF_PARK:
@@ -279,11 +276,15 @@ func reduce_map():
 
 # Starting from each power plant, trace power distribution and power tiles if they are connected
 func connectPower():
+	var powerPlants = []
+	
 	# De-power every tile on the map
 	for i in Global.mapWidth:
 		for j in Global.mapHeight:
 			Global.tileMap[i][j].powered = false
 			Global.tileMap[i][j].cube.update()
+			if Global.tileMap[i][j].inf == Tile.TileInf.POWER_PLANT:
+				powerPlants.append(Global.tileMap[i][j])
 
 	for plant in powerPlants:
 		plant.powered = true
@@ -446,7 +447,7 @@ func is_tile_inbounds(i, j):
 
 # Saves global variables and map data to a JSON file
 func saveMapData():
-	var filePath = str("res://maps/", mapName, ".json")
+	var filePath = str("user://", mapName, ".json")
 	
 	var tileData = []
 			
@@ -473,7 +474,7 @@ func saveMapData():
 
 func loadMapData():
 	var file = File.new()
-	var filePath = str("res://maps/", mapName, ".json")
+	var filePath = str("user://", mapName, ".json")
 		
 	if not file.file_exists(filePath):
 		get_node("HUD/TopBar/ActionText").text = "Error: Unable to find map file '%s'.json" % [mapName]
@@ -486,7 +487,7 @@ func loadMapData():
 	Global.mapHeight = mapData.mapHeight
 	Global.oceanHeight = mapData.oceanHeight
 	Global.seaLevel = mapData.seaLevel
-		
+	
 	Global.tileMap.clear()
 	
 	for _x in range(Global.mapWidth):
@@ -499,6 +500,7 @@ func loadMapData():
 
 	$VectorMap.loadMap()
 	get_node("HUD/TopBar/ActionText").text = "Map file '%s'.json loaded" % [mapName]
+	connectPower()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta):
