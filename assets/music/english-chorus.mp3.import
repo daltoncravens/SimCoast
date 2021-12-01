@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/english-chorus.mp3-12c9a1de54bab2f0f709fb6be698a0c0.mp3str"
+
+[deps]
+
+source_file="res://assets/music/english-chorus.mp3"
+dest_files=[ "res://.import/english-chorus.mp3-12c9a1de54bab2f0f709fb6be698a0c0.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0
