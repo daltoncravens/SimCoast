@@ -163,6 +163,10 @@ func _unhandled_input(event):
 					tile.clear_tile()
 					tile.inf = Tile.TileInf.BEACH_GRASS
 
+			Global.Tool.REPAIR:
+				if tile.has_building():
+					tile.data[4] = 0
+
 			Global.Tool.COPY_TILE:
 				copyTile = tile
 				actionText.text = "Tile copy saved"
