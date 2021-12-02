@@ -1,4 +1,4 @@
-[gd_scene load_steps=38 format=2]
+[gd_scene load_steps=45 format=2]
 
 [ext_resource path="res://assets/fonts/upheavtt_24.tres" type="DynamicFont" id=1]
 [ext_resource path="res://assets/buttons/izone_active.png" type="Texture" id=2]
@@ -32,6 +32,7 @@
 [ext_resource path="res://assets/buttons/play_pressed.png" type="Texture" id=30]
 [ext_resource path="res://assets/buttons/fast_forward_pressed.png" type="Texture" id=31]
 [ext_resource path="res://assets/buttons/fast_forward_default.png" type="Texture" id=32]
+[ext_resource path="res://ui/hud/toolbar/toolbar_buttons.gd" type="Script" id=33]
 
 [sub_resource type="Theme" id=1]
 default_font = ExtResource( 1 )
@@ -57,6 +58,25 @@ border_width_top = 1
 border_width_right = 1
 border_width_bottom = 1
 border_color = Color( 0, 0, 0, 1 )
+
+[sub_resource type="StyleBoxFlat" id=6]
+bg_color = Color( 0.133333, 0.886275, 0.129412, 1 )
+border_color = Color( 0.00392157, 0.00392157, 0.00392157, 1 )
+
+[sub_resource type="StyleBoxFlat" id=7]
+bg_color = Color( 0.54902, 0.717647, 0.6, 1 )
+
+[sub_resource type="StyleBoxFlat" id=8]
+bg_color = Color( 0, 0, 1, 1 )
+
+[sub_resource type="StyleBoxFlat" id=9]
+bg_color = Color( 0.686275, 0.866667, 0.909804, 1 )
+
+[sub_resource type="StyleBoxFlat" id=10]
+bg_color = Color( 0.964706, 0.839216, 0.0431373, 1 )
+
+[sub_resource type="StyleBoxFlat" id=11]
+bg_color = Color( 0.886275, 0.815686, 0.6, 1 )
 
 [sub_resource type="StyleBoxFlat" id=5]
 bg_color = Color( 0.231373, 0.223529, 0.262745, 1 )
@@ -172,21 +192,111 @@ margin_left = 640.0
 margin_right = 800.0
 margin_bottom = 100.0
 size_flags_horizontal = 3
+size_flags_vertical = 3
 
 [node name="Panel" type="Panel" parent="Population"]
 margin_right = 160.0
 margin_bottom = 100.0
 custom_styles/panel = SubResource( 4 )
 
-[node name="Placeholder" type="Label" parent="Population"]
-margin_top = 14.0
+[node name="Demand" type="HBoxContainer" parent="Population"]
 margin_right = 160.0
-margin_bottom = 86.0
-text = "City Info (To Add)
-"
+margin_bottom = 100.0
+alignment = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Res" type="VBoxContainer" parent="Population/Demand"]
+margin_left = 52.0
+margin_right = 68.0
+margin_bottom = 100.0
+alignment = 1
+
+[node name="ResDemand" type="ProgressBar" parent="Population/Demand/Res"]
+margin_top = 7.0
+margin_right = 16.0
+margin_bottom = 67.0
+rect_min_size = Vector2( 16, 60 )
+size_flags_vertical = 1
+custom_styles/fg = SubResource( 6 )
+custom_styles/bg = SubResource( 7 )
+percent_visible = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="Population/Demand/Res"]
+margin_top = 71.0
+margin_right = 16.0
+margin_bottom = 93.0
+rect_pivot_offset = Vector2( -836.142, -450.883 )
+text = "R"
 align = 1
-valign = 1
-autowrap = true
+valign = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Com" type="VBoxContainer" parent="Population/Demand"]
+margin_left = 72.0
+margin_right = 88.0
+margin_bottom = 100.0
+alignment = 1
+
+[node name="ComDemand" type="ProgressBar" parent="Population/Demand/Com"]
+margin_top = 7.0
+margin_right = 16.0
+margin_bottom = 67.0
+rect_min_size = Vector2( 16, 60 )
+custom_styles/fg = SubResource( 8 )
+custom_styles/bg = SubResource( 9 )
+percent_visible = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="Population/Demand/Com"]
+margin_top = 71.0
+margin_right = 16.0
+margin_bottom = 93.0
+rect_pivot_offset = Vector2( -836.142, -450.883 )
+text = "C"
+align = 1
+valign = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Ind" type="VBoxContainer" parent="Population/Demand"]
+margin_left = 92.0
+margin_right = 108.0
+margin_bottom = 100.0
+alignment = 1
+
+[node name="IndDemand" type="ProgressBar" parent="Population/Demand/Ind"]
+margin_top = 7.0
+margin_right = 16.0
+margin_bottom = 67.0
+rect_min_size = Vector2( 16, 60 )
+custom_styles/fg = SubResource( 10 )
+custom_styles/bg = SubResource( 11 )
+percent_visible = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="Population/Demand/Ind"]
+margin_top = 71.0
+margin_right = 16.0
+margin_bottom = 93.0
+rect_pivot_offset = Vector2( -836.142, -450.883 )
+text = "I"
+align = 1
+valign = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Actions" type="MarginContainer" parent="."]
 margin_left = 800.0
@@ -195,6 +305,8 @@ margin_bottom = 100.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 size_flags_stretch_ratio = 3.0
+script = ExtResource( 33 )
+group = ExtResource( 26 )
 
 [node name="Panel" type="Panel" parent="Actions"]
 margin_right = 480.0
