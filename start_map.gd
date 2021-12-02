@@ -278,7 +278,7 @@ func reduce_map():
 func connectPower():
 	var powerPlants = []
 	
-	# De-power every tile on the map
+	# De-power every tile on the map, find location of any power plants
 	for i in Global.mapWidth:
 		for j in Global.mapHeight:
 			Global.tileMap[i][j].powered = false
@@ -292,17 +292,20 @@ func connectPower():
 		var queue = []
 		var neighbors = [[plant.i-1, plant.j], [plant.i+1, plant.j], [plant.i, plant.j-1], [plant.i, plant.j+1]]
 		
+		# If an adjacent tile is a road, add it to the queue
 		for n in neighbors:
 			if roadConnected(plant, n, Global.MAX_CONNECTION_HEIGHT):
 				queue.append(Global.tileMap[n[0]][n[1]])
 		
+		# Add each connected road tile that hasn't yet been checked to the queue, power adjacent tiles
 		while !queue.empty():
 			var road = queue.pop_front()
 			
+			# If road is not powered, it hasn't yet been checked
 			if !road.powered:
 				road.powered = true
 			
-				# Check neighbors: if a zone, power it; if a connected road, add it to the queue
+				# Check neighbors: if it's a connected road, add it to the queue; otherwise, power tile
 				neighbors = [[road.i-1, road.j], [road.i+1, road.j], [road.i, road.j-1], [road.i, road.j+1]]
 
 				for n in neighbors:
@@ -311,7 +314,7 @@ func connectPower():
 							if roadConnected(road, n, Global.MAX_CONNECTION_HEIGHT):
 								if Global.tileMap[n[0]][n[1]].powered == false:
 									queue.append(Global.tileMap[n[0]][n[1]])
-						elif Global.tileMap[n[0]][n[1]].is_zoned():
+						else:
 							Global.tileMap[n[0]][n[1]].powered = true
 							Global.tileMap[n[0]][n[1]].cube.update()
 

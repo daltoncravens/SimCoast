@@ -488,6 +488,7 @@ margin_left = 36.0
 margin_right = 68.0
 margin_bottom = 32.0
 hint_tooltip = "Bridge Tile"
+disabled = true
 toggle_mode = true
 keep_pressed_outside = true
 group = ExtResource( 16 )
