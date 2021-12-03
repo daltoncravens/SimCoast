@@ -1,26 +1,48 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=6 format=2]
 
-[ext_resource path="res://assets/buttons/menu_default.png" type="Texture" id=1]
+[ext_resource path="res://assets/buttons/settings.png" type="Texture" id=1]
 [ext_resource path="res://assets/fonts/upheavtt_24.tres" type="DynamicFont" id=2]
+[ext_resource path="res://ui/hud/options_scrn/Options.gd" type="Script" id=3]
 
 [sub_resource type="Theme" id=1]
 default_font = ExtResource( 2 )
+
+[sub_resource type="GDScript" id=2]
+script/source = "extends AcceptDialog
+
+
+# Declare member variables here. Examples:
+# var a = 2
+# var b = \"text\"
+
+
+# Called when the node enters the scene tree for the first time.
+func _ready():
+	pass # Replace with function body.
+
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+#func _process(delta):
+#	pass
+"
 
 [node name="Options" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 1.33484
 margin_right = 1.33484
+script = ExtResource( 3 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="TextureButton" type="TextureButton" parent="."]
-margin_left = 10.0
-margin_top = 10.0
-margin_right = 33.0
-margin_bottom = 32.0
+[node name="SettingsButton" type="TextureButton" parent="."]
+margin_left = 14.0
+margin_top = 14.0
+margin_right = 56.0
+margin_bottom = 56.0
 texture_normal = ExtResource( 1 )
+expand = true
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -32,12 +54,13 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 margin_left = -250.0
-margin_top = -250.0
+margin_top = -258.5
 margin_right = 250.0
-margin_bottom = 267.0
+margin_bottom = 258.5
 rect_min_size = Vector2( 400, 400 )
 theme = SubResource( 1 )
 window_title = "Options Menu"
+script = SubResource( 2 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -156,3 +179,12 @@ margin_left = 407.0
 margin_right = 483.0
 margin_bottom = 40.0
 pressed = true
+
+[connection signal="pressed" from="SettingsButton" to="." method="_on_SettingsButton_pressed"]
+[connection signal="pressed" from="OptionsPopup/VBoxContainer/FullScreen/FullScreenToggle" to="." method="_on_FullScreenToggle_pressed"]
+[connection signal="value_changed" from="OptionsPopup/VBoxContainer/MasterVolume/MasterVolSlider" to="." method="_on_MasterVolSlider_value_changed"]
+[connection signal="toggled" from="OptionsPopup/VBoxContainer/MasterVolume/MasterMute" to="." method="_on_MasterMute_toggled"]
+[connection signal="value_changed" from="OptionsPopup/VBoxContainer/MusicVolume/MusicVolSlider" to="." method="_on_MusicVolSlider_value_changed"]
+[connection signal="toggled" from="OptionsPopup/VBoxContainer/MusicVolume/MusicMute" to="." method="_on_MusicMute_toggled"]
+[connection signal="value_changed" from="OptionsPopup/VBoxContainer/SFXVolume/SFXVolSlider" to="." method="_on_SFXVolSlider_value_changed"]
+[connection signal="toggled" from="OptionsPopup/VBoxContainer/SFXVolume/SFXMute" to="." method="_on_SFXMute_toggled"]
