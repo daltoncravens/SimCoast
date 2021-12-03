@@ -91,6 +91,13 @@ func _draw():
 		for r in objects:
 			draw_polygon(r, PoolColorArray([Tile.ROAD_COLOR[0]]))
 
+func clear_objects():
+	for o in objects:
+		for p in o:
+			if typeof(p) != TYPE_VECTOR2:
+				p.queue_free()
+	objects.clear()
+
 func update_polygons():
 	var tile = Global.tileMap[i][j]
 	var h = tile.get_base_height()
@@ -101,7 +108,7 @@ func update_polygons():
 	
 	# Create simple trees so landscape not so boring
 	if tile.inf == Tile.TileInf.PARK:
-		objects.clear()
+		clear_objects()
 		var tree_width = 0
 		var tree_depth = 0
 		var tree_height = 0
@@ -148,7 +155,7 @@ func update_polygons():
 	
 	# Create some one pixel high blades of grass
 	elif tile.inf == Tile.TileInf.BEACH_GRASS:
-		objects.clear()
+		clear_objects()
 		
 		if w == 0:
 			var grass_x = 0
@@ -180,7 +187,7 @@ func update_polygons():
 				]))
 
 	elif tile.inf == Tile.TileInf.POWER_PLANT:	
-		objects.clear()
+		clear_objects()
 		
 		var building_width = Global.TILE_WIDTH
 		var building_depth = building_width / 2.0
@@ -228,7 +235,7 @@ func update_polygons():
 				
 	# Draws roads depending on data values, which indicate which neighbords tile is connected to
 	elif tile.inf == Tile.TileInf.ROAD:
-		objects.clear()
+		clear_objects()
 		
 		if w == 0:
 			if tile.data[(0 + Global.camDirection) % 4]:
@@ -269,7 +276,7 @@ func update_polygons():
 				
 	# Create simple rocks to display beach rocks
 	elif tile.inf == Tile.TileInf.BEACH_ROCKS:
-		objects.clear()
+		clear_objects()
 		var rock_width = Global.TILE_WIDTH / 6.0
 		var rock_depth = rock_width / 2.0
 		var rock_height = 2
@@ -307,7 +314,7 @@ func update_polygons():
 	
 	# Generate building polygons depending on density and water height
 	elif tile.has_building():
-		objects.clear()
+		clear_objects()
 		var num_buildings = tile.get_number_of_buildings()
 		
 		var building_width = 0

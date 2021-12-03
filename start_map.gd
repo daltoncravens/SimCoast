@@ -114,6 +114,10 @@ func _unhandled_input(event):
 				if tile.get_base() != Tile.TileBase.OCEAN:
 					adjust_tile_water(tile)
 			
+			Global.Tool.CLEAR_WATER:	
+				tile.waterHeight = 0
+				tile.cube.update()
+					
 			Global.Tool.CLEAR_TILE:
 				tile.clear_tile()
 				
@@ -129,11 +133,15 @@ func _unhandled_input(event):
 						connectPower()
 						
 			Global.Tool.INF_PARK:
-				if tile.get_base() == Tile.TileBase.DIRT:
-					tile.clear_tile()
-					tile.inf = Tile.TileInf.PARK
-				else:
-					actionText.text = "Park must be built on a dirt base"
+				if Input.is_action_pressed("left_click"):
+					if tile.get_base() == Tile.TileBase.DIRT:
+						tile.clear_tile()
+						tile.inf = Tile.TileInf.PARK
+					else:
+						actionText.text = "Park must be built on a dirt base"
+				elif Input.is_action_pressed("right_click"):
+					if tile.inf == Tile.TileInf.PARK:
+						tile.clear_tile()
 			
 			Global.Tool.INF_ROAD:
 				if Input.is_action_pressed("left_click"):
@@ -399,6 +407,51 @@ func updateOceanHeight(dir):
 				if dir < 1 && Global.tileMap[n[0]][n[1]].baseHeight + Global.tileMap[n[0]][n[1]].waterHeight > Global.oceanHeight:
 					if Global.tileMap[n[0]][n[1]].waterHeight >= 1:
 						queue.append(Global.tileMap[n[0]][n[1]])
+
+func calculate_satisfaction():
+	var population = 0
+	var employees = 0
+	var houses = 0
+	var apartments = 0
+	var stores = 0
+	var offices = 0
+	var roads = 0
+	var parks = 0
+	var beaches = 0
+	
+	for i in Global.mapWidth:
+		for j in Global.mapHeight:
+			var tile = Global.tileMap[i][j]
+			
+			if tile.inf == Tile.TileInf.ROAD:
+				roads += 1
+			elif tile.inf == Tile.TileInf.PARK:
+				parks += 1
+			elif tile.base == Tile.TileBase.SAND:
+				if tile.inf == Tile.TileInf.NONE && tile.get_water_height() == 0:
+					beaches += 1
+			
+			elif tile.is_zoned():
+				if tile.zone == Tile.TileZone.LIGHT_RESIDENTIAL:
+					population += tile.data[2]
+					houses += tile.data[0]
+				elif tile.zone == Tile.TileZone.HEAVY_RESIDENTIAL:
+					population += tile.data[2]
+					if tile.data[0] > 0:
+						apartments += 1
+				if tile.zone == Tile.TileZone.LIGHT_COMMERCIAL:
+					employees += tile.data[2]
+					stores += tile.data[0]
+				elif tile.zone == Tile.TileZone.HEAVY_RESIDENTIAL:
+					employees += tile.data[2]
+					if tile.data[0] > 0:
+						offices += 1
+
+	print("")
+	print("CITY OVERVIEW:  Population: %s" % [population])
+	print("RESIDENTIAL:  Houses: %s;  Apartment Builidngs: %s" % [houses, apartments]) 
+	print("COMMERCIAL: Stores: %s;  Office Builidngs: %s;  Employees: %s" % [stores, offices, employees])
+	print("INFRASTRUCTURE: Roads: %s;  Parks: %s;  Beaches: %s" % [roads, parks, beaches])
 
 # When flooding occurs, determine damage to infrastructure and perform tile erosion
 func calculate_damage():

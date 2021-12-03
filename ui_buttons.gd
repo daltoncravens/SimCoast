@@ -149,6 +149,7 @@ func button_pressed():
 		
 		'satisfaction_button':
 			Global.mapTool = Global.Tool.NONE
+			mapNode.calculate_satisfaction()
 		
 		'quicksave_button':
 			Global.mapTool = Global.Tool.NONE
@@ -172,4 +173,4 @@ func button_pressed():
 			print("Load Button Pressed")
 			
 		'exit_button':
-			print("Exit Button Pressed")
+			get_tree().quit()
