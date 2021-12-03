@@ -1,4 +1,4 @@
-[gd_scene load_steps=45 format=2]
+[gd_scene load_steps=51 format=2]
 
 [ext_resource path="res://assets/fonts/upheavtt_24.tres" type="DynamicFont" id=1]
 [ext_resource path="res://assets/buttons/izone_active.png" type="Texture" id=2]
@@ -33,6 +33,12 @@
 [ext_resource path="res://assets/buttons/fast_forward_pressed.png" type="Texture" id=31]
 [ext_resource path="res://assets/buttons/fast_forward_default.png" type="Texture" id=32]
 [ext_resource path="res://ui/hud/toolbar/toolbar_buttons.gd" type="Script" id=33]
+[ext_resource path="res://assets/buttons/rock_active.png" type="Texture" id=34]
+[ext_resource path="res://assets/buttons/ocean_active.png" type="Texture" id=35]
+[ext_resource path="res://assets/buttons/ocean_normal.png" type="Texture" id=36]
+[ext_resource path="res://assets/buttons/rock_normal.png" type="Texture" id=37]
+[ext_resource path="res://assets/buttons/ocean_hover.png" type="Texture" id=38]
+[ext_resource path="res://assets/buttons/rock_hover.png" type="Texture" id=39]
 
 [sub_resource type="Theme" id=1]
 default_font = ExtResource( 1 )
@@ -317,9 +323,9 @@ margin_bottom = 100.0
 custom_styles/panel = SubResource( 11 )
 
 [node name="Buttons" type="HBoxContainer" parent="Actions"]
-margin_left = 98.0
+margin_left = 62.0
 margin_top = 34.0
-margin_right = 382.0
+margin_right = 418.0
 margin_bottom = 66.0
 size_flags_horizontal = 6
 size_flags_vertical = 6
@@ -352,9 +358,37 @@ texture_hover = ExtResource( 7 )
 texture_focused = ExtResource( 11 )
 stretch_mode = 2
 
-[node name="rzone_button" type="TextureButton" parent="Actions/Buttons"]
+[node name="rock_button" type="TextureButton" parent="Actions/Buttons"]
 margin_left = 72.0
 margin_right = 104.0
+margin_bottom = 32.0
+hint_tooltip = "Rock Tile"
+toggle_mode = true
+keep_pressed_outside = true
+group = ExtResource( 26 )
+texture_normal = ExtResource( 37 )
+texture_pressed = ExtResource( 34 )
+texture_hover = ExtResource( 39 )
+texture_focused = ExtResource( 34 )
+stretch_mode = 2
+
+[node name="ocean_button" type="TextureButton" parent="Actions/Buttons"]
+margin_left = 108.0
+margin_right = 140.0
+margin_bottom = 32.0
+hint_tooltip = "Ocean Tile"
+toggle_mode = true
+keep_pressed_outside = true
+group = ExtResource( 26 )
+texture_normal = ExtResource( 36 )
+texture_pressed = ExtResource( 35 )
+texture_hover = ExtResource( 38 )
+texture_focused = ExtResource( 35 )
+stretch_mode = 2
+
+[node name="rzone_button" type="TextureButton" parent="Actions/Buttons"]
+margin_left = 144.0
+margin_right = 176.0
 margin_bottom = 32.0
 hint_tooltip = "Residential Zoning"
 toggle_mode = true
@@ -367,8 +401,8 @@ texture_focused = ExtResource( 14 )
 stretch_mode = 2
 
 [node name="czone_button" type="TextureButton" parent="Actions/Buttons"]
-margin_left = 108.0
-margin_right = 140.0
+margin_left = 180.0
+margin_right = 212.0
 margin_bottom = 32.0
 hint_tooltip = "Commercial Zoning"
 toggle_mode = true
@@ -381,8 +415,8 @@ texture_focused = ExtResource( 20 )
 stretch_mode = 2
 
 [node name="izone_button" type="TextureButton" parent="Actions/Buttons"]
-margin_left = 144.0
-margin_right = 176.0
+margin_left = 216.0
+margin_right = 248.0
 margin_bottom = 32.0
 hint_tooltip = "Industrial Zoning"
 toggle_mode = true
@@ -395,8 +429,8 @@ texture_focused = ExtResource( 2 )
 stretch_mode = 2
 
 [node name="park_button" type="TextureButton" parent="Actions/Buttons"]
-margin_left = 180.0
-margin_right = 212.0
+margin_left = 252.0
+margin_right = 284.0
 margin_bottom = 32.0
 hint_tooltip = "Park Tile"
 toggle_mode = true
@@ -409,8 +443,8 @@ texture_focused = ExtResource( 22 )
 stretch_mode = 2
 
 [node name="road_button" type="TextureButton" parent="Actions/Buttons"]
-margin_left = 216.0
-margin_right = 248.0
+margin_left = 288.0
+margin_right = 320.0
 margin_bottom = 32.0
 hint_tooltip = "Road Tile"
 toggle_mode = true
@@ -423,8 +457,8 @@ texture_focused = ExtResource( 3 )
 stretch_mode = 2
 
 [node name="water_button" type="TextureButton" parent="Actions/Buttons"]
-margin_left = 252.0
-margin_right = 284.0
+margin_left = 324.0
+margin_right = 356.0
 margin_bottom = 32.0
 hint_tooltip = "Add/Remove Water"
 toggle_mode = true
