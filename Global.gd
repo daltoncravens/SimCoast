@@ -22,6 +22,9 @@ var camDirection = 0
 var rowRange = range(0, mapWidth, 1)
 var colRange = range(0, mapHeight, 1)
 
+var gameSpeed = 10000
+var gamePaused = false
+
 func initTileMap():
 	var tm = []
 	

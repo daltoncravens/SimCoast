@@ -1,4 +1,4 @@
-[gd_scene load_steps=52 format=2]
+[gd_scene load_steps=53 format=2]
 
 [ext_resource path="res://assets/fonts/upheavtt_24.tres" type="DynamicFont" id=1]
 [ext_resource path="res://assets/buttons/izone_active.png" type="Texture" id=2]
@@ -40,6 +40,7 @@
 [ext_resource path="res://assets/buttons/ocean_hover.png" type="Texture" id=38]
 [ext_resource path="res://assets/buttons/rock_hover.png" type="Texture" id=39]
 [ext_resource path="res://ui/hud/toolbar/time_button_group.tres" type="ButtonGroup" id=40]
+[ext_resource path="res://ui/hud/toolbar/toolbar_time.gd" type="Script" id=41]
 
 [sub_resource type="Theme" id=1]
 default_font = ExtResource( 1 )
@@ -125,6 +126,8 @@ margin_top = 21.0
 margin_right = 320.0
 margin_bottom = 53.0
 alignment = 1
+script = ExtResource( 41 )
+group = ExtResource( 40 )
 
 [node name="Pause_Button" type="TextureButton" parent="Time/VBoxContainer/Time_Controls"]
 margin_left = 108.0

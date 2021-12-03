@@ -7,9 +7,6 @@ var camera
 var gameTime = {"month": 1, "day": 1, "year": 2000}
 var gameTime_since_update = 0.0
 
-var gameSpeed = 10000
-var gamePaused = false
-
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	camera = get_node("Camera2D")
@@ -114,20 +111,20 @@ func _unhandled_input(event):
 			loadMapData()
 			print("Loading map data...")
 		elif event.scancode == KEY_SPACE:
-			if gamePaused:
+			if Global.gamePaused:
 				print("Resuming game")
 			else:
 				print("Pausing game")
-			gamePaused = !gamePaused
+			Global.gamePaused = !Global.gamePaused
 		elif event.scancode == KEY_1:
 			print("Game Speed: Slow")
-			gameSpeed = 5000
+			Global.gameSpeed = 5000
 		elif event.scancode == KEY_2:
-			print("Game Speed: Normel")
-			gameSpeed = 20000
+			print("Game Speed: Normal")
+			Global.gameSpeed = 20000
 		elif event.scancode == KEY_3:
 			print("Game Speed: Fast")
-			gameSpeed = 60000
+			Global.gameSpeed = 60000
 
 	elif event is InputEventMouseMotion:		
 		var cube = $VectorMap.get_tile_at(get_global_mouse_position())
@@ -241,7 +238,7 @@ func saveMapData():
 	file.close()
 
 func updateGameTime(delta):
-	gameTime_since_update += delta * gameSpeed
+	gameTime_since_update += delta * Global.gameSpeed
 
 	while gameTime_since_update > 60000:
 		if gameTime.month == 1 || gameTime.month == 3 || gameTime.month == 5 || gameTime.month == 7 || gameTime.month == 8 || gameTime.month == 10 || gameTime.month == 12:
@@ -308,5 +305,5 @@ func loadMapData():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta):
-	if !gamePaused:
+	if !Global.gamePaused:
 		updateGameTime(_delta)
