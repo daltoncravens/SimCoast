@@ -1,4 +1,4 @@
-[gd_scene load_steps=51 format=2]
+[gd_scene load_steps=52 format=2]
 
 [ext_resource path="res://assets/fonts/upheavtt_24.tres" type="DynamicFont" id=1]
 [ext_resource path="res://assets/buttons/izone_active.png" type="Texture" id=2]
@@ -39,6 +39,7 @@
 [ext_resource path="res://assets/buttons/rock_normal.png" type="Texture" id=37]
 [ext_resource path="res://assets/buttons/ocean_hover.png" type="Texture" id=38]
 [ext_resource path="res://assets/buttons/rock_hover.png" type="Texture" id=39]
+[ext_resource path="res://ui/hud/toolbar/time_button_group.tres" type="ButtonGroup" id=40]
 
 [sub_resource type="Theme" id=1]
 default_font = ExtResource( 1 )
@@ -131,6 +132,7 @@ margin_right = 140.0
 margin_bottom = 32.0
 toggle_mode = true
 action_mode = 0
+group = ExtResource( 40 )
 texture_normal = ExtResource( 27 )
 texture_pressed = ExtResource( 28 )
 
@@ -141,6 +143,7 @@ margin_bottom = 32.0
 toggle_mode = true
 pressed = true
 action_mode = 0
+group = ExtResource( 40 )
 texture_normal = ExtResource( 29 )
 texture_pressed = ExtResource( 30 )
 
@@ -150,6 +153,7 @@ margin_right = 212.0
 margin_bottom = 32.0
 toggle_mode = true
 action_mode = 0
+group = ExtResource( 40 )
 texture_normal = ExtResource( 32 )
 texture_pressed = ExtResource( 31 )
 
