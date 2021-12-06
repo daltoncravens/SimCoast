@@ -150,10 +150,12 @@ func button_pressed():
 		'satisfaction_button':
 			Global.mapTool = Global.Tool.NONE
 			mapNode.calculate_satisfaction()
+			get_node("../TopBar/ActionText").text = "Flooding damage calculated"
 		
 		'quicksave_button':
 			Global.mapTool = Global.Tool.NONE
 			mapNode.saveMapData()
+			get_node("../TopBar/ActionText").text = "Map data saved"
 		
 		'rotate_camera_button':
 			Global.mapTool = Global.Tool.NONE
@@ -161,16 +163,23 @@ func button_pressed():
 			get_node("../../VectorMap").rotate_map()
 
 		'zoom_out_button':
+			get_node("../../Camera2D").zoom_out()
 			Global.mapTool = Global.Tool.NONE
 		
 		'zoom_in_button':
+			get_node("../../Camera2D").zoom_in()
 			Global.mapTool = Global.Tool.NONE
 		
 		'save_button':
-			print("Save Button Pressed")
+			Global.mapTool = Global.Tool.NONE
+			mapNode.saveMapData()
+			get_node("../TopBar/ActionText").text = "Map Data Saved"
 
 		'load_button':
-			print("Load Button Pressed")
+			Global.mapTool = Global.Tool.NONE
+			mapNode.loadMapData()
+			mapNode.initCamera()
 			
 		'exit_button':
+			Global.mapTool = Global.Tool.NONE
 			get_tree().quit()
