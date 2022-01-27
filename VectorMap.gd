@@ -7,23 +7,26 @@ const cube_script = preload("res://TileCube.gd")
 func _ready():
 	for i in Global.mapHeight:
 		for j in Global.mapWidth:			
-			Global.tileMap[i][j].cube.set_script(cube_script)
-			Global.tileMap[i][j].cube.set_index(i, j)
-			Global.tileMap[i][j].cube.set_pickable(true)
-			self.add_child(Global.tileMap[i][j].cube)
+			add_tile(i, j)
 
-func clearNodes():
+func add_tile(i, j):
+	Global.tileMap[i][j].cube.set_script(cube_script)
+	Global.tileMap[i][j].cube.set_index(i, j)
+	Global.tileMap[i][j].cube.set_pickable(true)
+	self.add_child(Global.tileMap[i][j].cube)
+
+func remove_tile(i, j):
+	Global.tileMap[i][j].cube.queue_free()
+
+func clearAllNodes():
 	for x in get_children():
 		x.queue_free()
 
 func loadMap():
-	clearNodes()
+	clearAllNodes()
 	for i in Global.mapHeight:
 		for j in Global.mapWidth:			
-			Global.tileMap[i][j].cube.set_script(cube_script)
-			Global.tileMap[i][j].cube.set_index(i, j)
-			Global.tileMap[i][j].cube.set_pickable(true)
-			self.add_child(Global.tileMap[i][j].cube)
+			add_tile(i, j)
 
 # Draws all of the individual cubes in the map space
 func _draw():	

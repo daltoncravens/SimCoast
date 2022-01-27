@@ -1,17 +1,46 @@
 extends CanvasLayer
 
-func update_tile_display(i, j, baseHeight, waterHeight):
-	$StatusBar/TileDisplay.text = "Tile: (%s, %s), Base Height: %s, Water Height: %s" % [i, j, baseHeight, waterHeight]
+var base_values = {
+	Tile.TileBase.DIRT: "Dirt",
+	Tile.TileBase.ROCK: "Rock",
+	Tile.TileBase.SAND: "Sand",
+	Tile.TileBase.OCEAN: "Ocean"
+}
 
-func update_ocean_display():
-	$StatusBar/OceanHeight.text = "Ocean Height: %s" % Global.oceanHeight
+var zone_values = {	
+	Tile.TileZone.NONE: "None",
+	Tile.TileZone.LIGHT_RESIDENTIAL: "Light Residential",
+	Tile.TileZone.HEAVY_RESIDENTIAL: "Heavy Residential",
+	Tile.TileZone.LIGHT_COMMERCIAL: "Light Commercial",
+	Tile.TileZone.HEAVY_COMMERCIAL: "Heavy Commercial"
+}
 
-func update_mouse(pos):
-	$StatusBar/MousePosition.text = "Mouse Position: (%s, %s)" % [pos.x, pos.y]
+var inf_values = {
+	Tile.TileInf.NONE: "None",
+	Tile.TileInf.ROAD: "Road",
+	Tile.TileInf.PARK: "Park",
+	Tile.TileInf.BUILDING: "Building"
+}
 
-func update_time(date):
-	$Date.text = "Date: %s" % "{month}-{day}-{year}".format ({
-		month = str(date.month).pad_zeros(2),
-		day = str(date.day).pad_zeros(2),
-		year = str(date.year).pad_zeros(2)
-		})
+var damage_values = {
+	Tile.TileStatus.NONE: "None",
+	Tile.TileStatus.LIGHT_DAMAGE: "Light Damage",
+	Tile.TileStatus.MEDIUM_DAMAGE: "Medium Damage",
+	Tile.TileStatus.HEAVY_DAMAGE: "Heavy Damage"
+}
+
+func update_tile_display(i, j):
+	var tile = Global.tileMap[i][j]
+	$BottomBar/HoverText.text = "(%s, %s)" % [i, j]
+	$BottomBar/HoverText.text += "     BASE: %s     HEIGHT: %s" % [base_values[tile.get_base()], tile.get_base_height()]
+	if tile.get_zone() != Tile.TileZone.NONE:
+		$BottomBar/HoverText.text += "     Zone: %s, Buildings: %s / %s, People: %s / %s" % [zone_values[tile.get_zone()], tile.data[0], tile.data[1], tile.data[2], tile.data[3]]
+		if tile.powered:
+			$BottomBar/HoverText.text += "     Power: ON"
+		else:
+			$BottomBar/HoverText.text += "     Power: OFF"
+	elif tile.inf == Tile.TileInf.ROAD:
+		if tile.powered:
+			$BottomBar/HoverText.text += "     Power: ON"
+		else:
+			$BottomBar/HoverText.text += "     Power: OFF"
