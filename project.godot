@@ -18,10 +18,16 @@ _global_script_classes=[ {
 "class": "Tile",
 "language": "GDScript",
 "path": "res://scripts/Tile.gd"
+}, {
+"base": "Area2D",
+"class": "TileCube",
+"language": "GDScript",
+"path": "res://scripts/TileCube.gd"
 } ]
 _global_script_class_icons={
 "GitAPI": "",
-"Tile": ""
+"Tile": "",
+"TileCube": ""
 }
 
 [application]
@@ -33,6 +39,8 @@ config/icon="res://icon.png"
 [autoload]
 
 Global="*res://scripts/Global.gd"
+UpdateGraphics="*res://scripts/updateGraphics.gd"
+UpdateWaves="*res://scripts/updateWaves.gd"
 
 [display]
 

@@ -3,7 +3,7 @@ extends Node2D
 var mapName = "test2"	# File name for quick savings/loading
 var copyTile				# Stores tile to use when copy/pasting tiles on the map
 var tickDelay = Global.TICK_DELAY #time in seconds between ticks
-var ticksSinceStart = 0 #time elapsed since start
+var numTicks = 0 #time elapsed since start
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -561,20 +561,23 @@ func loadMapData():
 	connectPower()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-var waterDir = 1 #temp var for ocean level directions
 func _process(delta):
 	tickDelay -= delta
 	if tickDelay <= 0:
 		
-		ticksSinceStart += 1
-		print("Ticks since start: " + str(ticksSinceStart))
+		numTicks += 1
+		#print("Ticks since start: " + str(ticksSinceStart))
 		
-		if Global.oceanHeight == 0:
-			Global.oceanHeight = 1
-		Global.oceanHeight += (1 * waterDir)
-		updateOceanHeight(1 * waterDir)
-		if Global.oceanHeight <= 1 || Global.oceanHeight >= 5:
-			waterDir *= -1
-			
+		print("Updating on tick: " + str(numTicks))
+		update_game_state()
+		update_graphics()
+		
 		tickDelay = Global.TICK_DELAY
-		 
+
+func update_game_state():
+	#print("Updating game state on tick: " + str(numTicks))
+	UpdateWaves.update_waves()
+
+func update_graphics():
+	#print("Updating graphics on tick: " + str(numTicks))
+	UpdateGraphics.update_graphics()
