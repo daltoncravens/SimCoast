@@ -81,10 +81,10 @@ func button_pressed():
 	
 	match group.get_pressed_button().get_name():
 		'extend_grid_button':
-			mapNode.extend_map()
+			City.extend_map()
 			mapNode.initCamera()
 		'reduce_grid_button':
-			mapNode.reduce_map()
+			City.reduce_map()
 			mapNode.initCamera()
 		'dirt_button':
 			Global.mapTool = Global.Tool.BASE_DIRT
@@ -133,14 +133,14 @@ func button_pressed():
 			Global.mapTool = Global.Tool.NONE
 			if Global.oceanHeight < Global.MAX_HEIGHT:
 				Global.oceanHeight += 1
-				mapNode.updateOceanHeight(1)
+				City.updateOceanHeight(1)
 				get_node("../TopBar/ActionText").text = "Ocean height raised to %s" % [Global.oceanHeight]
 		
 		'lower_ocean_button':
 			Global.mapTool = Global.Tool.NONE
 			if Global.oceanHeight > 0:
 				Global.oceanHeight -= 1
-				mapNode.updateOceanHeight(-1)
+				City.updateOceanHeight(-1)
 				get_node("../TopBar/ActionText").text = "Ocean height lowered to %s" % [Global.oceanHeight]
 		
 		'damage_button':
@@ -149,12 +149,12 @@ func button_pressed():
 		
 		'satisfaction_button':
 			Global.mapTool = Global.Tool.NONE
-			mapNode.calculate_satisfaction()
+			City.calculate_satisfaction()
 			get_node("../TopBar/ActionText").text = "Flooding damage calculated"
 		
 		'quicksave_button':
 			Global.mapTool = Global.Tool.NONE
-			mapNode.saveMapData()
+			City.saveMapData()
 			get_node("../TopBar/ActionText").text = "Map data saved"
 		
 		'rotate_camera_button':

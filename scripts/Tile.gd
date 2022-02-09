@@ -119,13 +119,11 @@ func raise_water():
 	waterHeight += 1
 	if (waterHeight + baseHeight) > Global.MAX_HEIGHT:
 		waterHeight = Global.MAX_HEIGHT - baseHeight
-	cube.update_polygons()
 
 func lower_water():
 	waterHeight -= 1
 	if waterHeight < 0:
 		waterHeight = 0
-	cube.update_polygons()
 
 func can_zone():
 	return base == TileBase.DIRT || base == TileBase.ROCK
