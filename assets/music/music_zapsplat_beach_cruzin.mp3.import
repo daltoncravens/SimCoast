@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/music_zapsplat_beach_cruzin.mp3-519f46db05ab0f45d4660a48d13a19ff.mp3str"
+
+[deps]
+
+source_file="res://assets/music/music_zapsplat_beach_cruzin.mp3"
+dest_files=[ "res://.import/music_zapsplat_beach_cruzin.mp3-519f46db05ab0f45d4660a48d13a19ff.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0

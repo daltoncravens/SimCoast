@@ -1,6 +1,6 @@
 extends Node2D
 
-var mapName = "test2"	# File name for quick savings/loading
+# var mapName	# Custom name of map # File name for quick savings/loading
 var copyTile				# Stores tile to use when copy/pasting tiles on the map
 var tickDelay = Global.TICK_DELAY #time in seconds between ticks
 var numTicks = 0 #time elapsed since start
@@ -188,9 +188,9 @@ func _unhandled_input(event):
 
 	elif event is InputEventKey && event.pressed:
 		if event.scancode == KEY_S:
-			saveMapData()
+			saveMapData("test")
 		elif event.scancode == KEY_L:
-			loadMapData()
+			loadMapData("mapPath")
 			initCamera()
 		elif event.scancode == KEY_Z:
 			actionText.text = "Flood and erosion damange calculated"
@@ -214,9 +214,11 @@ func _unhandled_input(event):
 			get_node("HUD/BottomBar/HoverText").text = ""
 
 # Saves global variables and map data to a JSON file
-func saveMapData():
-	var filePath = str("user://", mapName, ".json")
-	
+func saveMapData(mapPath):
+	var correctMapName = mapPath.trim_suffix(".json")
+	correctMapName = correctMapName.trim_prefix("res://saves/")
+	# var filePath = str("res://saves/", correctMapName, ".json")
+	print(mapPath)
 	var tileData = []
 			
 	for i in Global.mapWidth:
@@ -224,7 +226,7 @@ func saveMapData():
 			tileData.append(Global.tileMap[i][j].get_save_tile_data())
 			
 	var data = {
-		"name": mapName,
+		"name": correctMapName,
 		"mapWidth": Global.mapWidth,
 		"mapHeight": Global.mapHeight,
 		"oceanHeight": Global.oceanHeight,
@@ -234,20 +236,19 @@ func saveMapData():
 	
 	var file
 	file = File.new()
-	file.open(filePath, File.WRITE)
+	file.open(mapPath, File.WRITE)
 	file.store_line(to_json(data))
 	file.close()
 	
-	get_node("HUD/TopBar/ActionText").text = "Map file '%s'.json saved" % [mapName]
+	get_node("HUD/TopBar/ActionText").text = "Map file '%s'.json saved" % [correctMapName]
 
-func loadMapData():
+func loadMapData(mapPath):
 	var file = File.new()
-	var filePath = str("user://", mapName, ".json")
-		
-	if not file.file_exists(filePath):
-		get_node("HUD/TopBar/ActionText").text = "Error: Unable to find map file '%s'.json" % [mapName]
+	print(mapPath)
+	if not file.file_exists(mapPath):
+		get_node("HUD/TopBar/ActionText").text = "Error: Unable to find map file '%s'.json" % ["mapName"]
 		return
-	file.open(filePath, File.READ)
+	file.open(mapPath, File.READ)
 	var mapData = parse_json(file.get_as_text())
 	file.close()
 	
@@ -267,7 +268,7 @@ func loadMapData():
 		Global.tileMap[tileData[0]][tileData[1]] = Tile.new(int(tileData[0]), int(tileData[1]), int(tileData[2]), int(tileData[3]), int(tileData[4]), int(tileData[5]), int(tileData[6]), tileData[7])
 
 	$VectorMap.loadMap()
-	get_node("HUD/TopBar/ActionText").text = "Map file '%s'.json loaded" % [mapName]
+	get_node("HUD/TopBar/ActionText").text = "Map file '%s'.json loaded" % [mapData.name]
 	City.connectPower()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -278,7 +279,7 @@ func _process(delta):
 		numTicks += 1
 		#print("Ticks since start: " + str(ticksSinceStart))
 		
-		print("Updating on tick: " + str(numTicks))
+		# print("Updating on tick: " + str(numTicks))
 		update_game_state()
 		update_graphics()
 		

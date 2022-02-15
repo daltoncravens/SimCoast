@@ -10,7 +10,7 @@
 [ext_resource path="res://ui/title_scrn/OptionsPopup.gd" type="Script" id=8]
 [ext_resource path="res://ui/title_scrn/DeleteSaveConfirm.gd" type="Script" id=9]
 [ext_resource path="res://ui/title_scrn/StartMenu.gd" type="Script" id=10]
-[ext_resource path="res://assets/music/english-chorus.mp3" type="AudioStream" id=11]
+[ext_resource path="res://assets/music/music_zapsplat_beach_cruzin.mp3" type="AudioStream" id=11]
 
 [sub_resource type="DynamicFont" id=1]
 size = 140
@@ -42,11 +42,11 @@ __meta__ = {
 [node name="Title" type="Label" parent="MenuLayout"]
 margin_right = 980.0
 margin_bottom = 117.0
-custom_fonts/font = SubResource( 1 )
 custom_colors/font_color = Color( 1, 1, 1, 1 )
 custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
 custom_constants/shadow_offset_x = 5
 custom_constants/shadow_offset_y = 5
+custom_fonts/font = SubResource( 1 )
 text = "SimCoast"
 align = 1
 valign = 1
@@ -101,14 +101,17 @@ __meta__ = {
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 11 )
+volume_db = -30.0
 
 [node name="AudioStreamPlayer2" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 11 )
+volume_db = -30.0
 autoplay = true
 bus = "Music"
 
 [node name="AudioStreamPlayer3" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 11 )
+volume_db = -30.0
 autoplay = true
 bus = "SFX"
 

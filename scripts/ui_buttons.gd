@@ -2,6 +2,10 @@ extends Control
 
 export(ButtonGroup) var group
 
+var mapName
+var mapPath
+var overwriteFile
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	for i in group.get_buttons():
@@ -172,14 +176,30 @@ func button_pressed():
 		
 		'save_button':
 			Global.mapTool = Global.Tool.NONE
-			mapNode.saveMapData()
-			get_node("../TopBar/ActionText").text = "Map Data Saved"
+			var savePopup = get_node("../../Popups/SaveDialog")
+			savePopup.popup_centered()
+			savePopup.connect("file_selected", self, "_on_file_selected_save")
 
 		'load_button':
 			Global.mapTool = Global.Tool.NONE
-			mapNode.loadMapData()
+			var loadPopup = get_node("../../Popups/LoadDialog")
+			loadPopup.popup_centered()
+			loadPopup.connect("file_selected", self, "_on_file_selected_load")
+			yield (loadPopup, "confirmed")
+			mapNode.loadMapData(mapPath)
 			mapNode.initCamera()
 			
 		'exit_button':
 			Global.mapTool = Global.Tool.NONE
 			get_tree().quit()
+
+
+func _on_file_selected_load(filePath):
+	mapPath = filePath
+	print("File Selected: ", filePath)
+
+func _on_file_selected_save(filePath):
+	print("File Selected: ", filePath)
+	var mapNode = get_node("../../")
+	mapNode.saveMapData(filePath)
+	get_node("../TopBar/ActionText").text = "Map Data Saved"
