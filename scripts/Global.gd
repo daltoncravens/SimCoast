@@ -26,6 +26,10 @@ var tileMap = initTileMap()
 var seaLevel = 2       # World value that ocean resets to after a storm surge
 var oceanHeight = 0    # Current ocean level on map
 
+var baseOceanHeight = 0 # Desired ocean level, independent of factors such as waves
+var waveHeight = 5 # Max height of waves
+var waveStrength = 1 # Rate at which waves grow/fall
+
 # Values by Camera2D to rotate camera and VectorMap to draw tiles
 var camDirection = 0
 var rowRange = range(0, mapWidth, 1)

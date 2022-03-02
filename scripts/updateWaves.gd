@@ -5,9 +5,7 @@ var waterDir = 1
 
 #Update waves
 func update_waves():
-	if Global.oceanHeight == 0:
-			Global.oceanHeight = 1
-	Global.oceanHeight += (1 * waterDir)
+	Global.oceanHeight += (Global.waveStrength * waterDir)
 	City.updateOceanHeight(waterDir);
-	if Global.oceanHeight <= 1 || Global.oceanHeight >= 5:
+	if Global.oceanHeight <= Global.baseOceanHeight || Global.oceanHeight >= Global.baseOceanHeight + Global.waveHeight:
 		waterDir *= -1

@@ -133,6 +133,7 @@ func button_pressed():
 			Global.mapTool = Global.Tool.NONE
 			if Global.oceanHeight < Global.MAX_HEIGHT:
 				Global.oceanHeight += 1
+				Global.baseOceanHeight += 1
 				City.updateOceanHeight(1)
 				get_node("../TopBar/ActionText").text = "Ocean height raised to %s" % [Global.oceanHeight]
 		
@@ -140,6 +141,7 @@ func button_pressed():
 			Global.mapTool = Global.Tool.NONE
 			if Global.oceanHeight > 0:
 				Global.oceanHeight -= 1
+				Global.baseOceanHeight -= 1
 				City.updateOceanHeight(-1)
 				get_node("../TopBar/ActionText").text = "Ocean height lowered to %s" % [Global.oceanHeight]
 		
