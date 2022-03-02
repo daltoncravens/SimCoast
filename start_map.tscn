@@ -695,21 +695,18 @@ margin_bottom = 662.0
 [node name="save_button" type="Button" parent="HUD/ToolMenu/VBoxContainer/VBoxContainer"]
 margin_right = 68.0
 margin_bottom = 20.0
-group = ExtResource( 16 )
 text = "SAVE"
 
 [node name="load_button" type="Button" parent="HUD/ToolMenu/VBoxContainer/VBoxContainer"]
 margin_top = 24.0
 margin_right = 68.0
 margin_bottom = 44.0
-group = ExtResource( 16 )
 text = "LOAD"
 
 [node name="exit_button" type="Button" parent="HUD/ToolMenu/VBoxContainer/VBoxContainer"]
 margin_top = 48.0
 margin_right = 68.0
 margin_bottom = 68.0
-group = ExtResource( 16 )
 text = "EXIT"
 
 [node name="Demand" type="HBoxContainer" parent="HUD"]
@@ -829,7 +826,7 @@ __meta__ = {
 [node name="LoadDialog" type="FileDialog" parent="Popups"]
 margin_right = 315.0
 margin_bottom = 130.0
-window_title = "Load a File"
+window_title = "Open a File"
 resizable = true
 mode = 0
 current_dir = "res://saves"

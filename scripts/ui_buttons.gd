@@ -4,7 +4,8 @@ export(ButtonGroup) var group
 
 var mapName
 var mapPath
-var overwriteFile
+var savePopup
+var loadPopup
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -171,35 +172,16 @@ func button_pressed():
 			Global.mapTool = Global.Tool.NONE
 		
 		'zoom_in_button':
+			print("ZOOMIN")
 			get_node("../../Camera2D").zoom_in()
 			Global.mapTool = Global.Tool.NONE
-		
-		'save_button':
-			Global.mapTool = Global.Tool.NONE
-			var savePopup = get_node("../../Popups/SaveDialog")
-			savePopup.popup_centered()
-			savePopup.connect("file_selected", self, "_on_file_selected_save")
-
-		'load_button':
-			Global.mapTool = Global.Tool.NONE
-			var loadPopup = get_node("../../Popups/LoadDialog")
-			loadPopup.popup_centered()
-			loadPopup.connect("file_selected", self, "_on_file_selected_load")
-			yield (loadPopup, "confirmed")
-			mapNode.loadMapData(mapPath)
-			mapNode.initCamera()
-			
-		'exit_button':
-			Global.mapTool = Global.Tool.NONE
-			get_tree().quit()
-
-
-func _on_file_selected_load(filePath):
-	mapPath = filePath
-	print("File Selected: ", filePath)
-
-func _on_file_selected_save(filePath):
-	print("File Selected: ", filePath)
-	var mapNode = get_node("../../")
-	mapNode.saveMapData(filePath)
-	get_node("../TopBar/ActionText").text = "Map Data Saved"
+		# 'save_button':
+		# 	print("SAVE")
+		# 	Global.mapTool = Global.Tool.NONE
+		# 	savePopup.popup_centered()
+		# 'load_button':
+		# 	Global.mapTool = Global.Tool.NONE
+		# 	loadPopup.popup_centered()
+		# 'exit_button':
+		# 	Global.mapTool = Global.Tool.NONE
+		# 	get_tree().quit()

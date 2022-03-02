@@ -33,7 +33,7 @@ _global_script_class_icons={
 [application]
 
 config/name="SimCoast"
-run/main_scene="res://start_map.tscn"
+run/main_scene="res://ui/title_scrn/StartMenu.tscn"
 config/icon="res://icon.png"
 
 [autoload]
@@ -43,6 +43,7 @@ UpdateGraphics="*res://scripts/updateGraphics.gd"
 City="*res://scripts/City.gd"
 UpdateWaves="*res://scripts/updateWaves.gd"
 SaveDialog="*res://SaveDialog.gd"
+SaveLoad="*res://scripts/Save_Load.gd"
 
 [display]
 
@@ -51,6 +52,10 @@ window/size/height=720
 window/size/resizable=false
 window/stretch/mode="viewport"
 window/stretch/aspect="keep"
+
+[editor]
+
+main_run_args="--verbose"
 
 [gdnative]
 

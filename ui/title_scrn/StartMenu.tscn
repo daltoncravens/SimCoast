@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://assets/fonts/upheavtt_24.tres" type="DynamicFont" id=1]
 [ext_resource path="res://assets/fonts/AldotheApache.ttf" type="DynamicFontData" id=2]
@@ -11,6 +11,7 @@
 [ext_resource path="res://ui/title_scrn/DeleteSaveConfirm.gd" type="Script" id=9]
 [ext_resource path="res://ui/title_scrn/StartMenu.gd" type="Script" id=10]
 [ext_resource path="res://assets/music/music_zapsplat_beach_cruzin.mp3" type="AudioStream" id=11]
+[ext_resource path="res://ui/title_scrn/LoadGamePopup.gd" type="Script" id=12]
 
 [sub_resource type="DynamicFont" id=1]
 size = 140
@@ -116,7 +117,6 @@ autoplay = true
 bus = "SFX"
 
 [node name="OptionsPopup" type="AcceptDialog" parent="."]
-visible = true
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -296,6 +296,19 @@ Warning: Deleted save files cannot be recovered!"
 align = 1
 autowrap = true
 
+[node name="LoadGamePopup" type="FileDialog" parent="."]
+margin_right = 315.0
+margin_bottom = 130.0
+window_title = "Open a File"
+resizable = true
+mode = 0
+current_dir = "res://saves"
+current_file = "saves"
+current_path = "res://saves/saves"
+script = ExtResource( 12 )
+
+[connection signal="pressed" from="MenuLayout/Buttons/NewGameButton" to="." method="_on_NewGameButton_pressed"]
+[connection signal="pressed" from="MenuLayout/Buttons/LoadGameButton" to="LoadGamePopup" method="_on_LoadGameButton_pressed"]
 [connection signal="pressed" from="MenuLayout/Buttons/OptionsButton" to="OptionsPopup" method="_on_OptionsButton_pressed"]
 [connection signal="pressed" from="MenuLayout/Buttons/QuitButton" to="." method="_on_QuitButton_pressed"]
 [connection signal="pressed" from="OptionsPopup/VBoxContainer/FullScreen/FullScreenToggle" to="." method="_on_FullScreenToggle_pressed"]
@@ -306,3 +319,4 @@ autowrap = true
 [connection signal="toggled" from="OptionsPopup/VBoxContainer/VolumeTable/VolumeToggles/MusicMute" to="." method="_on_MusicMute_toggled"]
 [connection signal="toggled" from="OptionsPopup/VBoxContainer/VolumeTable/VolumeToggles/SFXMute" to="." method="_on_SFXMute_toggled"]
 [connection signal="pressed" from="OptionsPopup/VBoxContainer/DeleteSaveButton" to="OptionsPopup/DeleteSaveConfirm" method="_on_DeleteSaveButton_pressed"]
+[connection signal="file_selected" from="LoadGamePopup" to="LoadGamePopup" method="_on_LoadGamePopup_file_selected"]
