@@ -159,8 +159,11 @@ func button_pressed():
 		
 		'quicksave_button':
 			Global.mapTool = Global.Tool.NONE
-			City.saveMapData()
-			get_node("../TopBar/ActionText").text = "Map data saved"
+			if not Global.mapPath.empty():
+				SaveLoad.saveMapData(Global.mapPath)
+				get_node("../TopBar/ActionText").text = "Map data saved"
+			else:
+				OS.alert('There is no existing save file to quicksave to, please use the Save button to make a new save file.', 'No Save File')
 		
 		'rotate_camera_button':
 			Global.mapTool = Global.Tool.NONE

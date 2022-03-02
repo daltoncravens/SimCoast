@@ -29,7 +29,8 @@ func saveData(mapPath: String):
 	file.open(mapPath, File.WRITE)
 	file.store_line(to_json(data))
 	file.close()
-	return correctMapName
+	Global.mapPath = mapPath
+	return [correctMapName, mapPath]
 
 
 func loadData(mapPath: String):
@@ -42,6 +43,8 @@ func loadData(mapPath: String):
 	var mapData = parse_json(file.get_as_text())
 	file.close()
 	
+	Global.mapName = mapData.name
+	Global.mapPath = mapPath
 	Global.mapWidth = mapData.mapWidth
 	Global.mapHeight = mapData.mapHeight
 	Global.oceanHeight = mapData.oceanHeight

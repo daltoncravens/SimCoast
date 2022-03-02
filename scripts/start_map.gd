@@ -223,7 +223,9 @@ func _unhandled_input(event):
 
 # Saves global variables and map data to a JSON file
 func saveMapData(mapPath):
-	var correctMapName = SaveLoad.saveData(mapPath) 
+	var pathValues = SaveLoad.saveData(mapPath) 
+	var correctMapName = pathValues[0]
+	currMapPath = pathValues[1]
 	get_node("HUD/TopBar/ActionText").text = "Map file '%s'.json saved" % [correctMapName]
 
 func loadMapData(mapPath):
