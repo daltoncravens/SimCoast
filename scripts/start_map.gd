@@ -278,7 +278,7 @@ func _process(delta):
 		numTicks += 1
 		#print("Ticks since start: " + str(ticksSinceStart))
 		
-		print("Updating on tick: " + str(numTicks))
+		#print("Updating on tick: " + str(numTicks))
 		update_game_state()
 		update_graphics()
 		
