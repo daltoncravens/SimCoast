@@ -5,6 +5,8 @@ var currMapPath # Current file path of the map loaded
 var copyTile				# Stores tile to use when copy/pasting tiles on the map
 var tickDelay = Global.TICK_DELAY #time in seconds between ticks
 var numTicks = 0 #time elapsed since start
+var isPaused = false
+var isFastFWD = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -282,17 +284,20 @@ func _on_ExitButton_pressed():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	tickDelay -= delta
-	if tickDelay <= 0:
-		
-		numTicks += 1
-		#print("Ticks since start: " + str(ticksSinceStart))
-		
-		# print("Updating on tick: " + str(numTicks))
-		update_game_state()
-		update_graphics()
-		
-		tickDelay = Global.TICK_DELAY
+	if !isPaused:
+		tickDelay -= delta
+		if tickDelay <= 0:
+			
+			numTicks += 1
+			#print("Ticks since start: " + str(ticksSinceStart))
+			
+			# print("Updating on tick: " + str(numTicks))
+			update_game_state()
+			update_graphics()
+			if isFastFWD:
+				tickDelay = Global.TICK_DELAY * 0.5
+			else:
+				tickDelay = Global.TICK_DELAY
 
 func update_game_state():
 	#print("Updating game state on tick: " + str(numTicks))
@@ -301,3 +306,10 @@ func update_game_state():
 func update_graphics():
 	#print("Updating graphics on tick: " + str(numTicks))
 	UpdateGraphics.update_graphics()
+
+
+func _on_play_button_toggled(button_pressed:bool):
+	isPaused = button_pressed
+
+func _on_fastfwd_button_toggled(button_pressed:bool):
+	isFastFWD = button_pressed
