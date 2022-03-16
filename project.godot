@@ -42,6 +42,7 @@ Global="*res://scripts/Global.gd"
 UpdateGraphics="*res://scripts/updateGraphics.gd"
 City="*res://scripts/City.gd"
 UpdateWaves="*res://scripts/updateWaves.gd"
+DisperseWater="*res://scripts/disperseWater.gd"
 
 [display]
 

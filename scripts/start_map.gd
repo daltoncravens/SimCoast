@@ -287,6 +287,7 @@ func _process(delta):
 func update_game_state():
 	#print("Updating game state on tick: " + str(numTicks))
 	UpdateWaves.update_waves()
+	DisperseWater.disperse_water()
 
 func update_graphics():
 	#print("Updating graphics on tick: " + str(numTicks))
