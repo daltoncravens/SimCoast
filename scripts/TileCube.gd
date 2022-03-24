@@ -1,6 +1,8 @@
 # Information for how to draw each tile based on properties
 extends Area2D
 
+class_name TileCube
+
 var i = 0
 var j = 0
 var x = 0

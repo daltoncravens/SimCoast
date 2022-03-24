@@ -15,7 +15,7 @@ const MAX_MAP_SIZE = 64
 
 const MAX_CONNECTION_HEIGHT = 3		# Largest amount of height allowed to consider tiles connected
 
-const TICK_DELAY = 0.2#Time between ticks
+const TICK_DELAY = 0.05#Time between ticks
 
 var mapWidth = 16
 var mapHeight = 16

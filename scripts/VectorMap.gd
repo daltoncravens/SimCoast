@@ -1,7 +1,7 @@
 # Parent node for all of the map cubes
 extends YSort
 
-const cube_script = preload("res://TileCube.gd")
+const cube_script = preload("res://scripts/TileCube.gd")
 
 # Initialize all map tile cubes and collision polygons
 func _ready():
