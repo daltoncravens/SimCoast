@@ -17,6 +17,8 @@ const MAX_CONNECTION_HEIGHT = 3		# Largest amount of height allowed to consider 
 
 const TICK_DELAY = 0.05#Time between ticks
 
+var mapName = ""
+var mapPath = ""
 var mapWidth = 16
 var mapHeight = 16
 

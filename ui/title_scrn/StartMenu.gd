@@ -34,3 +34,8 @@ func _on_MusicMute_toggled(button_pressed):
 
 func _on_SFXMute_toggled(button_pressed):
 	AudioServer.set_bus_mute(AudioServer.get_bus_index("SFX"), !button_pressed)
+
+
+func _on_NewGameButton_pressed():
+	var _err = get_tree().change_scene("res://start_map.tscn")
+	

@@ -2,6 +2,11 @@ extends Control
 
 export(ButtonGroup) var group
 
+var mapName
+var mapPath
+var savePopup
+var loadPopup
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	for i in group.get_buttons():
@@ -154,8 +159,11 @@ func button_pressed():
 		
 		'quicksave_button':
 			Global.mapTool = Global.Tool.NONE
-			City.saveMapData()
-			get_node("../TopBar/ActionText").text = "Map data saved"
+			if not Global.mapPath.empty():
+				SaveLoad.saveMapData(Global.mapPath)
+				get_node("../TopBar/ActionText").text = "Map data saved"
+			else:
+				OS.alert('There is no existing save file to quicksave to, please use the Save button to make a new save file.', 'No Save File')
 		
 		'rotate_camera_button':
 			Global.mapTool = Global.Tool.NONE
@@ -167,19 +175,16 @@ func button_pressed():
 			Global.mapTool = Global.Tool.NONE
 		
 		'zoom_in_button':
+			print("ZOOMIN")
 			get_node("../../Camera2D").zoom_in()
 			Global.mapTool = Global.Tool.NONE
-		
-		'save_button':
-			Global.mapTool = Global.Tool.NONE
-			mapNode.saveMapData()
-			get_node("../TopBar/ActionText").text = "Map Data Saved"
-
-		'load_button':
-			Global.mapTool = Global.Tool.NONE
-			mapNode.loadMapData()
-			mapNode.initCamera()
-			
-		'exit_button':
-			Global.mapTool = Global.Tool.NONE
-			get_tree().quit()
+		# 'save_button':
+		# 	print("SAVE")
+		# 	Global.mapTool = Global.Tool.NONE
+		# 	savePopup.popup_centered()
+		# 'load_button':
+		# 	Global.mapTool = Global.Tool.NONE
+		# 	loadPopup.popup_centered()
+		# 'exit_button':
+		# 	Global.mapTool = Global.Tool.NONE
+		# 	get_tree().quit()

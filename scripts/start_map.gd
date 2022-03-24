@@ -1,13 +1,24 @@
 extends Node2D
 
-var mapName = "test2"	# File name for quick savings/loading
+# var mapName	# Custom name of map # File name for quick savings/loading
+var currMapPath # Current file path of the map loaded
 var copyTile				# Stores tile to use when copy/pasting tiles on the map
 var tickDelay = Global.TICK_DELAY #time in seconds between ticks
 var numTicks = 0 #time elapsed since start
+var isPaused = false
+var isFastFWD = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	initCamera()
+	initSave_Exit()
+
+func initSave_Exit():
+	$HUD/ToolMenu/VBoxContainer/VBoxContainer/save_button.connect("pressed", self, "_on_SaveButton_pressed")
+	$HUD/ToolMenu/VBoxContainer/VBoxContainer/load_button.connect("pressed", self, "_on_LoadButton_pressed")
+	$Popups/SaveDialog.connect("file_selected", self, "_on_file_selected_save")
+	$Popups/LoadDialog.connect("file_selected", self, "_on_file_selected_load")
+	$HUD/ToolMenu/VBoxContainer/VBoxContainer/exit_button.connect("pressed", self, "_on_ExitButton_pressed")
 
 # Set camera to start at middle of map, and set camera edge limits
 # Width/height is number of map tiles
@@ -188,10 +199,9 @@ func _unhandled_input(event):
 
 	elif event is InputEventKey && event.pressed:
 		if event.scancode == KEY_S:
-			saveMapData()
+			$Popups/SaveDialog.popup_centered()
 		elif event.scancode == KEY_L:
-			loadMapData()
-			initCamera()
+			$Popups/LoadDialog.popup_centered()
 		elif event.scancode == KEY_Z:
 			actionText.text = "Flood and erosion damange calculated"
 			City.calculate_damage()
@@ -214,75 +224,80 @@ func _unhandled_input(event):
 			get_node("HUD/BottomBar/HoverText").text = ""
 
 # Saves global variables and map data to a JSON file
-func saveMapData():
-	var filePath = str("user://", mapName, ".json")
-	
-	var tileData = []
-			
-	for i in Global.mapWidth:
-		for j in Global.mapHeight:
-			tileData.append(Global.tileMap[i][j].get_save_tile_data())
-			
-	var data = {
-		"name": mapName,
-		"mapWidth": Global.mapWidth,
-		"mapHeight": Global.mapHeight,
-		"oceanHeight": Global.oceanHeight,
-		"seaLevel": Global.seaLevel,
-		"tiles": tileData
-	}
-	
-	var file
-	file = File.new()
-	file.open(filePath, File.WRITE)
-	file.store_line(to_json(data))
-	file.close()
-	
-	get_node("HUD/TopBar/ActionText").text = "Map file '%s'.json saved" % [mapName]
+func saveMapData(mapPath):
+	var pathValues = SaveLoad.saveData(mapPath) 
+	var correctMapName = pathValues[0]
+	currMapPath = pathValues[1]
+	get_node("HUD/TopBar/ActionText").text = "Map file '%s'.json saved" % [correctMapName]
 
-func loadMapData():
-	var file = File.new()
-	var filePath = str("user://", mapName, ".json")
-		
-	if not file.file_exists(filePath):
-		get_node("HUD/TopBar/ActionText").text = "Error: Unable to find map file '%s'.json" % [mapName]
-		return
-	file.open(filePath, File.READ)
-	var mapData = parse_json(file.get_as_text())
-	file.close()
+func loadMapData(mapPath):
+	# var file = File.new()
+	# print(mapPath)
+	# if not file.file_exists(mapPath):
+	# 	get_node("HUD/TopBar/ActionText").text = "Error: Unable to find map file '%s'.json" % ["mapName"]
+	# 	return
+	# file.open(mapPath, File.READ)
+	# var mapData = parse_json(file.get_as_text())
+	# file.close()
 	
-	Global.mapWidth = mapData.mapWidth
-	Global.mapHeight = mapData.mapHeight
-	Global.oceanHeight = mapData.oceanHeight
-	Global.seaLevel = mapData.seaLevel
+	# Global.mapWidth = mapData.mapWidth
+	# Global.mapHeight = mapData.mapHeight
+	# Global.oceanHeight = mapData.oceanHeight
+	# Global.seaLevel = mapData.seaLevel
 	
-	Global.tileMap.clear()
+	# Global.tileMap.clear()
 	
-	for _x in range(Global.mapWidth):
-		var row = []
-		row.resize(Global.mapHeight)
-		Global.tileMap.append(row)
+	# for _x in range(Global.mapWidth):
+	# 	var row = []
+	# 	row.resize(Global.mapHeight)
+	# 	Global.tileMap.append(row)
 
-	for tileData in mapData.tiles:
-		Global.tileMap[tileData[0]][tileData[1]] = Tile.new(int(tileData[0]), int(tileData[1]), int(tileData[2]), int(tileData[3]), int(tileData[4]), int(tileData[5]), int(tileData[6]), tileData[7])
-
+	# for tileData in mapData.tiles:
+	# 	Global.tileMap[tileData[0]][tileData[1]] = Tile.new(int(tileData[0]), int(tileData[1]), int(tileData[2]), int(tileData[3]), int(tileData[4]), int(tileData[5]), int(tileData[6]), tileData[7])
+	var mapName = SaveLoad.loadData(mapPath)
 	$VectorMap.loadMap()
 	get_node("HUD/TopBar/ActionText").text = "Map file '%s'.json loaded" % [mapName]
 	City.connectPower()
 
+
+func _on_SaveButton_pressed():
+	$Popups/SaveDialog.popup_centered()
+
+func _on_LoadButton_pressed():
+	$Popups/LoadDialog.popup_centered()
+
+func _on_file_selected_load(filePath):
+	if ".json" in filePath:
+		loadMapData(filePath)
+		initCamera()
+		print("File Selected: ", filePath)
+	else:
+		OS.alert('File chosen is of wrong type, the game specifically uses JSON files.', 'Warning')
+
+func _on_file_selected_save(filePath):
+	print("File Selected: ", filePath)
+	saveMapData(filePath)
+	$HUD/TopBar/ActionText.text = "Map Data Saved"
+
+func _on_ExitButton_pressed():
+	get_tree().quit()
+
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	tickDelay -= delta
-	if tickDelay <= 0:
-		
-		numTicks += 1
-		#print("Ticks since start: " + str(ticksSinceStart))
-		
-		print("Updating on tick: " + str(numTicks))
-		update_game_state()
-		update_graphics()
-		
-		tickDelay = Global.TICK_DELAY
+	if !isPaused:
+		tickDelay -= delta
+		if tickDelay <= 0:
+			
+			numTicks += 1
+			#print("Ticks since start: " + str(ticksSinceStart))
+			
+			# print("Updating on tick: " + str(numTicks))
+			update_game_state()
+			update_graphics()
+			if isFastFWD:
+				tickDelay = Global.TICK_DELAY * 0.5
+			else:
+				tickDelay = Global.TICK_DELAY
 
 func update_game_state():
 	#print("Updating game state on tick: " + str(numTicks))
@@ -291,3 +306,10 @@ func update_game_state():
 func update_graphics():
 	#print("Updating graphics on tick: " + str(numTicks))
 	UpdateGraphics.update_graphics()
+
+
+func _on_play_button_toggled(button_pressed:bool):
+	isPaused = button_pressed
+
+func _on_fastfwd_button_toggled(button_pressed:bool):
+	isFastFWD = button_pressed

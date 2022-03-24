@@ -1,4 +1,4 @@
-[gd_scene load_steps=109 format=2]
+[gd_scene load_steps=115 format=2]
 
 [ext_resource path="res://scripts/HUD.gd" type="Script" id=1]
 [ext_resource path="res://assets/buttons/add_water_hover.png" type="Texture" id=2]
@@ -38,6 +38,7 @@
 [ext_resource path="res://assets/buttons/road_active.png" type="Texture" id=36]
 [ext_resource path="res://assets/buttons/add_house_hover.png" type="Texture" id=37]
 [ext_resource path="res://assets/buttons/add_house_active.png" type="Texture" id=38]
+[ext_resource path="res://SaveDialog.gd" type="Script" id=39]
 [ext_resource path="res://assets/buttons/add_house_normal.png" type="Texture" id=40]
 [ext_resource path="res://assets/buttons/add_resident_normal.png" type="Texture" id=41]
 [ext_resource path="res://assets/buttons/raise_ocean_normal.png" type="Texture" id=42]
@@ -102,6 +103,11 @@
 [ext_resource path="res://assets/buttons/zoom_in_normal.png" type="Texture" id=101]
 [ext_resource path="res://assets/buttons/zoom_in_hover.png" type="Texture" id=102]
 [ext_resource path="res://assets/buttons/bridge_hover.png" type="Texture" id=103]
+[ext_resource path="res://scripts/LoadDialog.gd" type="Script" id=104]
+[ext_resource path="res://assets/buttons/play_default.png" type="Texture" id=105]
+[ext_resource path="res://assets/buttons/pause_default.png" type="Texture" id=106]
+[ext_resource path="res://assets/buttons/fast_forward_default.png" type="Texture" id=107]
+[ext_resource path="res://assets/buttons/fast_forward_pressed.png" type="Texture" id=108]
 
 [sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 0.133333, 0.886275, 0.129412, 1 )
@@ -693,21 +699,18 @@ margin_bottom = 662.0
 [node name="save_button" type="Button" parent="HUD/ToolMenu/VBoxContainer/VBoxContainer"]
 margin_right = 68.0
 margin_bottom = 20.0
-group = ExtResource( 16 )
 text = "SAVE"
 
 [node name="load_button" type="Button" parent="HUD/ToolMenu/VBoxContainer/VBoxContainer"]
 margin_top = 24.0
 margin_right = 68.0
 margin_bottom = 44.0
-group = ExtResource( 16 )
 text = "LOAD"
 
 [node name="exit_button" type="Button" parent="HUD/ToolMenu/VBoxContainer/VBoxContainer"]
 margin_top = 48.0
 margin_right = 68.0
 margin_bottom = 68.0
-group = ExtResource( 16 )
 text = "EXIT"
 
 [node name="Demand" type="HBoxContainer" parent="HUD"]
@@ -808,5 +811,56 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="play_button" type="TextureButton" parent="HUD"]
+margin_left = 90.0
+margin_top = 28.0
+margin_right = 130.0
+margin_bottom = 68.0
+toggle_mode = true
+texture_normal = ExtResource( 106 )
+texture_pressed = ExtResource( 105 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="fastfwd_button" type="TextureButton" parent="HUD"]
+margin_left = 130.0
+margin_top = 28.0
+margin_right = 170.0
+margin_bottom = 68.0
+toggle_mode = true
+texture_normal = ExtResource( 107 )
+texture_pressed = ExtResource( 108 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="VectorMap" type="YSort" parent="."]
 script = ExtResource( 7 )
+
+[node name="Popups" type="CanvasLayer" parent="."]
+
+[node name="SaveDialog" type="FileDialog" parent="Popups"]
+margin_left = 483.0
+margin_top = 295.0
+resizable = true
+current_dir = "res://saves"
+current_path = "res://saves/"
+script = ExtResource( 39 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="LoadDialog" type="FileDialog" parent="Popups"]
+margin_right = 315.0
+margin_bottom = 130.0
+window_title = "Open a File"
+resizable = true
+mode = 0
+current_dir = "res://saves"
+current_file = "Null.json"
+current_path = "res://saves/Null.json"
+script = ExtResource( 104 )
+
+[connection signal="toggled" from="HUD/play_button" to="." method="_on_play_button_toggled"]
+[connection signal="toggled" from="HUD/fastfwd_button" to="." method="_on_fastfwd_button_toggled"]
