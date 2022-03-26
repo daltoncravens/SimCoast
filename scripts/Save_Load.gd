@@ -58,5 +58,5 @@ func loadData(mapPath: String):
 		Global.tileMap.append(row)
 
 	for tileData in mapData.tiles:
-		Global.tileMap[tileData[0]][tileData[1]] = Tile.new(int(tileData[0]), int(tileData[1]), int(tileData[2]), int(tileData[3]), int(tileData[4]), int(tileData[5]), int(tileData[6]), tileData[7])
+		Global.tileMap[tileData[0]][tileData[1]] = Tile.new(int(tileData[0]), int(tileData[1]), int(tileData[2]), int(tileData[3]), int(tileData[4]), int(tileData[5]), int(tileData[6]), tileData[7], int(tileData[8]))
 	return mapData.name

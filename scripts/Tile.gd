@@ -77,8 +77,9 @@ var inf = 0
 var cube = Area2D.new()
 var data = [0, 0, 0, 0, 0]
 var powered = false
+var tileDamage = 0
 
-func _init(a, b, c, d, e, f, g, h):
+func _init(a, b, c, d, e, f, g, h, k):
 	self.i = a
 	self.j = b
 
@@ -88,9 +89,10 @@ func _init(a, b, c, d, e, f, g, h):
 	zone = f
 	inf = g
 	data = h
+	tileDamage = k
 
 func get_save_tile_data():
-	return [i, j, baseHeight, waterHeight, base, zone, inf, data]
+	return [i, j, baseHeight, waterHeight, base, zone, inf, data, tileDamage]
 
 func paste_tile(tile):
 	baseHeight = tile.baseHeight
@@ -99,12 +101,14 @@ func paste_tile(tile):
 	zone = tile.zone
 	inf = tile.inf
 	data = tile.data
+	tileDamage = tile.tileDamage
 
 func clear_tile():
 	zone = TileZone.NONE
 	inf = TileInf.NONE
+	tileDamage -= data[0] * 0.25
 	data = [0, 0, 0, 0, 0]
-
+	
 func raise_tile():
 	baseHeight += 1
 	if baseHeight > Global.MAX_HEIGHT:
@@ -189,6 +193,7 @@ func remove_water():
 
 func set_damage(n):
 	data[4] = n
+	tileDamage -= 3
 
 func get_zone():
 	return zone
@@ -205,6 +210,7 @@ func add_building():
 	if data[0] < data[1]:
 		data[0] += 1
 		data[3] += 4
+	tileDamage -= 1
 
 func remove_building():		
 	if data[0] <= 1:
@@ -216,6 +222,7 @@ func remove_building():
 		data[3] -= 4
 		if data[2] > data[3]:
 			data[2] = data[3]
+	tileDamage -= 0.25
 
 func add_people(n):	
 	data[2] += n

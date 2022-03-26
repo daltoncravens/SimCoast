@@ -205,6 +205,14 @@ margin_right = 1270.0
 margin_bottom = 24.0
 align = 1
 
+[node name="Money" type="Label" parent="HUD/BottomBar"]
+margin_left = 10.0
+margin_top = 10.0
+margin_right = 1270.0
+margin_bottom = 24.0
+text = "$100,000"
+align = 2
+
 [node name="ToolsBG" type="Panel" parent="HUD"]
 anchor_bottom = 1.0
 margin_right = 90.0
