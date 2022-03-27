@@ -190,6 +190,9 @@ func remove_water():
 func set_damage(n):
 	data[4] = n
 
+func is_powered():
+	return powered
+
 func get_zone():
 	return zone
 
