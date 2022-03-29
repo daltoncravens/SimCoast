@@ -14,18 +14,3 @@ script = ExtResource( 2 )
 is_active = false
 _blackboard = NodePath("../Blackboard")
 _agent = NodePath("..")
-
-[node name="Label" type="Label" parent="."]
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = -177.0
-margin_top = -235.0
-margin_right = 177.0
-margin_bottom = 235.0
-align = 1
-valign = 1
-__meta__ = {
-"_edit_use_anchors_": false
-}

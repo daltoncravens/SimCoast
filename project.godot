@@ -152,6 +152,7 @@ City="*res://scripts/City.gd"
 UpdateWaves="*res://scripts/updateWaves.gd"
 SaveDialog="*res://SaveDialog.gd"
 SaveLoad="*res://scripts/Save_Load.gd"
+Economy="*res://AI/economy/economy.tscn"
 
 [display]
 
