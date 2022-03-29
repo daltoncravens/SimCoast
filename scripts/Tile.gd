@@ -78,8 +78,10 @@ var cube = Area2D.new()
 var data = [0, 0, 0, 0, 0]
 var powered = false
 var tileDamage = 0
+var landValue = 0
+var profitRate = 0
 
-func _init(a, b, c, d, e, f, g, h, k):
+func _init(a, b, c, d, e, f, g, h, k, l, m):
 	self.i = a
 	self.j = b
 
@@ -90,9 +92,11 @@ func _init(a, b, c, d, e, f, g, h, k):
 	inf = g
 	data = h
 	tileDamage = k
+	landValue = l
+	profitRate = m
 
 func get_save_tile_data():
-	return [i, j, baseHeight, waterHeight, base, zone, inf, data, tileDamage]
+	return [i, j, baseHeight, waterHeight, base, zone, inf, data, tileDamage, landValue, profitRate]
 
 func paste_tile(tile):
 	baseHeight = tile.baseHeight
@@ -102,11 +106,16 @@ func paste_tile(tile):
 	inf = tile.inf
 	data = tile.data
 	tileDamage = tile.tileDamage
+	landValue = tile.landValue
+	profitRate = tile.profitRate
 
 func clear_tile():
+	if zone == TileZone.HEAVY_COMMERCIAL || zone == TileZone.LIGHT_COMMERCIAL:
+		tileDamage -= data[0] * Econ.REMOVE_COMMERCIAL_BUILDING
+	else:
+		tileDamage -= data[0] * Econ.REMOVE_BUILDING_DAMAGE
 	zone = TileZone.NONE
 	inf = TileInf.NONE
-	tileDamage -= data[0] * 0.25
 	data = [0, 0, 0, 0, 0]
 	
 func raise_tile():
@@ -193,7 +202,6 @@ func remove_water():
 
 func set_damage(n):
 	data[4] = n
-	tileDamage -= 3
 
 func get_zone():
 	return zone
@@ -210,7 +218,6 @@ func add_building():
 	if data[0] < data[1]:
 		data[0] += 1
 		data[3] += 4
-	tileDamage -= 1
 
 func remove_building():		
 	if data[0] <= 1:
@@ -222,7 +229,10 @@ func remove_building():
 		data[3] -= 4
 		if data[2] > data[3]:
 			data[2] = data[3]
-	tileDamage -= 0.25
+	if zone == TileZone.HEAVY_COMMERCIAL || zone == TileZone.LIGHT_COMMERCIAL:
+		tileDamage -= Econ.REMOVE_COMMERCIAL_BUILDING
+	else:
+		tileDamage -= Econ.REMOVE_BUILDING_DAMAGE
 
 func add_people(n):	
 	data[2] += n
