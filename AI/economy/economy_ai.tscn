@@ -1,8 +1,17 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://addons/behavior_tree/src/behavior_tree.gd" type="Script" id=1]
 [ext_resource path="res://AI/economy/queue_check.gd" type="Script" id=2]
 [ext_resource path="res://addons/behavior_tree/src/btnodes/composites/bt_sequence.gd" type="Script" id=3]
+[ext_resource path="res://AI/economy/validator.gd" type="Script" id=4]
+[ext_resource path="res://AI/economy/city_wealth.gd" type="Script" id=5]
+[ext_resource path="res://AI/economy/number_of_zones.gd" type="Script" id=6]
+[ext_resource path="res://AI/economy/presence_of_water.gd" type="Script" id=7]
+[ext_resource path="res://AI/economy/zone_connections.gd" type="Script" id=8]
+[ext_resource path="res://AI/economy/tile_base_type.gd" type="Script" id=9]
+[ext_resource path="res://AI/economy/tile_damage.gd" type="Script" id=10]
+[ext_resource path="res://AI/economy/taxation_rate.gd" type="Script" id=11]
+[ext_resource path="res://AI/economy/succeeder.gd" type="Script" id=12]
 
 [node name="BehaviorTree" type="Node"]
 script = ExtResource( 1 )
@@ -17,11 +26,41 @@ script = ExtResource( 3 )
 [node name="Location" type="Node" parent="Is Queue Empty\?/Main Sequence"]
 script = ExtResource( 3 )
 
+[node name="Presence of Water" type="Node" parent="Is Queue Empty\?/Main Sequence/Location"]
+script = ExtResource( 7 )
+
+[node name="Tile Base Type" type="Node" parent="Is Queue Empty\?/Main Sequence/Location"]
+script = ExtResource( 9 )
+
 [node name="Infrastructure" type="Node" parent="Is Queue Empty\?/Main Sequence"]
 script = ExtResource( 3 )
+
+[node name="Zone Connections" type="Node" parent="Is Queue Empty\?/Main Sequence/Infrastructure"]
+script = ExtResource( 8 )
+
+[node name="Succeeder" type="Node" parent="Is Queue Empty\?/Main Sequence/Infrastructure"]
+script = ExtResource( 12 )
 
 [node name="Land Use" type="Node" parent="Is Queue Empty\?/Main Sequence"]
 script = ExtResource( 3 )
 
+[node name="Tile Damage" type="Node" parent="Is Queue Empty\?/Main Sequence/Land Use"]
+script = ExtResource( 10 )
+
+[node name="Succeeder" type="Node" parent="Is Queue Empty\?/Main Sequence/Land Use"]
+script = ExtResource( 12 )
+
 [node name="Economic" type="Node" parent="Is Queue Empty\?/Main Sequence"]
 script = ExtResource( 3 )
+
+[node name="Number of Zones" type="Node" parent="Is Queue Empty\?/Main Sequence/Economic"]
+script = ExtResource( 6 )
+
+[node name="City Wealth" type="Node" parent="Is Queue Empty\?/Main Sequence/Economic"]
+script = ExtResource( 5 )
+
+[node name="Taxation Rate" type="Node" parent="Is Queue Empty\?/Main Sequence/Economic"]
+script = ExtResource( 11 )
+
+[node name="Validator" type="Node" parent="Is Queue Empty\?/Main Sequence"]
+script = ExtResource( 4 )
