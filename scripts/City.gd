@@ -32,13 +32,13 @@ func extend_map():
 	Global.tileMap.append(new_row)
 
 	for j in Global.mapWidth:
-		Global.tileMap[Global.mapHeight][j] = Tile.new(Global.mapHeight, j, 0, 0, 0, 0, 0, [0, 0, 0, 0, 0], 100)
+		Global.tileMap[Global.mapHeight][j] = Tile.new(Global.mapHeight, j, 0, 0, 0, 0, 0, [0, 0, 0, 0, 0], 100, Econ.TILE_BASE_VALUE, 0)
 		$VectorMap.add_tile(Global.mapHeight, j)
 	
 	Global.mapHeight += 1
 		
 	for i in Global.mapHeight:
-		Global.tileMap[i].append(Tile.new(i, Global.mapWidth, 0, 0, 0, 0, 0, [0, 0, 0, 0, 0], 100))
+		Global.tileMap[i].append(Tile.new(i, Global.mapWidth, 0, 0, 0, 0, 0, [0, 0, 0, 0, 0], 100, Econ.TILE_BASE_VALUE, 0))
 		$VectorMap.add_tile(i, Global.mapWidth)
 	
 	Global.mapWidth += 1

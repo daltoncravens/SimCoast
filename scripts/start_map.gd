@@ -12,6 +12,9 @@ var isFastFWD = false
 func _ready():
 	initCamera()
 	initSave_Exit()
+	$HUD/TopBar/HBoxContainer/Money.text = "Player Money: $" + Econ.comma_values(str(Econ.money))
+	$HUD/TopBar/HBoxContainer/City_Income.text = "City's Net Profit: $" + Econ.comma_values(str(Econ.city_income))
+	$HUD/TopBar/HBoxContainer/City_Tax_Rate.text = "Tax Rate: " + str(Econ.city_tax_rate * 100) + "%"
 
 func initSave_Exit():
 	$HUD/ToolMenu/VBoxContainer/VBoxContainer/save_button.connect("pressed", self, "_on_SaveButton_pressed")

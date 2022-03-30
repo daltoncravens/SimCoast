@@ -162,6 +162,29 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="HBoxContainer" type="HBoxContainer" parent="HUD/TopBar"]
+margin_left = 10.0
+margin_top = 10.0
+margin_right = 1270.0
+margin_bottom = 24.0
+custom_constants/separation = 20
+alignment = 1
+
+[node name="Money" type="Label" parent="HUD/TopBar/HBoxContainer"]
+margin_left = 610.0
+margin_right = 610.0
+margin_bottom = 14.0
+
+[node name="City_Income" type="Label" parent="HUD/TopBar/HBoxContainer"]
+margin_left = 630.0
+margin_right = 630.0
+margin_bottom = 14.0
+
+[node name="City_Tax_Rate" type="Label" parent="HUD/TopBar/HBoxContainer"]
+margin_left = 650.0
+margin_right = 650.0
+margin_bottom = 14.0
+
 [node name="ActionText" type="Label" parent="HUD/TopBar"]
 margin_left = 10.0
 margin_top = 10.0
@@ -204,14 +227,6 @@ margin_top = 10.0
 margin_right = 1270.0
 margin_bottom = 24.0
 align = 1
-
-[node name="Money" type="Label" parent="HUD/BottomBar"]
-margin_left = 10.0
-margin_top = 10.0
-margin_right = 1270.0
-margin_bottom = 24.0
-text = "$100,000"
-align = 2
 
 [node name="ToolsBG" type="Panel" parent="HUD"]
 anchor_bottom = 1.0
