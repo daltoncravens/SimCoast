@@ -1,12 +1,27 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://addons/behavior_tree/src/behavior_tree.gd" type="Script" id=1]
+[ext_resource path="res://AI/economy/queue_check.gd" type="Script" id=2]
 [ext_resource path="res://addons/behavior_tree/src/btnodes/composites/bt_sequence.gd" type="Script" id=3]
 
 [node name="BehaviorTree" type="Node"]
 script = ExtResource( 1 )
 is_active = true
-debug = true
 
-[node name="BTSequence" type="Node" parent="."]
+[node name="Is Queue Empty\?" type="Node" parent="."]
+script = ExtResource( 2 )
+
+[node name="Main Sequence" type="Node" parent="Is Queue Empty\?"]
+script = ExtResource( 3 )
+
+[node name="Location" type="Node" parent="Is Queue Empty\?/Main Sequence"]
+script = ExtResource( 3 )
+
+[node name="Infrastructure" type="Node" parent="Is Queue Empty\?/Main Sequence"]
+script = ExtResource( 3 )
+
+[node name="Land Use" type="Node" parent="Is Queue Empty\?/Main Sequence"]
+script = ExtResource( 3 )
+
+[node name="Economic" type="Node" parent="Is Queue Empty\?/Main Sequence"]
 script = ExtResource( 3 )

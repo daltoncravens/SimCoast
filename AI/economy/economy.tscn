@@ -14,3 +14,4 @@ script = ExtResource( 2 )
 is_active = false
 _blackboard = NodePath("../Blackboard")
 _agent = NodePath("..")
+debug = false
