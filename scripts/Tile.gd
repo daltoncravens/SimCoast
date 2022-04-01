@@ -78,8 +78,14 @@ var cube = Area2D.new()
 var data = [0, 0, 0, 0, 0]
 var powered = false
 var tileDamage = 0
+# Purchase price of a tile
 var landValue = 0
+# Income of a zone
 var profitRate = 0
+
+# Economy AI: percentages
+var desirability = 0.2
+
 
 func _init(a, b, c, d, e, f, g, h, k, l, m):
 	self.i = a
@@ -94,6 +100,7 @@ func _init(a, b, c, d, e, f, g, h, k, l, m):
 	tileDamage = k
 	landValue = l
 	profitRate = m
+	
 
 func get_save_tile_data():
 	return [i, j, baseHeight, waterHeight, base, zone, inf, data, tileDamage, landValue, profitRate]

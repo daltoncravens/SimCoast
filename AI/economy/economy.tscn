@@ -11,6 +11,5 @@ script = ExtResource( 3 )
 script = ExtResource( 2 )
 
 [node name="BehaviorTree" parent="." instance=ExtResource( 1 )]
-is_active = false
 _blackboard = NodePath("../Blackboard")
 _agent = NodePath("..")

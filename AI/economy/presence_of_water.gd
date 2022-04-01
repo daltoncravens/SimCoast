@@ -1,8 +1,8 @@
 extends BTLeaf
 
 
-const INNER_NEIGHBOR = 10
-const OUTER_NEIGHBOR = 5
+const INNER_NEIGHBOR = 0.10
+const OUTER_NEIGHBOR = 0.5
 
 
 # Is the zone near a body of water? If so, value increases
@@ -15,24 +15,22 @@ func _tick(agent: Node, blackboard: Blackboard) -> bool:
 	var neighbors = [[tile.i-1, tile.j], [tile.i+1, tile.j], [tile.i, tile.j-1], [tile.i, tile.j+1]]
 	for n in neighbors:
 		if is_valid_tile(n[0], n[1]):
-			pass
-		if Global.tileMap[n[0]][n[1]].base == Tile.TileBase.OCEAN:
-			is_close_to_water = true
+			if Global.tileMap[n[0]][n[1]].base == Tile.TileBase.OCEAN:
+				is_close_to_water = true
 
 	# If tile is not touching water, check second neighbors for water
 	if is_close_to_water == false:		
 		var far_neighbors = [[tile.i-2, tile.j], [tile.i+2, tile.j], [tile.i, tile.j-2], [tile.i, tile.j+2]]
 		for n in far_neighbors:
 			if is_valid_tile(n[0], n[1]):
-				pass
-			if Global.tileMap[n[0]][n[1]].base == Tile.TileBase.OCEAN:
-				is_far_to_water = true
+				if Global.tileMap[n[0]][n[1]].base == Tile.TileBase.OCEAN:
+					is_far_to_water = true
 	
 	# Based on priority, modify tile value			
 	if is_close_to_water:
-		tile.landvalue += INNER_NEIGHBOR
+		tile.desirability += INNER_NEIGHBOR
 	elif is_far_to_water:
-		tile.landvalue += OUTER_NEIGHBOR
+		tile.desirability += OUTER_NEIGHBOR
 						
 	return succeed()
 

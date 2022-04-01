@@ -38,6 +38,9 @@ script = ExtResource( 3 )
 [node name="Zone Connections" type="Node" parent="Is Queue Empty\?/Main Sequence/Infrastructure"]
 script = ExtResource( 8 )
 
+[node name="Number of Zones" type="Node" parent="Is Queue Empty\?/Main Sequence/Infrastructure"]
+script = ExtResource( 6 )
+
 [node name="Succeeder" type="Node" parent="Is Queue Empty\?/Main Sequence/Infrastructure"]
 script = ExtResource( 12 )
 
@@ -53,14 +56,14 @@ script = ExtResource( 12 )
 [node name="Economic" type="Node" parent="Is Queue Empty\?/Main Sequence"]
 script = ExtResource( 3 )
 
-[node name="Number of Zones" type="Node" parent="Is Queue Empty\?/Main Sequence/Economic"]
-script = ExtResource( 6 )
-
 [node name="City Wealth" type="Node" parent="Is Queue Empty\?/Main Sequence/Economic"]
 script = ExtResource( 5 )
 
 [node name="Taxation Rate" type="Node" parent="Is Queue Empty\?/Main Sequence/Economic"]
 script = ExtResource( 11 )
+__meta__ = {
+"_editor_description_": "Property tax"
+}
 
 [node name="Validator" type="Node" parent="Is Queue Empty\?/Main Sequence"]
 script = ExtResource( 4 )
