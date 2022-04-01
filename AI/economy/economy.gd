@@ -19,8 +19,9 @@ func _process(delta):
 # Obtains a new tile queue and sets it in the blackboard	
 func update_AI():
 	var latest = update_queue()
-	$Blackboard.set_data("queue", latest)
-	$Blackboard.set_data("queue_empty", false)
+	if latest.size() != 0:
+		$Blackboard.set_data("queue", latest)
+		$Blackboard.set_data("queue_empty", false)
 	
 
 # Refills the zone queue
