@@ -28,6 +28,10 @@ func adjust_player_money(adjustVal):
 	money += adjustVal
 	$Money.text = "$" + comma_values(str(money))
 	
+func adjust_city_income(val):
+	city_income = val
+	$City_Income.text = "$" + comma_values(str(city_income))
+	
 func collectTaxes():
 	var taxProfit = 0
 	var mapHeight = Global.mapHeight
@@ -36,11 +40,25 @@ func collectTaxes():
 		for j in mapWidth:
 			var currTile = Global.tileMap[i][j]
 			if currTile.zone == Tile.TileZone.HEAVY_COMMERCIAL || currTile.zone == Tile.TileZone.LIGHT_COMMERCIAL:
-				taxProfit += currTile.profitRate * (city_tax_rate + property_tax_rate)
+				taxProfit += (currTile.profitRate * city_tax_rate) + (currTile.data[0] * property_tax_rate)
 			elif currTile.zone == Tile.TileZone.HEAVY_RESIDENTIAL || currTile.zone == Tile.TileZone.LIGHT_RESIDENTIAL:
-				taxProfit += currTile.get * property_tax_rate
+				taxProfit += currTile.data[0] * property_tax_rate
 	adjust_player_money(taxProfit)
-			
+	
+func calcCityIncome():
+	var numOfZones = 0
+	var totalIncome = 0
+	var mapHeight = Global.mapHeight
+	var mapWidth = Global.mapWidth
+	for i in mapHeight:
+		for j in mapWidth:
+			var currTile = Global.tileMap[i][j]
+			if currTile.zone == Tile.TileZone.HEAVY_COMMERCIAL || currTile.zone == Tile.TileZone.LIGHT_COMMERCIAL:
+				totalIncome += currTile.profitRate
+				numOfZones += 1
+	var avgIncome = totalIncome / numOfZones
+	adjust_city_income(avgIncome)
+	return avgIncome
 	
 
 # Helper Functions

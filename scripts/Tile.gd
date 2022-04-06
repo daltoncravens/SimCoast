@@ -94,8 +94,11 @@ const BASE_SAND = -0.05
 const PROP_TAX_HEAVY = -0.1
 const PROP_TAX_LOW = 0.05
 const SALES_TAX_HEAVY = -0.05
+const WEALTH_NEG = -0.05
+const WEALTH_DESIRE = 0.025
 
-# Economy AI: Equation variable booleans
+
+# Economy AI: Equation variable booleans & values
 var is_close_water = false
 var is_far_water = false
 var tile_base_dirt = false
@@ -103,6 +106,8 @@ var tile_base_rock = false
 var tile_base_sand = false
 var prop_tax_weight = 0
 var is_sales_tax_heavy = false
+var is_neg_profit = false
+var wealth_weight = 0
 
 
 func _init(a, b, c, d, e, f, g, h, k, l, m):
