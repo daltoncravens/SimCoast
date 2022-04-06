@@ -26,11 +26,12 @@ var property_tax_rate = 0.01
 # EX: if player spends $500 then adjustVal should be -500
 func adjust_player_money(adjustVal):
 	money += adjustVal
-	$Money.text = "$" + comma_values(str(money))
+	# $Money.text = "$" + comma_values(str(money))
 	
 func adjust_city_income(val):
 	city_income = val
-	$City_Income.text = "$" + comma_values(str(city_income))
+	# get_node().text = "$" + comma_values(str(city_income))
+	print("$" + comma_values(str(city_income)))
 	
 func collectTaxes():
 	var taxProfit = 0
@@ -56,7 +57,9 @@ func calcCityIncome():
 			if currTile.zone == Tile.TileZone.HEAVY_COMMERCIAL || currTile.zone == Tile.TileZone.LIGHT_COMMERCIAL:
 				totalIncome += currTile.profitRate
 				numOfZones += 1
-	var avgIncome = totalIncome / numOfZones
+	var avgIncome = 0
+	if numOfZones != 0:
+		avgIncome = totalIncome / numOfZones
 	adjust_city_income(avgIncome)
 	return avgIncome
 	

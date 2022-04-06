@@ -9,9 +9,9 @@ func _tick(agent: Node, blackboard: Blackboard) -> bool:
 		tile.is_neg_profit = true
 	elif tile.profitRate < avgIncome - 1000:
 		tile.wealth_weight = 0
-	elif avgIncome - 1000 <= tile.profitRate < avgIncome:
+	elif avgIncome - 1000 <= tile.profitRate && tile.profitRate < avgIncome:
 		tile.wealth_weight = 1
-	elif avgIncome <= tile.profitRate < avgIncome + 1000:
+	elif avgIncome <= tile.profitRate && tile.profitRate < avgIncome + 1000:
 		tile.wealth_weight = 2
 	else:
 		tile.wealth_weight = 4

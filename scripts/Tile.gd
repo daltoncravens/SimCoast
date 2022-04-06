@@ -247,6 +247,8 @@ func has_building():
 
 func set_zone(type):
 	zone = type
+	if type == TileZone.HEAVY_COMMERCIAL || type == TileZone.LIGHT_COMMERCIAL:
+		profitRate = 10000
 	data = [0, 4, 0, 0, 0]
 
 func add_building():		
