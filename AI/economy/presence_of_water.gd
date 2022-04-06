@@ -22,7 +22,8 @@ func _tick(agent: Node, blackboard: Blackboard) -> bool:
 
 	# Checking if this zone is second neighbor to a water tile
 	if is_far_water == false:		
-		var far_neighbors = [[tile.i-2, tile.j], [tile.i+2, tile.j], [tile.i, tile.j-2], [tile.i, tile.j+2]]
+		var far_neighbors = [[tile.i-2, tile.j], [tile.i+2, tile.j], [tile.i, tile.j-2], [tile.i, tile.j+2], \
+			[tile.i+1, tile.j+1], [tile.i-1, tile.j+1], [tile.i-1, tile.j-1], [tile.i+1, tile.j-1]]
 		for n in far_neighbors:
 			if is_valid_tile(n[0], n[1]):
 				if Global.tileMap[n[0]][n[1]].base == Tile.TileBase.OCEAN:
