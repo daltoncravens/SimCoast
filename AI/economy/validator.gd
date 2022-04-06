@@ -19,7 +19,8 @@ func _tick(agent: Node, blackboard: Blackboard) -> bool:
 		int(tile.is_sales_tax_heavy) * tile.SALES_TAX_HEAVY + \
 		tile.prop_tax_weight + \
 		int(tile.is_neg_profit) * tile.WEALTH_NEG + \
-		tile.wealth_weight * tile.WEALTH_DESIRE
+		tile.wealth_weight * tile.WEALTH_DESIRE + \
+		tile.tile_dmg_weight
 		
 	if desirability > UPPER_LIMIT:
 		desirability = UPPER_LIMIT

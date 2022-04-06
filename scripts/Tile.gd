@@ -114,6 +114,7 @@ var prop_tax_weight = 0
 var is_sales_tax_heavy = false
 var is_neg_profit = false
 var wealth_weight = 0
+var tile_dmg_weight = 0
 
 
 func _init(a, b, c, d, e, f, g, h, k, l, m):
