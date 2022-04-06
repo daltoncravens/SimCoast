@@ -91,16 +91,22 @@ const WATER_FAR = 0.05
 const BASE_DIRT = 0.05
 const BASE_ROCK = 0
 const BASE_SAND = -0.05
+const RESIDENTIAL_NEIGHBOR = 0.05
+const COMMERCIAL_NEIGHBOR = 0.10
+const INDUSTRIAL_NEIGHBOR = -0.2
 const PROP_TAX_HEAVY = -0.1
 const PROP_TAX_LOW = 0.05
 const SALES_TAX_HEAVY = -0.05
 
-# Economy AI: Equation variable booleans
+# Economy AI: Equation variables
 var is_close_water = false
 var is_far_water = false
 var tile_base_dirt = false
 var tile_base_rock = false
 var tile_base_sand = false
+var residential_neighbors = 0
+var commercial_neighbors = 0
+var industrial_neighbors = 0
 var prop_tax_weight = 0
 var is_sales_tax_heavy = false
 
