@@ -83,8 +83,15 @@ var landValue = 0
 # Income of a zone
 var profitRate = 0
 
-# Economy AI: percentages
+# Economy AI: equation coefficient constants
 var desirability = 0.2
+const BASE_DESIRABILITY = 0.2
+const WATER_CLOSE = 0.1
+const WATER_FAR = 0.05
+
+# Economy AI: Equation variable booleans
+var is_close_water = false
+var is_far_water = false
 
 
 func _init(a, b, c, d, e, f, g, h, k, l, m):

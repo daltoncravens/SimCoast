@@ -7,30 +7,30 @@ const OUTER_NEIGHBOR = 0.5
 
 # Is the zone near a body of water? If so, value increases
 func _tick(agent: Node, blackboard: Blackboard) -> bool:
-	var is_close_to_water = false
-	var is_far_to_water = false
 	var tile = blackboard.get_data("queue").front()
+	var is_close_water = tile.is_close_water
+	var is_far_water = tile.is_far_water
 	
-	# Check all inner neighbor tiles to check for water
-	var neighbors = [[tile.i-1, tile.j], [tile.i+1, tile.j], [tile.i, tile.j-1], [tile.i, tile.j+1]]
-	for n in neighbors:
-		if is_valid_tile(n[0], n[1]):
-			if Global.tileMap[n[0]][n[1]].base == Tile.TileBase.OCEAN:
-				is_close_to_water = true
+	# Checking if this zone is touching a water tile
+	if is_close_water == false:
+		# Check all inner neighbor tiles to check for water
+		var neighbors = [[tile.i-1, tile.j], [tile.i+1, tile.j], [tile.i, tile.j-1], [tile.i, tile.j+1]]
+		for n in neighbors:
+			if is_valid_tile(n[0], n[1]):
+				if Global.tileMap[n[0]][n[1]].base == Tile.TileBase.OCEAN:
+					is_close_water = true
 
-	# If tile is not touching water, check second neighbors for water
-	if is_close_to_water == false:		
+	# Checking if this zone is second neighbor to a water tile
+	if is_far_water == false:		
 		var far_neighbors = [[tile.i-2, tile.j], [tile.i+2, tile.j], [tile.i, tile.j-2], [tile.i, tile.j+2]]
 		for n in far_neighbors:
 			if is_valid_tile(n[0], n[1]):
 				if Global.tileMap[n[0]][n[1]].base == Tile.TileBase.OCEAN:
-					is_far_to_water = true
+					is_far_water = true
 	
-	# Based on priority, modify tile value			
-	if is_close_to_water:
-		tile.desirability += INNER_NEIGHBOR
-	elif is_far_to_water:
-		tile.desirability += OUTER_NEIGHBOR
+	# update tile variable booleans			
+	tile.is_close_water = is_close_water
+	tile.is_far_water = is_far_water
 						
 	return succeed()
 
