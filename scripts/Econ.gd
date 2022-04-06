@@ -16,8 +16,10 @@ const REMOVE_COMMERCIAL_BUILDING  = 0.3
 
 # Player/Mayor Constants
 var money = 100000
+# Sales Tax
 var city_tax_rate = BASE_TAX_RATE
 var city_income = 0 # Net Profit
+# Property Tax
 var property_tax_rate = 0.01 
 
 # adjustVal parameter takes in the exact amount loss or gain towards the player money 
@@ -36,7 +38,7 @@ func collectTaxes():
 			if currTile.zone == Tile.TileZone.HEAVY_COMMERCIAL || currTile.zone == Tile.TileZone.LIGHT_COMMERCIAL:
 				taxProfit += currTile.profitRate * (city_tax_rate + property_tax_rate)
 			elif currTile.zone == Tile.TileZone.HEAVY_RESIDENTIAL || currTile.zone == Tile.TileZone.LIGHT_RESIDENTIAL:
-				taxProfit += currTile.profitRate * property_tax_rate
+				taxProfit += currTile.get * property_tax_rate
 	adjust_player_money(taxProfit)
 			
 	
