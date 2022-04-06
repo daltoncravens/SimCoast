@@ -17,8 +17,9 @@ func _tick(agent: Node, blackboard: Blackboard) -> bool:
 		int(tile.tile_base_dirt) * tile.BASE_DIRT + int(tile.tile_base_rock) * tile.BASE_ROCK + int(tile.tile_base_sand) * tile.BASE_SAND + \
 		tile.residential_neighbors * tile.RESIDENTIAL_NEIGHBOR + tile.commercial_neighbors * tile.COMMERCIAL_NEIGHBOR + tile.industrial_neighbors * tile.INDUSTRIAL_NEIGHBOR + \
 		int(tile.is_sales_tax_heavy) * tile.SALES_TAX_HEAVY + \
-		tile.prop_tax_weight
-		
+		tile.prop_tax_weight + \
+		int(tile.is_neg_profit) * tile.WEALTH_NEG + \
+		tile.wealth_weight * tile.WEALTH_DESIRE
 		
 	if desirability > UPPER_LIMIT:
 		desirability = UPPER_LIMIT
