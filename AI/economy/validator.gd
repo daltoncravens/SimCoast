@@ -14,7 +14,13 @@ func _tick(agent: Node, blackboard: Blackboard) -> bool:
 	var desirability = tile.BASE_DESIRABILITY + \
 		int(tile.is_close_water) * tile.WATER_CLOSE + \
 		int(tile.is_far_water) * tile.WATER_FAR + \
+<<<<<<< Updated upstream
 		int(tile.tile_base_dirt) * tile.BASE_DIRT + int(tile.tile_base_rock) * tile.BASE_ROCK + int(tile.tile_base_sand) * tile.BASE_SAND
+=======
+		int(tile.is_sales_tax_heavy) * tile.SALES_TAX_HEAVY + \
+		tile.prop_tax_weight + \
+		
+>>>>>>> Stashed changes
 		
 	if desirability > UPPER_LIMIT:
 		desirability = UPPER_LIMIT
