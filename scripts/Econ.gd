@@ -26,11 +26,11 @@ var property_tax_rate = 0.01
 # EX: if player spends $500 then adjustVal should be -500
 func adjust_player_money(adjustVal):
 	money += adjustVal
-	# $Money.text = "$" + comma_values(str(money))
+	get_node("/root/CityMap/HUD/TopBar/HBoxContainer/Money").text = "$" + comma_values(str(money))
 	
 func adjust_city_income(val):
 	city_income = val
-	# get_node().text = "$" + comma_values(str(city_income))
+	get_node("/root/CityMap/HUD/TopBar/HBoxContainer/City_Income").text = "$" + comma_values(str(city_income))
 	print("$" + comma_values(str(city_income)))
 	
 func collectTaxes():

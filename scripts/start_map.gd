@@ -305,6 +305,7 @@ func _process(delta):
 func update_game_state():
 	#print("Updating game state on tick: " + str(numTicks))
 	UpdateWaves.update_waves()
+	Econ.collectTaxes()
 
 func update_graphics():
 	#print("Updating graphics on tick: " + str(numTicks))
