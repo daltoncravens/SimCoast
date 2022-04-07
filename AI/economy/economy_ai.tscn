@@ -41,9 +41,6 @@ script = ExtResource( 8 )
 [node name="Number of Zones" type="Node" parent="Is Queue Empty\?/Main Sequence/Infrastructure"]
 script = ExtResource( 6 )
 
-[node name="Succeeder" type="Node" parent="Is Queue Empty\?/Main Sequence/Infrastructure"]
-script = ExtResource( 12 )
-
 [node name="Land Use" type="Node" parent="Is Queue Empty\?/Main Sequence"]
 script = ExtResource( 3 )
 

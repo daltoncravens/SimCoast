@@ -33,6 +33,10 @@ var camDirection = 0
 var rowRange = range(0, mapWidth, 1)
 var colRange = range(0, mapHeight, 1)
 
+# For Economy AI use only (see number_of_zones.gd)
+var numZones = 0
+var numPeople = 0
+
 func initTileMap():
 	var tm = []
 	
