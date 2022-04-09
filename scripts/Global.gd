@@ -33,6 +33,10 @@ var camDirection = 0
 var rowRange = range(0, mapWidth, 1)
 var colRange = range(0, mapHeight, 1)
 
+# For Economy AI use only (see number_of_zones.gd)
+var numZones = 0
+var numPeople = 0
+
 func initTileMap():
 	var tm = []
 	
@@ -43,7 +47,7 @@ func initTileMap():
 
 	for i in mapHeight:
 		for j in mapWidth:
-			tm[i][j] = Tile.new(i, j, 0, 0, 0, 0, 0, [0, 0, 0, 0, 0])
+			tm[i][j] = Tile.new(i, j, 0, 0, 0, 0, 0, [0, 0, 0, 0, 0], 100, Econ.TILE_BASE_VALUE, 0)
 	
 	return tm
 

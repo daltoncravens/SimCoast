@@ -77,8 +77,49 @@ var inf = 0
 var cube = Area2D.new()
 var data = [0, 0, 0, 0, 0]
 var powered = false
+var tileDamage = 0
+# Purchase price of a tile
+var landValue = 0
+# Income of a zone
+var profitRate = 0
 
-func _init(a, b, c, d, e, f, g, h):
+# Economy AI: equation coefficient constants
+var desirability = 0.2
+const BASE_DESIRABILITY = 0.2
+const WATER_CLOSE = 0.1
+const WATER_FAR = 0.05
+const BASE_DIRT = 0.05
+const BASE_ROCK = 0
+const BASE_SAND = -0.05
+const RESIDENTIAL_NEIGHBOR = 0.05
+const COMMERCIAL_NEIGHBOR = 0.10
+const INDUSTRIAL_NEIGHBOR = -0.2
+const NUMBER_ZONES = 0.01
+const NUMBER_PEOPLE = 0.001
+const PROP_TAX_HEAVY = -0.1
+const PROP_TAX_LOW = 0.05
+const SALES_TAX_HEAVY = -0.05
+const WEALTH_NEG = -0.05
+const WEALTH_DESIRE = 0.025
+
+
+# Economy AI: Equation variable booleans & values
+var is_close_water = false
+var is_far_water = false
+var tile_base_dirt = false
+var tile_base_rock = false
+var tile_base_sand = false
+var residential_neighbors = 0
+var commercial_neighbors = 0
+var industrial_neighbors = 0
+var prop_tax_weight = 0
+var is_sales_tax_heavy = false
+var is_neg_profit = false
+var wealth_weight = 0
+var tile_dmg_weight = 0
+
+
+func _init(a, b, c, d, e, f, g, h, k, l, m):
 	self.i = a
 	self.j = b
 
@@ -88,9 +129,13 @@ func _init(a, b, c, d, e, f, g, h):
 	zone = f
 	inf = g
 	data = h
+	tileDamage = k
+	landValue = l
+	profitRate = m
+	
 
 func get_save_tile_data():
-	return [i, j, baseHeight, waterHeight, base, zone, inf, data]
+	return [i, j, baseHeight, waterHeight, base, zone, inf, data, tileDamage, landValue, profitRate]
 
 func paste_tile(tile):
 	baseHeight = tile.baseHeight
@@ -99,12 +144,19 @@ func paste_tile(tile):
 	zone = tile.zone
 	inf = tile.inf
 	data = tile.data
+	tileDamage = tile.tileDamage
+	landValue = tile.landValue
+	profitRate = tile.profitRate
 
 func clear_tile():
+	if zone == TileZone.HEAVY_COMMERCIAL || zone == TileZone.LIGHT_COMMERCIAL:
+		tileDamage -= data[0] * Econ.REMOVE_COMMERCIAL_BUILDING
+	else:
+		tileDamage -= data[0] * Econ.REMOVE_BUILDING_DAMAGE
 	zone = TileZone.NONE
 	inf = TileInf.NONE
 	data = [0, 0, 0, 0, 0]
-
+	
 func raise_tile():
 	baseHeight += 1
 	if baseHeight > Global.MAX_HEIGHT:
@@ -198,6 +250,8 @@ func has_building():
 
 func set_zone(type):
 	zone = type
+	if type == TileZone.HEAVY_COMMERCIAL || type == TileZone.LIGHT_COMMERCIAL:
+		profitRate = 10000
 	data = [0, 4, 0, 0, 0]
 
 func add_building():		
@@ -205,6 +259,15 @@ func add_building():
 	if data[0] < data[1]:
 		data[0] += 1
 		data[3] += 4
+	match(zone):
+		TileZone.HEAVY_RESIDENTIAL:
+			Econ.adjust_player_money(-30000)
+		TileZone.HEAVY_COMMERCIAL:
+			Econ.adjust_player_money(-40000)
+		TileZone.LIGHT_COMMERCIAL:
+			Econ.adjust_player_money(-20000)
+		TileZone.LIGHT_RESIDENTIAL:
+			Econ.adjust_player_money(-10000)
 
 func remove_building():		
 	if data[0] <= 1:
@@ -216,6 +279,10 @@ func remove_building():
 		data[3] -= 4
 		if data[2] > data[3]:
 			data[2] = data[3]
+	if zone == TileZone.HEAVY_COMMERCIAL || zone == TileZone.LIGHT_COMMERCIAL:
+		tileDamage -= Econ.REMOVE_COMMERCIAL_BUILDING
+	else:
+		tileDamage -= Econ.REMOVE_BUILDING_DAMAGE
 
 func add_people(n):	
 	data[2] += n
