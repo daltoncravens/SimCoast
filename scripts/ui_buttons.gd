@@ -150,7 +150,7 @@ func button_pressed():
 		
 		'damage_button':
 			Global.mapTool = Global.Tool.NONE
-			get_node("../../").calculate_damage()
+			City.calculate_damage()
 		
 		'satisfaction_button':
 			Global.mapTool = Global.Tool.NONE

@@ -310,7 +310,7 @@ func update_game_state():
 func update_graphics():
 	#print("Updating graphics on tick: " + str(numTicks))
 	UpdateGraphics.update_graphics()
-
+	UpdatePopulation.update_population()
 
 func _on_play_button_toggled(button_pressed:bool):
 	isPaused = button_pressed

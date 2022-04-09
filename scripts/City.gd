@@ -241,7 +241,7 @@ func calculate_damage():
 				elif tile.get_base() == Tile.TileBase.SAND:
 					if tile.get_water_height() >= 5:
 						tile.lower_tile()
-				tile.remove_water()
+				#tile.remove_water()
 				#tile.cube.update()
 
 	# Restore ocean height to sea level
