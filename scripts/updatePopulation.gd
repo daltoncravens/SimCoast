@@ -5,7 +5,6 @@ extends Node
 var BASE_BUILD_CHANCE = 0.01
 var BASE_MOVE_CHANCE = 0.01
 var BASE_LEAVE_CHANCE = 0.01
-var TILE_VALUE = 1
 
 var NO_POWER_UNHAPPINESS = 10
 var DAMAGE_UNHAPPINESS = 10
@@ -20,9 +19,9 @@ func update_population():
 			if Global.tileMap[i][j].is_zoned() && Global.tileMap[i][j].is_powered():
 				
 				rng.randomize()
-				if ((BASE_BUILD_CHANCE * TILE_VALUE) > rng.randf()):
+				if ((BASE_BUILD_CHANCE * Global.tileMap[i][j].desirability) > rng.randf()):
 					Global.tileMap[i][j].add_building()
-				if ((BASE_MOVE_CHANCE * TILE_VALUE) > rng.randf()):
+				if ((BASE_MOVE_CHANCE * Global.tileMap[i][j].desirability) > rng.randf()):
 					Global.tileMap[i][j].add_people(1)
 					
 			if Global.tileMap[i][j].has_building():
