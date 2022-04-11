@@ -44,7 +44,7 @@ func collectTaxes():
 				taxProfit += (currTile.profitRate * city_tax_rate) + (currTile.data[0] * property_tax_rate)
 			elif currTile.zone == Tile.TileZone.HEAVY_RESIDENTIAL || currTile.zone == Tile.TileZone.LIGHT_RESIDENTIAL:
 				taxProfit += currTile.data[0] * property_tax_rate
-	adjust_player_money(taxProfit)
+	adjust_player_money(round(taxProfit))
 	
 func calcCityIncome():
 	var numOfZones = 0
