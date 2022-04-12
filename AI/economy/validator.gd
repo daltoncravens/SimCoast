@@ -3,7 +3,7 @@ extends BTLeaf
 
 # Based on percentages
 const UPPER_LIMIT = 0.99
-const LOWER_LIMIT = 0.1
+const LOWER_LIMIT = 0.01
 
 
 # Now that the tile's variable coefficients have been updated, update desirability
