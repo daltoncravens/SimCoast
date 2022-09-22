@@ -44,3 +44,4 @@ func update_tile_display(i, j):
 			$BottomBar/HoverText.text += "     Power: ON"
 		else:
 			$BottomBar/HoverText.text += "     Power: OFF"
+

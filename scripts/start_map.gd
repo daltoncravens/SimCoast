@@ -15,6 +15,9 @@ func _ready():
 	$HUD/TopBar/HBoxContainer/Money.text = "Player Money: $" + Econ.comma_values(str(Econ.money))
 	$HUD/TopBar/HBoxContainer/City_Income.text = "City's Net Profit: $" + Econ.comma_values(str(Econ.city_income))
 	$HUD/TopBar/HBoxContainer/City_Tax_Rate.text = "Tax Rate: " + str(Econ.city_tax_rate * 100) + "%"
+	$HUD/Date/Year.text = str(UpdateDate.year)
+	$HUD/Date/Month.text = UpdateDate.Months.keys()[UpdateDate.month]
+	
 
 func initSave_Exit():
 	$HUD/ToolMenu/VBoxContainer/VBoxContainer/save_button.connect("pressed", self, "_on_SaveButton_pressed")
@@ -305,12 +308,13 @@ func _process(delta):
 func update_game_state():
 	#print("Updating game state on tick: " + str(numTicks))
 	UpdateWaves.update_waves()
+	UpdatePopulation.update_population()
+	UpdateDate.update_date()
 	Econ.collectTaxes()
 
 func update_graphics():
 	#print("Updating graphics on tick: " + str(numTicks))
 	UpdateGraphics.update_graphics()
-	UpdatePopulation.update_population()
 
 func _on_play_button_toggled(button_pressed:bool):
 	isPaused = button_pressed

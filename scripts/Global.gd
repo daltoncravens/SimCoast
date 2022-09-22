@@ -28,6 +28,9 @@ var tileMap = initTileMap()
 var seaLevel = 2       # World value that ocean resets to after a storm surge
 var oceanHeight = 0    # Current ocean level on map
 
+#var month = 0
+#var year = 2022
+
 # Values by Camera2D to rotate camera and VectorMap to draw tiles
 var camDirection = 0
 var rowRange = range(0, mapWidth, 1)
