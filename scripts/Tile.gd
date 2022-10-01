@@ -262,15 +262,15 @@ func add_building():
 	if data[0] < data[1]:
 		data[0] += 1
 		data[3] += 4
-	match(zone):
-		TileZone.HEAVY_RESIDENTIAL:
-			Econ.adjust_player_money(-30000)
-		TileZone.HEAVY_COMMERCIAL:
-			Econ.adjust_player_money(-40000)
-		TileZone.LIGHT_COMMERCIAL:
-			Econ.adjust_player_money(-20000)
-		TileZone.LIGHT_RESIDENTIAL:
-			Econ.adjust_player_money(-10000)
+	#match(zone):
+	#	TileZone.HEAVY_RESIDENTIAL:
+	#		Econ.adjust_player_money(-30000)
+	#	TileZone.HEAVY_COMMERCIAL:
+	#		Econ.adjust_player_money(-40000)
+	#	TileZone.LIGHT_COMMERCIAL:
+	#		Econ.adjust_player_money(-20000)
+	#	TileZone.LIGHT_RESIDENTIAL:
+	#		Econ.adjust_player_money(-10000)
 
 func remove_building():		
 	if data[0] <= 1:

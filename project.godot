@@ -141,7 +141,7 @@ _global_script_class_icons={
 [application]
 
 config/name="SimCoast"
-run/main_scene="res://start_map.tscn"
+run/main_scene="res://ui/title_scrn/StartMenu.tscn"
 config/icon="res://icon.png"
 
 [autoload]
@@ -155,6 +155,7 @@ UpdateWaves="*res://scripts/updateWaves.gd"
 SaveDialog="*res://SaveDialog.gd"
 SaveLoad="*res://scripts/Save_Load.gd"
 Economy="*res://AI/economy/economy.tscn"
+UpdateDate="*res://scripts/updateDate.gd"
 
 [display]
 
