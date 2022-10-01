@@ -142,33 +142,53 @@ func _unhandled_input(event):
 				
 			Global.Tool.INF_POWER_PLANT:
 				if Input.is_action_pressed("left_click"):
-					if tile.get_base() == Tile.TileBase.DIRT || tile.get_base() == Tile.TileBase.ROCK:
-						tile.clear_tile()
-						tile.inf = Tile.TileInf.POWER_PLANT
-						City.connectPower()
+					if ((tile.get_base() == Tile.TileBase.DIRT || tile.get_base() == Tile.TileBase.ROCK) && tile.inf != Tile.TileInf.POWER_PLANT):
+						if (Econ.purchase_structure(Econ.POWER_PLANT_COST)):
+							tile.clear_tile()
+							tile.inf = Tile.TileInf.POWER_PLANT
+							City.connectPower()
+							City.numPowerPlants += 1
+						else:
+							actionText.text = "Not enough funds!"
+					elif (tile.inf == Tile.TileInf.POWER_PLANT):
+						actionText.text = "Cannot build here!"
 				elif Input.is_action_pressed("right_click"):
 					if tile.inf == Tile.TileInf.POWER_PLANT:
 						tile.clear_tile()
 						City.connectPower()
+						City.numPowerPlants -= 1
 						
 			Global.Tool.INF_PARK:
 				if Input.is_action_pressed("left_click"):
-					if tile.get_base() == Tile.TileBase.DIRT:
-						tile.clear_tile()
-						tile.inf = Tile.TileInf.PARK
+					if (tile.get_base() == Tile.TileBase.DIRT && tile.inf != Tile.TileInf.PARK):
+						if (Econ.purchase_structure(Econ.PARK_COST)):
+							tile.clear_tile()
+							tile.inf = Tile.TileInf.PARK
+							City.numParks += 1
+						else:
+							actionText.text = "Not enough funds!"
+					elif (tile.inf == Tile.TileInf.PARK):
+						actionText.text = "Cannot build here!"
 					else:
-						actionText.text = "Park must be built on a dirt base"
+						actionText.text = "Park must be built on a dirt base!"
 				elif Input.is_action_pressed("right_click"):
 					if tile.inf == Tile.TileInf.PARK:
 						tile.clear_tile()
+						City.numParks -= 1
 			
 			Global.Tool.INF_ROAD:
 				if Input.is_action_pressed("left_click"):
-					if tile.get_base() == Tile.TileBase.DIRT || tile.get_base() == Tile.TileBase.ROCK:
-						tile.clear_tile()
-						tile.inf = Tile.TileInf.ROAD
-						City.connectRoads(tile)
-						City.connectPower()
+					if ((tile.get_base() == Tile.TileBase.DIRT || tile.get_base() == Tile.TileBase.ROCK) && tile.inf != Tile.TileInf.ROAD):
+						if (Econ.purchase_structure(Econ.ROAD_COST)):
+							tile.clear_tile()
+							tile.inf = Tile.TileInf.ROAD
+							City.connectRoads(tile)
+							City.connectPower()
+							City.numRoads += 1
+						else:
+							actionText.text = "Not enough funds!"
+					elif (tile.inf == Tile.TileInf.ROAD):
+						actionText.text = "Cannot build here!"
 					else:
 						actionText.text = "Road not buildable on tile base type"
 				elif Input.is_action_pressed("right_click"):
@@ -176,6 +196,7 @@ func _unhandled_input(event):
 						tile.clear_tile()
 						City.connectRoads(tile)
 						City.connectPower()
+						City.numRoads -= 1
 
 			Global.Tool.INF_BEACH_ROCKS:
 				if tile.get_base() == Tile.TileBase.SAND:
@@ -309,12 +330,14 @@ func update_game_state():
 	#print("Updating game state on tick: " + str(numTicks))
 	UpdateWaves.update_waves()
 	UpdatePopulation.update_population()
+	Econ.calcCityIncome()
+	Econ.calculate_upkeep_costs()
 	UpdateDate.update_date()
-	Econ.collectTaxes()
-
+	
 func update_graphics():
 	#print("Updating graphics on tick: " + str(numTicks))
 	UpdateGraphics.update_graphics()
+	Econ.updateProfitDisplay()
 
 func _on_play_button_toggled(button_pressed:bool):
 	isPaused = button_pressed

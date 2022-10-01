@@ -1,5 +1,9 @@
 extends Node
 
+var numParks = 0
+var numPowerPlants = 0
+var numRoads = 0
+
 # Delete the last row and column of the map
 func reduce_map():
 	if Global.mapHeight <= Global.MIN_MAP_SIZE || Global.mapWidth <= Global.MIN_MAP_SIZE:

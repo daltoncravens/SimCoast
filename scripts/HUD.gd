@@ -34,7 +34,7 @@ func update_tile_display(i, j):
 	$BottomBar/HoverText.text = "(%s, %s)" % [i, j]
 	$BottomBar/HoverText.text += "     BASE: %s     HEIGHT: %s" % [base_values[tile.get_base()], tile.get_base_height()]
 	if tile.get_zone() != Tile.TileZone.NONE:
-		$BottomBar/HoverText.text += "     Zone: %s, Buildings: %s / %s, People: %s / %s, Tile Durability: %s%%, Zone Desirability: %s%%" % [zone_values[tile.get_zone()], tile.data[0], tile.data[1], tile.data[2], tile.data[3], tile.tileDamage, tile.desirability]
+		$BottomBar/HoverText.text += "     Zone: %s, Buildings: %s / %s, People: %s / %s, Tile Durability: %s%%, Zone Desirability: %s%%, Profit Rate: %s" % [zone_values[tile.get_zone()], tile.data[0], tile.data[1], tile.data[2], tile.data[3], tile.tileDamage, tile.desirability, tile.profitRate]
 		if tile.powered:
 			$BottomBar/HoverText.text += "     Power: ON"
 		else:
