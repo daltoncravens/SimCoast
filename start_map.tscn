@@ -222,8 +222,10 @@ __meta__ = {
 }
 
 [node name="HoverText" type="Label" parent="HUD/BottomBar"]
-margin_right = 1191.0
-margin_bottom = 28.0
+margin_left = 10.0
+margin_top = 10.0
+margin_right = 1181.0
+margin_bottom = 24.0
 align = 1
 valign = 1
 
@@ -747,12 +749,14 @@ __meta__ = {
 [node name="Month" type="Label" parent="HUD/Date"]
 margin_right = 90.0
 margin_bottom = 14.0
+text = "April"
 align = 1
 
 [node name="Year" type="Label" parent="HUD/Date"]
 margin_top = 18.0
 margin_right = 90.0
 margin_bottom = 32.0
+text = "2022"
 align = 1
 
 [node name="Demand" type="HBoxContainer" parent="HUD"]
