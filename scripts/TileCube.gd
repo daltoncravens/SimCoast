@@ -425,6 +425,8 @@ func get_cube_colors():
 	match tile.get_base():
 		Tile.TileBase.DIRT:
 			colors = Tile.DIRT_COLOR.duplicate(true)
+			colors[0] = Tile.GRASS_COLOR[0]
+			colors[3] = Tile.GRASS_COLOR[1]
 		Tile.TileBase.ROCK:
 			colors = Tile.ROCK_COLOR.duplicate(true)
 		Tile.TileBase.SAND:
