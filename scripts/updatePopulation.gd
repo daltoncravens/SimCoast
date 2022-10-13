@@ -37,5 +37,5 @@ func update_population():
 					leaveChance += SEVERE_DAMAGE_UNHAPPINESS
 				
 				rng.randomize()
-				if ((BASE_LEAVE_CHANCE * leaveChance) > rng.randf()):
+				if ((BASE_LEAVE_CHANCE * leaveChance * Global.tileMap[i][j].desirability) > rng.randf()):
 					Global.tileMap[i][j].remove_people(1)

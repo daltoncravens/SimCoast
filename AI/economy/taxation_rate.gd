@@ -2,6 +2,7 @@ extends BTLeaf
 
 const avg_property_tax_rate = 0.008
 const avg_sales_tax = 0.07
+var avg_tax_rate = Econ.BASE_TAX_RATE
 
 # Tax rates change how valuable a zone is through a negative relationship
 func _tick(agent: Node, blackboard: Blackboard) -> bool:
