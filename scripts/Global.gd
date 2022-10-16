@@ -53,6 +53,14 @@ func initTileMap():
 			tm[i][j] = Tile.new(i, j, 0, 0, 0, 0, 0, [0, 0, 0, 0, 0], 100, Econ.TILE_BASE_VALUE, 0)
 	
 	return tm
+	
+func getPopulation():
+	var population = 0
+	
+	for tile in tileMap:
+		population += tile.data[2]
+	
+	return population
 
 # Map Tool Buttons that are used on map tiles
 enum Tool {
