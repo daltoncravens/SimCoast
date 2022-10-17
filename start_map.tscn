@@ -171,18 +171,23 @@ custom_constants/separation = 20
 alignment = 1
 
 [node name="Money" type="Label" parent="HUD/TopBar/HBoxContainer"]
-margin_left = 610.0
-margin_right = 610.0
+margin_left = 600.0
+margin_right = 600.0
 margin_bottom = 14.0
 
 [node name="City_Income" type="Label" parent="HUD/TopBar/HBoxContainer"]
-margin_left = 630.0
-margin_right = 630.0
+margin_left = 620.0
+margin_right = 620.0
 margin_bottom = 14.0
 
 [node name="City_Tax_Rate" type="Label" parent="HUD/TopBar/HBoxContainer"]
-margin_left = 650.0
-margin_right = 650.0
+margin_left = 640.0
+margin_right = 640.0
+margin_bottom = 14.0
+
+[node name="Population" type="Label" parent="HUD/TopBar/HBoxContainer"]
+margin_left = 660.0
+margin_right = 660.0
 margin_bottom = 14.0
 
 [node name="ActionText" type="Label" parent="HUD/TopBar"]
@@ -890,8 +895,6 @@ script = ExtResource( 7 )
 margin_left = 483.0
 margin_top = 295.0
 resizable = true
-current_dir = "res://saves"
-current_path = "res://saves/"
 script = ExtResource( 39 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -903,9 +906,6 @@ margin_bottom = 130.0
 window_title = "Open a File"
 resizable = true
 mode = 0
-current_dir = "res://saves"
-current_file = "Null.json"
-current_path = "res://saves/Null.json"
 script = ExtResource( 104 )
 
 [connection signal="toggled" from="HUD/play_button" to="." method="_on_play_button_toggled"]
