@@ -24,8 +24,9 @@ func update_population():
 				if ((BASE_BUILD_CHANCE * Global.tileMap[i][j].desirability) > rng.randf()):
 					Global.tileMap[i][j].add_building()
 				if ((BASE_MOVE_CHANCE * Global.tileMap[i][j].desirability) > rng.randf()):
-					Global.tileMap[i][j].add_people(1)
-					TOTAL_POPULATION+=1
+					var change = Global.tileMap[i][j].add_people(1)
+					print("add " + str(change))
+					TOTAL_POPULATION += change
 					
 			if Global.tileMap[i][j].has_building():
 				
@@ -40,9 +41,10 @@ func update_population():
 					leaveChance += SEVERE_DAMAGE_UNHAPPINESS
 				
 				rng.randomize()
-				if ((BASE_LEAVE_CHANCE * leaveChance * Global.tileMap[i][j].desirability) > rng.randf()):
-					Global.tileMap[i][j].remove_people(1)
-					TOTAL_POPULATION-=1
+				if ((BASE_LEAVE_CHANCE * leaveChance * Global.tileMap[i][j].desirability) > rng.randf() && TOTAL_POPULATION > 0):
+					var change = Global.tileMap[i][j].remove_people(1)
+					print("remove " + str(change))
+					TOTAL_POPULATION += change
 	
 	get_node("/root/CityMap/HUD/TopBar/HBoxContainer/Population").text = "Total Population: " + str(TOTAL_POPULATION)
 					
