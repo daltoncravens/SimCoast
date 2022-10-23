@@ -289,15 +289,21 @@ func remove_building():
 		tileDamage -= Econ.REMOVE_BUILDING_DAMAGE
 
 func add_people(n):	
+	var before = data[2]
 	data[2] += n
 	if data[2] > data[3]:
 		data[2] = data[3]
+	var after = data[2]
+	return after - before
 
 func remove_people(n):		
+	var before = data[2]
 	data[2] -= n
 	if data[2] <= 0:
 		data[2] = 0
 		data[4] = 0
+	var after = data[2]
+	return after - before
 
 func clear_house():
 	if zone != TileZone.RESIDENTIAL:
