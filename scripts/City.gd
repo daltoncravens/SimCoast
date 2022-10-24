@@ -203,9 +203,9 @@ func adjust_building_number(tile):
 
 func adjust_people_number(tile):
 	if Input.is_action_pressed("left_click"):
-		tile.add_people(1)
+		UpdatePopulation.TOTAL_POPULATION += tile.add_people(1)
 	elif Input.is_action_pressed("right_click"):
-		tile.remove_people(1)
+		UpdatePopulation.TOTAL_POPULATION += tile.remove_people(1)
 
 func calculate_satisfaction():
 	var population = 0
