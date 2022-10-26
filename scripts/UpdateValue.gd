@@ -121,7 +121,7 @@ func calc_num_zones(tile): #Return value number of zones in city
 	return ZONE_VALUE * numZones
 
 func  calc_num_people(tile): #Return value of number of people in city
-	return
+	return UpdatePopulation.TOTAL_POPULATION * PERSON_VALUE
 
 func calc_tile_damage(tile): #Return a weight depending on tile damage
 	return
