@@ -16,6 +16,7 @@ func _ready():
 	$HUD/TopBar/HBoxContainer/Money.text = "Player Money: $" + Econ.comma_values(str(Econ.money))
 	$HUD/TopBar/HBoxContainer/City_Income.text = "City's Net Profit: $" + Econ.comma_values(str(Econ.city_income))
 	$HUD/TopBar/HBoxContainer/City_Tax_Rate.text = "Tax Rate: " + str(Econ.city_tax_rate * 100) + "%"
+	$HUD/TopBar/HBoxContainer/Population.text = "Total Population: " + str(UpdatePopulation.get_population()) 
 	$HUD/Date/Year.text = str(UpdateDate.year)
 	$HUD/Date/Month.text = UpdateDate.Months.keys()[UpdateDate.month]
 	

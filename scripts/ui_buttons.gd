@@ -23,9 +23,9 @@ func button_hover(button):
 
 	match button.get_name():
 		'extend_grid_button':
-			toolInfo.text = "Add a row/column to the map"
+			toolInfo.text = "Increase tax rate"
 		'reduce_grid_button':
-			toolInfo.text = "Remove a row/column from the map"
+			toolInfo.text = "Decrease tax rate"
 		'dirt_button':
 			toolInfo.text = "Replace base tile with dirt / Raise dirt base tile height   (Right Click: Lower dirt base tile height)"
 		'rock_button':
@@ -86,11 +86,13 @@ func button_pressed():
 	
 	match group.get_pressed_button().get_name():
 		'extend_grid_button':
-			City.extend_map()
-			mapNode.initCamera()
+			Econ.adjust_tax_rate(0.01)
+			#City.extend_map()
+			#mapNode.initCamera()
 		'reduce_grid_button':
-			City.reduce_map()
-			mapNode.initCamera()
+			Econ.adjust_tax_rate(-0.01)
+			#City.reduce_map()
+			#mapNode.initCamera()
 		'dirt_button':
 			Global.mapTool = Global.Tool.BASE_DIRT
 		'rock_button':

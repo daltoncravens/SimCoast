@@ -5,17 +5,20 @@ extends Node
 const TILE_BASE_VALUE = 500
 const BUILDING_BASE_VALUE = 50
 const RESIDENT_PERSON_VALUE = 2000
-const BASE_TAX_RATE = 0.05 # 7% #TODO: Be able to update this in-game / maybe different tax rates for commercial/residentail/industry
+
+
 
 #tax rates
-const LIGHT_RES_PROPERTY_RATE = 0.05 #land value * num buildings
-const LIGHT_RES_INCOME_RATE = 0.05 #land value * num people
-const HEAVY_RES_PROPERTY_RATE = 0.05 #land value * num people
-const HEAVY_RES_INCOME_RATE = 0.05 #land value * num people
-const LIGHT_COM_PROPERTY_RATE = 0.05 #land value * num people
-const LIGHT_COM_INCOME_RATE = 0.05 #land value * num people
-const HEAVY_COM_PROPERTY_RATE = 0.05 #land value * num people
-const HEAVY_COM_INCOME_RATE = 0.05 #land value * num people
+const TAX_INCOME_MULTIPLIER = 1000
+var BASE_TAX_RATE = 0.05 # 7% #TODO: Be able to update this in-game / maybe different tax rates for commercial/residentail/industry
+var LIGHT_RES_PROPERTY_RATE = BASE_TAX_RATE #land value * num buildings
+var LIGHT_RES_INCOME_RATE = BASE_TAX_RATE #land value * num people
+var HEAVY_RES_PROPERTY_RATE = BASE_TAX_RATE #land value * num people
+var HEAVY_RES_INCOME_RATE = BASE_TAX_RATE #land value * num people
+var LIGHT_COM_PROPERTY_RATE = BASE_TAX_RATE #land value * num people
+var LIGHT_COM_INCOME_RATE = BASE_TAX_RATE #land value * num people
+var HEAVY_COM_PROPERTY_RATE = BASE_TAX_RATE #land value * num people
+var HEAVY_COM_INCOME_RATE = BASE_TAX_RATE #land value * num people
 
 # Tile Durability Constants
 const REMOVE_BUILDING_DAMAGE = 0.2
@@ -60,18 +63,18 @@ func purchase_structure(structureCost):
 func calculate_upkeep_costs():
 	city_costs = ((City.numPowerPlants * POWER_PLANT_UPKEEP_COST) + (City.numParks * PARK_UPKEEP_COST) + (City.numRoads * ROAD_UPKEEP_COST))
 
-func adjust_city_income(val):
-	city_income = val
-	get_node("/root/CityMap/HUD/TopBar/HBoxContainer/City_Income").text = "$" + comma_values(str(city_income))
-	print("$" + comma_values(str(city_income)))
+#func adjust_city_income(val):
+#	city_income = val
+#	get_node("/root/CityMap/HUD/TopBar/HBoxContainer/City_Income").text = "$" + comma_values(str(city_income))
+#	print("$" + comma_values(str(city_income)))
 	
 func updateProfitDisplay():
-	var profit = city_income - city_costs
+	var profit = round(city_income - city_costs)
 	get_node("/root/CityMap/HUD/TopBar/HBoxContainer/City_Income").text = "$" + comma_values(str(profit))
 	#print("$" + comma_values(str(profit)))
 	
 func profit():
-	var profit = city_income - city_costs
+	var profit = round(city_income - city_costs)
 	adjust_player_money(profit)
 
 func collectTaxes(): #TODO: multiply by some land/profit value
@@ -103,19 +106,19 @@ func calcCityIncome(): #Calculate tax profit
 		for j in mapWidth:
 			var currTile = Global.tileMap[i][j]
 			if currTile.zone == Tile.TileZone.HEAVY_COMMERCIAL:
-				taxProfit += (currTile.data[2] * HEAVY_COM_INCOME_RATE) #multiplied by some profit rate
-				taxProfit += (currTile.data[0] * HEAVY_COM_PROPERTY_RATE) #multiplied by some land value
+				taxProfit += (currTile.data[2] * currTile.desirability * HEAVY_COM_INCOME_RATE * TAX_INCOME_MULTIPLIER) #multiplied by some profit rate
+				taxProfit += (currTile.data[0] * currTile.desirability * HEAVY_COM_PROPERTY_RATE * TAX_INCOME_MULTIPLIER) #multiplied by some land value
 			elif currTile.zone == Tile.TileZone.LIGHT_COMMERCIAL:
-				taxProfit += (currTile.data[2] * LIGHT_COM_INCOME_RATE) #multiplied by some profit rate
-				taxProfit += (currTile.data[0] * LIGHT_COM_PROPERTY_RATE) #multiplied by some land value
+				taxProfit += (currTile.data[2] * currTile.desirability * LIGHT_COM_INCOME_RATE * TAX_INCOME_MULTIPLIER) #multiplied by some profit rate
+				taxProfit += (currTile.data[0] * currTile.desirability * LIGHT_COM_PROPERTY_RATE * TAX_INCOME_MULTIPLIER) #multiplied by some land value
 			elif currTile.zone == Tile.TileZone.HEAVY_RESIDENTIAL:
-				taxProfit += (currTile.data[2] * HEAVY_RES_INCOME_RATE) #multiplied by some profit rate
-				taxProfit += (currTile.data[0] * HEAVY_RES_PROPERTY_RATE) #multiplied by some land value
+				taxProfit += (currTile.data[2] * currTile.desirability * HEAVY_RES_INCOME_RATE * TAX_INCOME_MULTIPLIER) #multiplied by some profit rate
+				taxProfit += (currTile.data[0] * currTile.desirability * HEAVY_RES_PROPERTY_RATE * TAX_INCOME_MULTIPLIER) #multiplied by some land value
 			elif currTile.zone == Tile.TileZone.LIGHT_RESIDENTIAL:
-				taxProfit += (currTile.data[2] * LIGHT_RES_INCOME_RATE) #multiplied by some profit rate
-				taxProfit += (currTile.data[0] * LIGHT_RES_PROPERTY_RATE) #multiplied by some land value
+				taxProfit += (currTile.data[2] * currTile.desirability * LIGHT_RES_INCOME_RATE * TAX_INCOME_MULTIPLIER) #multiplied by some profit rate
+				taxProfit += (currTile.data[0] * currTile.desirability * LIGHT_RES_PROPERTY_RATE * TAX_INCOME_MULTIPLIER) #multiplied by some land value
 	city_income = taxProfit
-	return taxProfit
+	return round(taxProfit)
 	
 	#var numOfZones = 0
 	#var totalIncome = 0
@@ -132,7 +135,14 @@ func calcCityIncome(): #Calculate tax profit
 	#	avgIncome = totalIncome / numOfZones
 	#adjust_city_income(avgIncome)
 	#return avgIncome
-	
+
+func adjust_tax_rate(val):
+	BASE_TAX_RATE += val
+	if (BASE_TAX_RATE < 0):
+		BASE_TAX_RATE = 0
+	elif (BASE_TAX_RATE > 1):
+		BASE_TAX_RATE = 1
+	get_node("/root/CityMap/HUD/TopBar/HBoxContainer/City_Tax_Rate").text = "Tax Rate: " + str(BASE_TAX_RATE * 100) + "%"
 
 # Helper Functions
 func comma_values(val):
