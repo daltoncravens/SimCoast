@@ -123,14 +123,52 @@ func calc_num_zones(tile): #Return value number of zones in city
 func  calc_num_people(tile): #Return value of number of people in city
 	return UpdatePopulation.TOTAL_POPULATION * PERSON_VALUE
 
-func calc_tile_damage(tile): #Return a weight depending on tile damage
-	return
+func calc_tile_damage(tile): #Return a weight depending on tile damage (tile health)
+	# most healthy tile to least healthy
+	if tile.tileDamage == 100:
+		return 0
+	elif tile.tileDamage >= 80:
+		return -0.05
+	elif tile.tileDamage >= 60:
+		return -0.1
+	elif tile.tileDamage >= 40:
+		return -0.2
+	elif tile.tileDamage >= 20:
+		return -0.4
+	else:
+		return -0.8
 
 func calc_city_wealth(tile): #Return a weight city wealth
-	return
+	# compare avg city profit (profit per zone) to the zone's profit
+	var avgCityIncome = Econ.calcCityIncome()/calc_num_zones(tile)
+	# very below avg 
+	if tile.profitRate < avgCityIncome - 1000:
+		return -0.1
+	# below avg
+	elif tile.profitRate < avgCityIncome:
+		return -0.2
+	# above avg 
+	elif tile.profitRate > avgCityIncome:
+		return 0.1
+	# very above avg
+	else:
+		return 0.2
 
 func calc_taxation_rate(tile): #Return a weight depending on tax rate of tile
-	return
+	# these vars may not be used
+	# var avg_property_tax_rate = 0.008
+	# var avg_sales_tax = 0.07
+	# var avg_tax_rate = Econ.BASE_TAX_RATE
+	# just have impact be directly proportional to the tax rate
+	if tile.TileZone == Tile.LIGHT_RESIDENTIAL:
+		return -(Econ.LIGHT_RES_PROPERTY_RATE + Econ.LIGHT_RES_INCOME_RATE)
+	elif tile.TileZone == Tile.HEAVY_RESIDENTIAL:
+		return -(Econ.HEAVY_RES_PROPERTY_RATE + Econ.HEAVY_RES_INCOME_RATE)
+	elif tile.TileZone == Tile.LIGHT_COMMERCIAL:
+		return -(Econ.LIGHT_COM_PROPERTY_RATE + Econ.LIGHT_COM_INCOME_RATE)
+	elif tile.TileZone == Tile.HEAVY_COMMERCIAL:
+		return -(Econ.HEAVY_COM_PROPERTY_RATE + Econ.HEAVY_)
+	return 
 
 func is_valid_tile(i, j) -> bool: # Check to see if these indices are valid tile coordinates
 	if i < 0 || Global.mapWidth <= i:
