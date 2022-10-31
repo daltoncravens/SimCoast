@@ -23,8 +23,13 @@ func update_population():
 			if Global.tileMap[i][j].is_zoned() && Global.tileMap[i][j].is_powered():
 				
 				rng.randomize()
-				if ((BASE_BUILD_CHANCE * Global.tileMap[i][j].desirability) > rng.randf()):
+				#only add buildings if a tile is at over 75% capacity
+				if ((BASE_BUILD_CHANCE * Global.tileMap[i][j].desirability) > rng.randf() && Global.tileMap[i][j].data[3] != 0 && Global.tileMap[i][j].data[2]/Global.tileMap[i][j].data[3] > .5):
 					Global.tileMap[i][j].add_building()
+				#if tile has no buildings, add building if random chance hits
+				elif (Global.tileMap[i][j].data[3] == 0 && (BASE_BUILD_CHANCE * Global.tileMap[i][j].desirability) > rng.randf()):
+					Global.tileMap[i][j].add_building()
+					
 				if ((BASE_MOVE_CHANCE * Global.tileMap[i][j].desirability) > rng.randf()):
 					var change = Global.tileMap[i][j].add_people(1)
 					#print("add " + str(change))
