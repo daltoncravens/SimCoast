@@ -10,7 +10,7 @@ const RESIDENT_PERSON_VALUE = 2000
 
 #tax rates
 const TAX_INCOME_MULTIPLIER = 1000
-var BASE_TAX_RATE = 0.05 # 7% #TODO: Be able to update this in-game / maybe different tax rates for commercial/residentail/industry
+var BASE_TAX_RATE = 0.05 # 5% #TODO: Be able to update this in-game / maybe different tax rates for commercial/residentail/industry
 var LIGHT_RES_PROPERTY_RATE = BASE_TAX_RATE #land value * num buildings
 var LIGHT_RES_INCOME_RATE = BASE_TAX_RATE #land value * num people
 var HEAVY_RES_PROPERTY_RATE = BASE_TAX_RATE #land value * num people
