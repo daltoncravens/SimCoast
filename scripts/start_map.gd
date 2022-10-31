@@ -123,12 +123,15 @@ func _unhandled_input(event):
 
 			# Add/Remove People
 			Global.Tool.ADD_RES_PERSON:
-				if tile.get_zone() == Tile.TileZone.LIGHT_RESIDENTIAL || tile.get_zone() == Tile.TileZone.HEAVY_RESIDENTIAL:
-					City.adjust_people_number(tile)
+				if tile.is_residential():
+					var change = tile.add_people(1)
+					UpdatePopulation.RESIDENTS += change
+					UpdatePopulation.TOTAL_POPULATION += change
 
 			Global.Tool.ADD_COM_PERSON:
-				if tile.get_zone() == Tile.TileZone.LIGHT_COMMERCIAL || tile.get_zone() == Tile.TileZone.HEAVY_COMMERCIAL:
-					City.adjust_people_number(tile)
+				if tile.is_commercial() && UpdatePopulation.RESIDENTS * UpdatePopulation.BASE_EMPLOYMENT_RATE > UpdatePopulation.WORKERS:
+					var change = tile.add_people(1)
+					UpdatePopulation.WORKERS += change
 
 			# Water Tool
 			Global.Tool.LAYER_WATER:
