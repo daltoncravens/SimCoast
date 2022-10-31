@@ -317,3 +317,9 @@ func get_data():
 
 func _ready():
 	pass
+
+func is_residential():
+	return zone == TileZone.LIGHT_RESIDENTIAL || zone == TileZone.HEAVY_RESIDENTIAL
+	
+func is_commercial():
+	return zone == TileZone.LIGHT_COMMERCIAL || zone == TileZone.HEAVY_COMMERCIAL
