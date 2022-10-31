@@ -1,6 +1,7 @@
 extends Node
 
 const BASE_TILE_VALUE = 20 #How valuable is an empty plot of land?
+const GLOBAL_TILE_VALUE_WEIGHT = 20 #Divide calculated value by this number
 
 const WATER_TILE_WEIGHT = 5
 
@@ -42,7 +43,8 @@ func update_land_value():
 				var cityWealthValue = calc_city_wealth(currTile)
 				var taxRateValue = calc_taxation_rate(currTile)
 				
-				value = waterValue + baseValue + zoneConnectionsValue + numZonesValue + numPeopleValue + tileDamageValue + cityWealthValue + taxRateValue
+				value += waterValue + baseValue + zoneConnectionsValue + numZonesValue + numPeopleValue + tileDamageValue + cityWealthValue + taxRateValue
+				value = value / GLOBAL_TILE_VALUE_WEIGHT
 				currTile.landValue = value
 
 func calc_presence_of_water(tile): #Return value of nearby water tiles within a radius
