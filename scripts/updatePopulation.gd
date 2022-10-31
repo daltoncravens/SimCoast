@@ -30,9 +30,6 @@ func update_population():
 				#if tile has no buildings, add building if random chance hits
 				elif (currTile.data[3] == 0 && (BASE_BUILD_CHANCE * currTile.desirability) > rng.randf()):
 					currTile.add_building()
-				#if tile is full, go ahead and build a new building there 
-				elif currTile.data[2] == currTile.data[3]:
-					currTile.add_building()
 					
 				if ((BASE_MOVE_CHANCE * currTile.desirability) > rng.randf()):
 					if (currTile.is_residential()):
