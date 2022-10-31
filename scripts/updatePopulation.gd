@@ -13,6 +13,7 @@ var SEVERE_DAMAGE_UNHAPPINESS = 30
 var TOTAL_POPULATION = 0
 var RESIDENTS = 0
 var WORKERS = 0
+var BASE_EMPLOYMENT_RATE = .95
 
 var rng = RandomNumberGenerator.new()
 
@@ -20,27 +21,36 @@ var rng = RandomNumberGenerator.new()
 func update_population():
 	for i in Global.mapWidth:
 		for j in Global.mapHeight:
-			if Global.tileMap[i][j].is_zoned() && Global.tileMap[i][j].is_powered():
-				
+			var currTile = Global.tileMap[i][j]
+			if currTile.is_zoned() && currTile.is_powered():
 				rng.randomize()
-				#only add buildings if a tile is at over 75% capacity
-				if ((BASE_BUILD_CHANCE * Global.tileMap[i][j].desirability) > rng.randf() && Global.tileMap[i][j].data[3] != 0 && Global.tileMap[i][j].data[2]/Global.tileMap[i][j].data[3] > .5):
-					Global.tileMap[i][j].add_building()
+				#only add buildings to tiles that already have buildings if a tile is at over 75% capacity
+				if ((BASE_BUILD_CHANCE * currTile.desirability) > rng.randf() && currTile.data[3] != 0 && currTile.data[2]/currTile.data[3] > .5):
+					currTile.add_building()
 				#if tile has no buildings, add building if random chance hits
-				elif (Global.tileMap[i][j].data[3] == 0 && (BASE_BUILD_CHANCE * Global.tileMap[i][j].desirability) > rng.randf()):
-					Global.tileMap[i][j].add_building()
+				elif (currTile.data[3] == 0 && (BASE_BUILD_CHANCE * currTile.desirability) > rng.randf()):
+					currTile.add_building()
+				#if tile is full, go ahead and build a new building there 
+				elif currTile.data[2] == currTile.data[3]:
+					currTile.add_building()
 					
-				if ((BASE_MOVE_CHANCE * Global.tileMap[i][j].desirability) > rng.randf()):
-					var change = Global.tileMap[i][j].add_people(1)
-					#print("add " + str(change))
-					TOTAL_POPULATION += change
+				if ((BASE_MOVE_CHANCE * currTile.desirability) > rng.randf()):
+					if (currTile.is_residential()):
+						var change = currTile.add_people(1)
+						RESIDENTS += change
+						TOTAL_POPULATION += change
+					elif (currTile.is_commercial()):
+						if RESIDENTS * BASE_EMPLOYMENT_RATE > WORKERS:
+							var change = currTile.add_people(1)
+							WORKERS += change
 					
-			if Global.tileMap[i][j].has_building():
+					
+			if currTile.has_building():
 				
 				var leaveChance = 0
-				var status = Global.tileMap[i][j].get_status()
+				var status = currTile.get_status()
 				
-				if (!Global.tileMap[i][j].is_powered()):
+				if (!currTile.is_powered()):
 					leaveChance += NO_POWER_UNHAPPINESS 
 				if (status == Tile.TileStatus.LIGHT_DAMAGE || status == Tile.TileStatus.MEDIUM_DAMAGE):
 					leaveChance += DAMAGE_UNHAPPINESS
@@ -48,8 +58,8 @@ func update_population():
 					leaveChance += SEVERE_DAMAGE_UNHAPPINESS
 				
 				rng.randomize()
-				if ((BASE_LEAVE_CHANCE * leaveChance * Global.tileMap[i][j].desirability) > rng.randf() && TOTAL_POPULATION > 0):
-					var change = Global.tileMap[i][j].remove_people(1)
+				if ((BASE_LEAVE_CHANCE * leaveChance * currTile.desirability) > rng.randf() && TOTAL_POPULATION > 0):
+					var change = currTile.remove_people(1)
 					#print("remove " + str(change))
 					TOTAL_POPULATION += change
 	
