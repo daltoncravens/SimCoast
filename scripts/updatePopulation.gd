@@ -24,7 +24,7 @@ func update_population():
 			var currTile = Global.tileMap[i][j]
 			if currTile.is_zoned() && currTile.is_powered():
 				rng.randomize()
-				#only add buildings to tiles that already have buildings if a tile is at over 75% capacity
+				#only add buildings to tiles that already have buildings if a tile is at over 50% capacity
 				if ((BASE_BUILD_CHANCE * currTile.desirability) > rng.randf() && currTile.data[3] != 0 && currTile.data[2]/currTile.data[3] > .5):
 					currTile.add_building()
 				#if tile has no buildings, add building if random chance hits
@@ -41,7 +41,6 @@ func update_population():
 							var change = currTile.add_people(1)
 							WORKERS += change
 					
-					
 			if currTile.has_building():
 				
 				var leaveChance = 0
@@ -57,7 +56,6 @@ func update_population():
 				rng.randomize()
 				if ((BASE_LEAVE_CHANCE * leaveChance * currTile.desirability) > rng.randf() && TOTAL_POPULATION > 0):
 					var change = currTile.remove_people(1)
-					#print("remove " + str(change))
 					TOTAL_POPULATION += change
 	
 	get_node("/root/CityMap/HUD/TopBar/HBoxContainer/Population").text = "Total Population: " + str(TOTAL_POPULATION)
