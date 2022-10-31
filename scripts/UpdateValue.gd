@@ -1,6 +1,7 @@
 extends Node
 
-const BASE_TILE_VALUE = 20 #How valuable is an empty plot of land?
+const BASE_TILE_VALUE = 5 #How valuable is an empty plot of land?
+const GLOBAL_TILE_VALUE_WEIGHT = 20 #Divide calculated value by this number
 
 const WATER_TILE_WEIGHT = 5
 
@@ -42,7 +43,8 @@ func update_land_value():
 				var cityWealthValue = calc_city_wealth(currTile)
 				var taxRateValue = calc_taxation_rate(currTile)
 				
-				value = waterValue + baseValue + zoneConnectionsValue + numZonesValue + numPeopleValue + tileDamageValue + cityWealthValue + taxRateValue
+				value += waterValue + baseValue + zoneConnectionsValue + numZonesValue + numPeopleValue + tileDamageValue + cityWealthValue + taxRateValue
+				value = value / GLOBAL_TILE_VALUE_WEIGHT
 				currTile.landValue = value
 
 func calc_presence_of_water(tile): #Return value of nearby water tiles within a radius
@@ -132,7 +134,7 @@ func  calc_num_people(tile): #Return value of number of people in city
 	return UpdatePopulation.TOTAL_POPULATION * PERSON_VALUE
 
 func calc_tile_damage(tile): #Return a value depending on tile damage
-	return tile.tileDamage * TILE_DAMAGE_WEIGHT
+	return (100 - tile.tileDamage) * TILE_DAMAGE_WEIGHT #100 is max tile health
 
 func calc_city_wealth(tile): #Return a value based on city wealth
 	var cityWealthValue = 0
