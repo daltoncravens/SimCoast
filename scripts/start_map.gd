@@ -335,6 +335,7 @@ func update_game_state():
 	Econ.calcCityIncome()
 	Econ.calculate_upkeep_costs()
 	UpdateDate.update_date()
+	UpdateValue.update_land_value()
 	
 func update_graphics():
 	#print("Updating graphics on tick: " + str(numTicks))
