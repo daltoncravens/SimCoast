@@ -22,17 +22,21 @@ func update_population():
 	for i in Global.mapWidth:
 		for j in Global.mapHeight:
 			var currTile = Global.tileMap[i][j]
-			var maxRange = currTile.landValue/2
+			
+			var maxRange = currTile.landValue + currTile.happiness
+			var selectTile = BASE_BUILD_CHANCE * (currTile.landValue + currTile.happiness)
+			
 			if currTile.is_zoned() && currTile.is_powered():
 				rng.randomize()
+				print(selectTile)
 				#only add buildings to tiles that already have buildings if a tile is at over 50% capacity
-				if ((BASE_BUILD_CHANCE * currTile.landValue) > rng.randf_range(0, maxRange) && currTile.data[3] != 0 && currTile.data[2]/currTile.data[3] > .5):
+				if (selectTile > rng.randf_range(0, maxRange) && currTile.data[3] != 0 && currTile.data[2]/currTile.data[3] > .5):
 					currTile.add_building()
 				#if tile has no buildings, add building if random chance hits
-				elif (currTile.data[3] == 0 && (BASE_BUILD_CHANCE * currTile.landValue) > rng.randf_range(0, maxRange)):
+				elif (currTile.data[3] == 0 && selectTile > rng.randf_range(0, maxRange)):
 					currTile.add_building()
 					
-				if ((BASE_MOVE_CHANCE * currTile.landValue) > rng.randf_range(0, maxRange)):
+				if (selectTile > rng.randf_range(0, maxRange)):
 					if (currTile.is_residential()):
 						var change = currTile.add_people(1)
 						RESIDENTS += change
@@ -55,7 +59,7 @@ func update_population():
 					leaveChance += SEVERE_DAMAGE_UNHAPPINESS
 				
 				rng.randomize()
-				if ((BASE_LEAVE_CHANCE * leaveChance * currTile.landValue) > rng.randf_range(0, maxRange) && TOTAL_POPULATION > 0):
+				if (selectTile * leaveChance > rng.randf_range(0, maxRange) && TOTAL_POPULATION > 0):
 					var change = currTile.remove_people(1)
 					TOTAL_POPULATION += change
 	
