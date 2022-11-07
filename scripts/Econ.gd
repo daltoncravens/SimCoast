@@ -136,6 +136,38 @@ func calcCityIncome(): #Calculate tax profit
 	#adjust_city_income(avgIncome)
 	#return avgIncome
 
+func calcResidentialDemand():
+	var resDemand = 0
+	# TODO calc demand from happiness
+	return resDemand
+
+func calcCommercialDemand():
+	var comDemand = 0
+	var mapHeight = Global.mapHeight
+	var mapWidth = Global.mapWidth
+	var pop = 0;
+	var comzones = 0;
+	# get population and number of commercial zones, Heavy Commercial weighted double 
+	for i in mapHeight:
+		for j in mapWidth:
+			var currTile = Global.tileMap[i][j]
+			if currTile.zone == Tile.TileZone.HEAVY_RESIDENTIAL:
+				pop += currTile.data[2]
+			elif currTile.zone == Tile.TileZone.LIGHT_RESIDENTIAL:
+				pop += currTile.data[2]
+			elif currTile.zone == Tile.TileZone.HEAVY_COMMERCIAL:
+				comzones += 2
+			elif currTile.zone == Tile.TileZone.LIGHT_COMMERCIAL:
+				comzones += 1
+	# for every 40 residential pop, demand 1 commercial zone (edit this number as needed)
+	comDemand = round(pop/40)
+	comDemand -= comzones
+	# Don't accept negative demand (possibly change)
+	if comDemand < 0:
+		comDemand = 0;
+	# print("Commercial Demand: " + comDemand)
+	return comDemand
+
 func adjust_tax_rate(val):
 	BASE_TAX_RATE += val
 	if (BASE_TAX_RATE < 0):
