@@ -157,6 +157,7 @@ SaveLoad="*res://scripts/Save_Load.gd"
 Economy="*res://AI/economy/economy.tscn"
 UpdateDate="*res://scripts/updateDate.gd"
 UpdateValue="*res://scripts/UpdateValue.gd"
+UpdateHappiness="*res://scripts/UpdateHappiness.gd"
 
 [display]
 

@@ -1,29 +1,38 @@
 extends Node
 
-const WATER_TILE_WEIGHT = 0.2
+const BASE_TILE_VALUE = 5 #How valuable is an empty plot of land?
+const GLOBAL_TILE_VALUE_WEIGHT = 20 #Divide calculated value by this number
 
-const BASE_DIRT_VALUE = 0.3
-const BASE_SAND_VALUE = 0.1
-const BASE_ROCK_VALUE = 0.2
+const WATER_TILE_WEIGHT = 5
 
-const LIGHT_RES_VALUE = 0.02
-const HEAVY_RES_VALUE = 0.04
-const LIGHT_COM_VALUE = 0.02
-const HEAVY_COM_VALUE = 0.04
-const POWER_PLANT_VALUE = 0.1
-const PARK_VALUE = 0.04
-const ROAD_VALUE = 0.01
+const BASE_DIRT_VALUE = 0
+const BASE_SAND_VALUE = -10
+const BASE_ROCK_VALUE = -10
 
-const ZONE_VALUE = 0.005
+const LIGHT_RES_VALUE = 1
+const HEAVY_RES_VALUE = 1
+const LIGHT_COM_VALUE = 1
+const HEAVY_COM_VALUE = -1
+const POWER_PLANT_VALUE = -10
+const PARK_VALUE = 3
+const ROAD_VALUE = 0
 
-const PERSON_VALUE = 0.001
+const ZONE_VALUE = 0.1
+
+const PERSON_VALUE = 0.1
+
+const TILE_DAMAGE_WEIGHT = -1
+
+const CITY_WEALTH_WEIGHT = 0.001
+
+const TAX_WEIGHT = -100
 
 func update_land_value():
 	for i in Global.mapWidth:
 		for j in Global.mapHeight:
 			if (Global.tileMap[i][j].is_zoned()):
 				var currTile = Global.tileMap[i][j]
-				var value = 0
+				var value = BASE_TILE_VALUE
 				
 				var waterValue = calc_presence_of_water(currTile)
 				var baseValue = calc_tile_base(currTile)
@@ -34,9 +43,9 @@ func update_land_value():
 				var cityWealthValue = calc_city_wealth(currTile)
 				var taxRateValue = calc_taxation_rate(currTile)
 				
-				value = waterValue + baseValue + zoneConnectionsValue + numZonesValue + numPeopleValue + tileDamageValue + cityWealthValue + taxRateValue
-				currTile.desirability = value
-				#currTile.value = value
+				value += waterValue + baseValue + zoneConnectionsValue + numZonesValue + numPeopleValue + tileDamageValue + cityWealthValue + taxRateValue
+				value = value / GLOBAL_TILE_VALUE_WEIGHT
+				currTile.landValue = value
 
 func calc_presence_of_water(tile): #Return value of nearby water tiles within a radius
 	var numWaterTiles = 0
@@ -124,52 +133,18 @@ func calc_num_zones(tile): #Return value number of zones in city
 func  calc_num_people(tile): #Return value of number of people in city
 	return UpdatePopulation.TOTAL_POPULATION * PERSON_VALUE
 
-func calc_tile_damage(tile): #Return a weight depending on tile damage (tile health)
-	# most healthy tile to least healthy
-	if tile.tileDamage == 100:
-		return 0
-	elif tile.tileDamage >= 80:
-		return -0.05
-	elif tile.tileDamage >= 60:
-		return -0.1
-	elif tile.tileDamage >= 40:
-		return -0.2
-	elif tile.tileDamage >= 20:
-		return -0.4
-	else:
-		return -0.8
+func calc_tile_damage(tile): #Return a value depending on tile damage
+	return (100 - tile.tileDamage) * TILE_DAMAGE_WEIGHT #100 is max tile health
 
-func calc_city_wealth(tile): #Return a weight city wealth
-	# compare avg city profit (profit per zone) to the zone's profit
-	var avgCityIncome = Econ.calcCityIncome()/calc_num_zones(tile)
-	# very below avg 
-	if tile.profitRate < avgCityIncome - 1000:
-		return -0.1
-	# below avg
-	elif tile.profitRate < avgCityIncome:
-		return -0.2
-	# above avg 
-	elif tile.profitRate > avgCityIncome:
-		return 0.1
-	# very above avg
-	else:
-		return 0.2
+func calc_city_wealth(tile): #Return a value based on city wealth
+	var cityWealthValue = 0
+	cityWealthValue = Econ.money * CITY_WEALTH_WEIGHT #TODO: Make this logarithmic?
+	return cityWealthValue
 
 func calc_taxation_rate(tile): #Return a weight depending on tax rate of tile
-	# these vars may not be used
-	# var avg_property_tax_rate = 0.008
-	# var avg_sales_tax = 0.07
-	# var avg_tax_rate = Econ.BASE_TAX_RATE
-	# just have impact be directly proportional to the tax rate
-	if tile.zone == Tile.TileZone.LIGHT_RESIDENTIAL:
-		return -(Econ.LIGHT_RES_PROPERTY_RATE + Econ.LIGHT_RES_INCOME_RATE)
-	elif tile.zone == Tile.TileZone.HEAVY_RESIDENTIAL:
-		return -(Econ.HEAVY_RES_PROPERTY_RATE + Econ.HEAVY_RES_INCOME_RATE)
-	elif tile.zone == Tile.TileZone.LIGHT_COMMERCIAL:
-		return -(Econ.LIGHT_COM_PROPERTY_RATE + Econ.LIGHT_COM_INCOME_RATE)
-	elif tile.zone == Tile.TileZone.HEAVY_COMMERCIAL:
-		return -(Econ.HEAVY_COM_PROPERTY_RATE + Econ.HEAVY_COM_INCOME_RATE)
-	return 
+	var cityTaxValue = 0
+	cityTaxValue = Econ.BASE_TAX_RATE * TAX_WEIGHT
+	return cityTaxValue
 
 func is_valid_tile(i, j) -> bool: # Check to see if these indices are valid tile coordinates
 	if i < 0 || Global.mapWidth <= i:
