@@ -25,13 +25,13 @@ func update_population():
 			if currTile.is_zoned() && currTile.is_powered():
 				rng.randomize()
 				#only add buildings to tiles that already have buildings if a tile is at over 50% capacity
-				if ((BASE_BUILD_CHANCE * currTile.landValue) > rng.randf() && currTile.data[3] != 0 && currTile.data[2]/currTile.data[3] > .5):
+				if ((BASE_BUILD_CHANCE * currTile.landValue) > rng.randf_range(0, currTile.landValue/2) && currTile.data[3] != 0 && currTile.data[2]/currTile.data[3] > .5):
 					currTile.add_building()
 				#if tile has no buildings, add building if random chance hits
-				elif (currTile.data[3] == 0 && (BASE_BUILD_CHANCE * currTile.landValue) > rng.randf()):
+				elif (currTile.data[3] == 0 && (BASE_BUILD_CHANCE * currTile.landValue) > rng.randf_range(0, currTile.landValue/2)):
 					currTile.add_building()
 					
-				if ((BASE_MOVE_CHANCE * currTile.landValue) > rng.randf()):
+				if ((BASE_MOVE_CHANCE * currTile.landValue) > rng.randf_range(0, currTile.landValue/2)):
 					if (currTile.is_residential()):
 						var change = currTile.add_people(1)
 						RESIDENTS += change
