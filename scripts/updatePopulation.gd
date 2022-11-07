@@ -28,7 +28,6 @@ func update_population():
 			
 			if currTile.is_zoned() && currTile.is_powered():
 				rng.randomize()
-				print(selectTile)
 				#only add buildings to tiles that already have buildings if a tile is at over 50% capacity
 				if (selectTile > rng.randf_range(0, maxRange) && currTile.data[3] != 0 && currTile.data[2]/currTile.data[3] > .5):
 					currTile.add_building()
