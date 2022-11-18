@@ -1,0 +1,342 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://ui/TaxMenu.gd" type="Script" id=1]
+[ext_resource path="res://assets/fonts/upheavtt.ttf" type="DynamicFontData" id=2]
+
+[sub_resource type="DynamicFont" id=1]
+size = 25
+outline_color = Color( 0, 0, 0, 1 )
+font_data = ExtResource( 2 )
+
+[node name="TaxMenu" type="Control"]
+pause_mode = 2
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Background" type="ColorRect" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color( 0.196078, 0.207843, 0.247059, 0.588235 )
+
+[node name="CenterContainer" type="CenterContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer"]
+margin_left = 498.0
+margin_top = 246.0
+margin_right = 781.0
+margin_bottom = 474.0
+custom_constants/separation = 5
+
+[node name="Taxes" type="Label" parent="CenterContainer/VBoxContainer"]
+margin_right = 283.0
+margin_bottom = 23.0
+custom_fonts/font = SubResource( 1 )
+text = "Taxes"
+align = 1
+valign = 1
+
+[node name="Spacer" type="Control" parent="CenterContainer/VBoxContainer"]
+margin_top = 28.0
+margin_right = 283.0
+margin_bottom = 28.0
+
+[node name="LResProp" type="HBoxContainer" parent="CenterContainer/VBoxContainer"]
+margin_top = 33.0
+margin_right = 283.0
+margin_bottom = 53.0
+custom_constants/separation = 5
+
+[node name="Label" type="Label" parent="CenterContainer/VBoxContainer/LResProp"]
+margin_top = 3.0
+margin_right = 28.0
+margin_bottom = 17.0
+text = "0.05"
+
+[node name="Inc" type="Button" parent="CenterContainer/VBoxContainer/LResProp"]
+margin_left = 33.0
+margin_right = 53.0
+margin_bottom = 20.0
+text = "+"
+
+[node name="Dec" type="Button" parent="CenterContainer/VBoxContainer/LResProp"]
+margin_left = 58.0
+margin_right = 75.0
+margin_bottom = 20.0
+text = "-"
+
+[node name="LResPro" type="Label" parent="CenterContainer/VBoxContainer/LResProp"]
+margin_left = 80.0
+margin_top = 3.0
+margin_right = 269.0
+margin_bottom = 17.0
+text = "Light Residential Property Tax"
+align = 1
+valign = 1
+
+[node name="LResInc" type="HBoxContainer" parent="CenterContainer/VBoxContainer"]
+margin_top = 58.0
+margin_right = 283.0
+margin_bottom = 78.0
+custom_constants/separation = 5
+
+[node name="Label" type="Label" parent="CenterContainer/VBoxContainer/LResInc"]
+margin_top = 3.0
+margin_right = 28.0
+margin_bottom = 17.0
+text = "0.05"
+
+[node name="Inc" type="Button" parent="CenterContainer/VBoxContainer/LResInc"]
+margin_left = 33.0
+margin_right = 53.0
+margin_bottom = 20.0
+text = "+"
+
+[node name="Dec" type="Button" parent="CenterContainer/VBoxContainer/LResInc"]
+margin_left = 58.0
+margin_right = 75.0
+margin_bottom = 20.0
+text = "-"
+
+[node name="LResInc" type="Label" parent="CenterContainer/VBoxContainer/LResInc"]
+margin_left = 80.0
+margin_top = 3.0
+margin_right = 264.0
+margin_bottom = 17.0
+text = "Light Residential Income Tax"
+align = 1
+valign = 1
+
+[node name="HResProp" type="HBoxContainer" parent="CenterContainer/VBoxContainer"]
+margin_top = 83.0
+margin_right = 283.0
+margin_bottom = 103.0
+custom_constants/separation = 5
+
+[node name="Label" type="Label" parent="CenterContainer/VBoxContainer/HResProp"]
+margin_top = 3.0
+margin_right = 28.0
+margin_bottom = 17.0
+text = "0.05"
+
+[node name="Inc" type="Button" parent="CenterContainer/VBoxContainer/HResProp"]
+margin_left = 33.0
+margin_right = 53.0
+margin_bottom = 20.0
+text = "+"
+
+[node name="Dec" type="Button" parent="CenterContainer/VBoxContainer/HResProp"]
+margin_left = 58.0
+margin_right = 75.0
+margin_bottom = 20.0
+text = "-"
+
+[node name="HResProp" type="Label" parent="CenterContainer/VBoxContainer/HResProp"]
+margin_left = 80.0
+margin_top = 3.0
+margin_right = 277.0
+margin_bottom = 17.0
+text = "Heavy Residential Property Tax"
+align = 1
+valign = 1
+
+[node name="HResInc" type="HBoxContainer" parent="CenterContainer/VBoxContainer"]
+margin_top = 108.0
+margin_right = 283.0
+margin_bottom = 128.0
+custom_constants/separation = 5
+
+[node name="Label" type="Label" parent="CenterContainer/VBoxContainer/HResInc"]
+margin_top = 3.0
+margin_right = 28.0
+margin_bottom = 17.0
+text = "0.05"
+
+[node name="Inc" type="Button" parent="CenterContainer/VBoxContainer/HResInc"]
+margin_left = 33.0
+margin_right = 53.0
+margin_bottom = 20.0
+text = "+"
+
+[node name="Dec" type="Button" parent="CenterContainer/VBoxContainer/HResInc"]
+margin_left = 58.0
+margin_right = 75.0
+margin_bottom = 20.0
+text = "-"
+
+[node name="HResInc" type="Label" parent="CenterContainer/VBoxContainer/HResInc"]
+margin_left = 80.0
+margin_top = 3.0
+margin_right = 272.0
+margin_bottom = 17.0
+text = "Heavy Residential Income Tax"
+align = 1
+valign = 1
+
+[node name="LComProp" type="HBoxContainer" parent="CenterContainer/VBoxContainer"]
+margin_top = 133.0
+margin_right = 283.0
+margin_bottom = 153.0
+custom_constants/separation = 5
+
+[node name="Label" type="Label" parent="CenterContainer/VBoxContainer/LComProp"]
+margin_top = 3.0
+margin_right = 28.0
+margin_bottom = 17.0
+text = "0.05"
+
+[node name="Inc" type="Button" parent="CenterContainer/VBoxContainer/LComProp"]
+margin_left = 33.0
+margin_right = 53.0
+margin_bottom = 20.0
+text = "+"
+
+[node name="Dec" type="Button" parent="CenterContainer/VBoxContainer/LComProp"]
+margin_left = 58.0
+margin_right = 75.0
+margin_bottom = 20.0
+text = "-"
+
+[node name="LComProp" type="Label" parent="CenterContainer/VBoxContainer/LComProp"]
+margin_left = 80.0
+margin_top = 3.0
+margin_right = 275.0
+margin_bottom = 17.0
+text = "Light Commerical Property Tax"
+align = 1
+valign = 1
+
+[node name="LComInc" type="HBoxContainer" parent="CenterContainer/VBoxContainer"]
+margin_top = 158.0
+margin_right = 283.0
+margin_bottom = 178.0
+custom_constants/separation = 5
+
+[node name="Label" type="Label" parent="CenterContainer/VBoxContainer/LComInc"]
+margin_top = 3.0
+margin_right = 28.0
+margin_bottom = 17.0
+text = "0.05"
+
+[node name="Inc" type="Button" parent="CenterContainer/VBoxContainer/LComInc"]
+margin_left = 33.0
+margin_right = 53.0
+margin_bottom = 20.0
+text = "+"
+
+[node name="Dec" type="Button" parent="CenterContainer/VBoxContainer/LComInc"]
+margin_left = 58.0
+margin_right = 75.0
+margin_bottom = 20.0
+text = "-"
+
+[node name="LComInc" type="Label" parent="CenterContainer/VBoxContainer/LComInc"]
+margin_left = 80.0
+margin_top = 3.0
+margin_right = 270.0
+margin_bottom = 17.0
+text = "Light Commerical Income Tax"
+align = 1
+valign = 1
+
+[node name="HComProp" type="HBoxContainer" parent="CenterContainer/VBoxContainer"]
+margin_top = 183.0
+margin_right = 283.0
+margin_bottom = 203.0
+custom_constants/separation = 5
+
+[node name="Label" type="Label" parent="CenterContainer/VBoxContainer/HComProp"]
+margin_top = 3.0
+margin_right = 28.0
+margin_bottom = 17.0
+text = "0.05"
+
+[node name="Inc" type="Button" parent="CenterContainer/VBoxContainer/HComProp"]
+margin_left = 33.0
+margin_right = 53.0
+margin_bottom = 20.0
+text = "+"
+
+[node name="Dec" type="Button" parent="CenterContainer/VBoxContainer/HComProp"]
+margin_left = 58.0
+margin_right = 75.0
+margin_bottom = 20.0
+text = "-"
+
+[node name="HcomProp" type="Label" parent="CenterContainer/VBoxContainer/HComProp"]
+margin_left = 80.0
+margin_top = 3.0
+margin_right = 283.0
+margin_bottom = 17.0
+text = "Heavy Commerical Property Tax"
+align = 1
+valign = 1
+
+[node name="HComInc" type="HBoxContainer" parent="CenterContainer/VBoxContainer"]
+margin_top = 208.0
+margin_right = 283.0
+margin_bottom = 228.0
+custom_constants/separation = 5
+
+[node name="Label" type="Label" parent="CenterContainer/VBoxContainer/HComInc"]
+margin_top = 3.0
+margin_right = 28.0
+margin_bottom = 17.0
+text = "0.05"
+
+[node name="Inc" type="Button" parent="CenterContainer/VBoxContainer/HComInc"]
+margin_left = 33.0
+margin_right = 53.0
+margin_bottom = 20.0
+text = "+"
+
+[node name="Dec" type="Button" parent="CenterContainer/VBoxContainer/HComInc"]
+margin_left = 58.0
+margin_right = 75.0
+margin_bottom = 20.0
+text = "-"
+
+[node name="HComInc" type="Label" parent="CenterContainer/VBoxContainer/HComInc"]
+margin_left = 80.0
+margin_top = 3.0
+margin_right = 278.0
+margin_bottom = 17.0
+text = "Heavy Commerical Income Tax"
+align = 1
+valign = 1
+
+[node name="GridContainer" type="GridContainer" parent="."]
+margin_right = 40.0
+margin_bottom = 40.0
+
+[node name="ExitTaxMenu" type="Button" parent="GridContainer"]
+margin_right = 20.0
+margin_bottom = 20.0
+text = "X"
+
+[connection signal="pressed" from="CenterContainer/VBoxContainer/LResProp/Inc" to="." method="_on_Inc_pressed" binds= [ 0 ]]
+[connection signal="pressed" from="CenterContainer/VBoxContainer/LResProp/Dec" to="." method="_on_Dec_pressed" binds= [ 0 ]]
+[connection signal="pressed" from="CenterContainer/VBoxContainer/LResInc/Inc" to="." method="_on_Inc_pressed" binds= [ 1 ]]
+[connection signal="pressed" from="CenterContainer/VBoxContainer/LResInc/Dec" to="." method="_on_Dec_pressed" binds= [ 1 ]]
+[connection signal="pressed" from="CenterContainer/VBoxContainer/HResProp/Inc" to="." method="_on_Inc_pressed" binds= [ 2 ]]
+[connection signal="pressed" from="CenterContainer/VBoxContainer/HResProp/Dec" to="." method="_on_Dec_pressed" binds= [ 2 ]]
+[connection signal="pressed" from="CenterContainer/VBoxContainer/HResInc/Inc" to="." method="_on_Inc_pressed" binds= [ 3 ]]
+[connection signal="pressed" from="CenterContainer/VBoxContainer/HResInc/Dec" to="." method="_on_Dec_pressed" binds= [ 3 ]]
+[connection signal="pressed" from="CenterContainer/VBoxContainer/LComProp/Inc" to="." method="_on_Inc_pressed" binds= [ 4 ]]
+[connection signal="pressed" from="CenterContainer/VBoxContainer/LComProp/Dec" to="." method="_on_Dec_pressed" binds= [ 4 ]]
+[connection signal="pressed" from="CenterContainer/VBoxContainer/LComInc/Inc" to="." method="_on_Inc_pressed" binds= [ 5 ]]
+[connection signal="pressed" from="CenterContainer/VBoxContainer/LComInc/Dec" to="." method="_on_Dec_pressed" binds= [ 5 ]]
+[connection signal="pressed" from="CenterContainer/VBoxContainer/HComProp/Inc" to="." method="_on_Inc_pressed" binds= [ 6 ]]
+[connection signal="pressed" from="CenterContainer/VBoxContainer/HComProp/Dec" to="." method="_on_Dec_pressed" binds= [ 6 ]]
+[connection signal="pressed" from="CenterContainer/VBoxContainer/HComInc/Inc" to="." method="_on_Inc_pressed" binds= [ 7 ]]
+[connection signal="pressed" from="CenterContainer/VBoxContainer/HComInc/Dec" to="." method="_on_Dec_pressed" binds= [ 7 ]]
+[connection signal="pressed" from="GridContainer/ExitTaxMenu" to="." method="_on_ExitTaxMenu_pressed"]
