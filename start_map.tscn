@@ -271,21 +271,21 @@ margin_top = 18.0
 margin_right = 68.0
 margin_bottom = 50.0
 
-[node name="extend_grid_button" type="TextureButton" parent="HUD/ToolMenu/VBoxContainer/HBoxR0"]
+[node name="increase_tax_button" type="TextureButton" parent="HUD/ToolMenu/VBoxContainer/HBoxR0"]
 margin_right = 32.0
 margin_bottom = 32.0
-hint_tooltip = "Add Row/Column to Map"
+hint_tooltip = "Increase Tax Rate"
 toggle_mode = true
 group = ExtResource( 16 )
 texture_normal = ExtResource( 84 )
 texture_pressed = ExtResource( 28 )
 texture_hover = ExtResource( 83 )
 
-[node name="reduce_grid_button" type="TextureButton" parent="HUD/ToolMenu/VBoxContainer/HBoxR0"]
+[node name="decrease_tax_button" type="TextureButton" parent="HUD/ToolMenu/VBoxContainer/HBoxR0"]
 margin_left = 36.0
 margin_right = 68.0
 margin_bottom = 32.0
-hint_tooltip = "Remove Row/Column from Map"
+hint_tooltip = "Decrease Tax Rate"
 toggle_mode = true
 group = ExtResource( 16 )
 texture_normal = ExtResource( 81 )
