@@ -2,19 +2,19 @@ extends Control
 
 var is_displayed = false setget set_is_displayed
 
-func _unhandled_input(event):
+func _unhandled_input(event): #On pressing "t", toggle the tax menu
 	if event.is_action_pressed("taxMenu"):
 		self.is_displayed = !is_displayed
 
-func set_is_displayed(value):
+func set_is_displayed(value): #Toggles the tax menu off by default
 	is_displayed = value
 	#get_tree().paused = is_displayed
 	visible = is_displayed
 
-func _on_ExitTaxMenu_pressed():
+func _on_ExitTaxMenu_pressed(): #Disable the tax menu via the 'x' button in the top left
 	self.is_displayed = false
 
-func _on_Inc_pressed(extra_arg_0):
+func _on_Inc_pressed(extra_arg_0): #Extra arg is the id of the tax rate, this signal is received from the 8 inc. buttons
 	match extra_arg_0:
 		0: #light res prop
 			Econ.adjust_individual_tax_rate(extra_arg_0, 0)
@@ -34,7 +34,7 @@ func _on_Inc_pressed(extra_arg_0):
 			Econ.adjust_individual_tax_rate(extra_arg_0, 0)
 	update_tax_values()
 
-func _on_Dec_pressed(extra_arg_0):
+func _on_Dec_pressed(extra_arg_0): #Extra arg is the id of the tax rate, this signal is received from the 8 inc. buttons
 	match extra_arg_0:
 		0: #light res prop
 			Econ.adjust_individual_tax_rate(extra_arg_0, 1)
@@ -54,7 +54,7 @@ func _on_Dec_pressed(extra_arg_0):
 			Econ.adjust_individual_tax_rate(extra_arg_0, 1)
 	update_tax_values()
 
-func update_tax_values():
+func update_tax_values(): #Update the dispay on the tax menu
 	$CenterContainer/VBoxContainer/LResProp/Label.text = str(Econ.LIGHT_RES_PROPERTY_RATE).pad_decimals(2)
 	$CenterContainer/VBoxContainer/LResInc/Label.text = str(Econ.LIGHT_RES_INCOME_RATE).pad_decimals(2)
 	$CenterContainer/VBoxContainer/HResProp/Label.text = str(Econ.HEAVY_RES_PROPERTY_RATE).pad_decimals(2)
