@@ -44,8 +44,12 @@ func calcResidentialDemand():
 	# otherwise scale demand based on the difference between the two
 	else:
 		resDemand = round((avgmove - avgleave)/20)
-		# reduce demand if there is available space
-		resDemand -= (maxpop - currpop)/10
+		# ensure minimum demand if at maximum population capacity 
+		if maxpop == currpop:
+			resDemand += 1
+		# cap demand at 10
+		if resDemand > 10:
+			resDemand = 10
 	return resDemand
 
 func calcCommercialDemand():
