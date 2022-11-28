@@ -1,4 +1,4 @@
-[gd_scene load_steps=115 format=2]
+[gd_scene load_steps=116 format=2]
 
 [ext_resource path="res://scripts/HUD.gd" type="Script" id=1]
 [ext_resource path="res://assets/buttons/add_water_hover.png" type="Texture" id=2]
@@ -108,6 +108,7 @@
 [ext_resource path="res://assets/buttons/pause_default.png" type="Texture" id=106]
 [ext_resource path="res://assets/buttons/fast_forward_default.png" type="Texture" id=107]
 [ext_resource path="res://assets/buttons/fast_forward_pressed.png" type="Texture" id=108]
+[ext_resource path="res://ui/SubMenu/TaxMenu.tscn" type="PackedScene" id=109]
 
 [sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 0.133333, 0.886275, 0.129412, 1 )
@@ -890,6 +891,8 @@ texture_pressed = ExtResource( 108 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="TaxMenu" parent="HUD" instance=ExtResource( 109 )]
 
 [node name="VectorMap" type="YSort" parent="."]
 script = ExtResource( 7 )
