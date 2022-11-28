@@ -158,6 +158,7 @@ Economy="*res://AI/economy/economy.tscn"
 UpdateDate="*res://scripts/updateDate.gd"
 UpdateValue="*res://scripts/UpdateValue.gd"
 UpdateHappiness="*res://scripts/UpdateHappiness.gd"
+UpdateDemand="*res://scripts/updateDemand.gd"
 
 [display]
 
