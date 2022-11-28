@@ -22,10 +22,10 @@ func button_hover(button):
 	var toolInfo = get_node("../BottomBar/HoverText")
 
 	match button.get_name():
-		'extend_grid_button':
-			toolInfo.text = "Increase tax rate"
-		'reduce_grid_button':
-			toolInfo.text = "Decrease tax rate"
+		'increase_tax_button':
+			toolInfo.text = "Increase city tax rate by 1%"
+		'decrease_tax_button':
+			toolInfo.text = "Decrease city tax rate by 1%"
 		'dirt_button':
 			toolInfo.text = "Replace base tile with dirt / Raise dirt base tile height   (Right Click: Lower dirt base tile height)"
 		'rock_button':
@@ -85,11 +85,11 @@ func button_pressed():
 	var mapNode = get_node("../../")
 	
 	match group.get_pressed_button().get_name():
-		'extend_grid_button':
+		'increase_tax_button':
 			Econ.adjust_tax_rate(0.01)
 			#City.extend_map()
 			#mapNode.initCamera()
-		'reduce_grid_button':
+		'decrease_tax_button':
 			Econ.adjust_tax_rate(-0.01)
 			#City.reduce_map()
 			#mapNode.initCamera()

@@ -57,8 +57,8 @@ func initTileMap():
 # Map Tool Buttons that are used on map tiles
 enum Tool {
 	NONE,
-	EXTEND_MAP,
-	REDUCE_MAP,
+	INCREASE_TAX,
+	DECREASE_TAX,
 	BASE_DIRT,
 	BASE_ROCK,
 	BASE_SAND,
