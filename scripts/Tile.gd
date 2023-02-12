@@ -155,6 +155,8 @@ func clear_tile():
 		tileDamage -= data[0] * Econ.REMOVE_COMMERCIAL_BUILDING
 	else:
 		tileDamage -= data[0] * Econ.REMOVE_BUILDING_DAMAGE
+	if tileDamage < 0:
+		tileDamage = 0
 	zone = TileZone.NONE
 	inf = TileInf.NONE
 	data = [0, 0, 0, 0, 0]
@@ -242,7 +244,28 @@ func remove_water():
 	waterHeight = 0
 
 func set_damage(n):
-	data[4] = n
+	if n == Tile.TileStatus.LIGHT_DAMAGE:
+		tileDamage += .25
+	elif n == Tile.TileStatus.MEDIUM_DAMAGE:
+		tileDamage += .5
+	elif n == Tile.TileStatus.HEAVY_DAMAGE:
+		tileDamage += .75
+	
+		
+	if tileDamage < .5:
+		data[4] = Tile.TileStatus.LIGHT_DAMAGE
+	elif tileDamage >=.5 and tileDamage <= .75:
+		data[4] = Tile.TileStatus.MEDIUM_DAMAGE
+	elif tileDamage > .75:
+		data[4] = Tile.TileStatus.HEAVY_DAMAGE
+		
+	if tileDamage >= 1:
+		tileDamage = 1
+		#the tile is completely destroyed at this point
+		#should remove all buildings and all population?
+		while data[0] > 0:
+			remove_building()
+		remove_people(data[2])
 
 func is_powered():
 	return powered
@@ -288,6 +311,8 @@ func remove_building():
 		tileDamage -= Econ.REMOVE_COMMERCIAL_BUILDING
 	else:
 		tileDamage -= Econ.REMOVE_BUILDING_DAMAGE
+	if tileDamage < 0:
+		tileDamage = 0
 
 func add_people(n):	
 	var before = data[2]
