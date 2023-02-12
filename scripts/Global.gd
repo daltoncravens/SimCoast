@@ -50,7 +50,7 @@ func initTileMap():
 
 	for i in mapHeight:
 		for j in mapWidth:
-			tm[i][j] = Tile.new(i, j, 0, 0, 0, 0, 0, [0, 0, 0, 0, 0], 100, Econ.TILE_BASE_VALUE, 0)
+			tm[i][j] = Tile.new(i, j, 0, 0, 0, 0, 0, [0, 0, 0, 0, 0], 0, Econ.TILE_BASE_VALUE, 0)
 	
 	return tm
 
