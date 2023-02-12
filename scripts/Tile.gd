@@ -244,20 +244,20 @@ func remove_water():
 	waterHeight = 0
 
 func set_damage(n):
-	if n == Tile.TileStatus.LIGHT_DAMAGE:
+	if n == TileStatus.LIGHT_DAMAGE:
 		tileDamage += .25
-	elif n == Tile.TileStatus.MEDIUM_DAMAGE:
+	elif n == TileStatus.MEDIUM_DAMAGE:
 		tileDamage += .5
-	elif n == Tile.TileStatus.HEAVY_DAMAGE:
+	elif n == TileStatus.HEAVY_DAMAGE:
 		tileDamage += .75
 	
 		
 	if tileDamage < .5:
-		data[4] = Tile.TileStatus.LIGHT_DAMAGE
+		data[4] = TileStatus.LIGHT_DAMAGE
 	elif tileDamage >=.5 and tileDamage <= .75:
-		data[4] = Tile.TileStatus.MEDIUM_DAMAGE
+		data[4] = TileStatus.MEDIUM_DAMAGE
 	elif tileDamage > .75:
-		data[4] = Tile.TileStatus.HEAVY_DAMAGE
+		data[4] = TileStatus.HEAVY_DAMAGE
 		
 	if tileDamage >= 1:
 		tileDamage = 1
