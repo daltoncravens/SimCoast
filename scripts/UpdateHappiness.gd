@@ -14,7 +14,7 @@ func update_happiness():
 				var tileDamageValue = UpdateValue.calc_tile_damage(currTile)
 				var taxRateValue = UpdateValue.calc_taxation_rate(currTile)
 				
-				happiness = happiness + waterValue + zoneConnectionsValue + taxRateValue + tileDamageValue
+				happiness = happiness + waterValue + zoneConnectionsValue + taxRateValue - tileDamageValue
 				
 				if happiness < 0:
 					happiness = 0
