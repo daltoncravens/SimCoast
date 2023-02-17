@@ -1,4 +1,4 @@
-[gd_scene load_steps=115 format=2]
+[gd_scene load_steps=116 format=2]
 
 [ext_resource path="res://scripts/HUD.gd" type="Script" id=1]
 [ext_resource path="res://assets/buttons/add_water_hover.png" type="Texture" id=2]
@@ -108,6 +108,7 @@
 [ext_resource path="res://assets/buttons/pause_default.png" type="Texture" id=106]
 [ext_resource path="res://assets/buttons/fast_forward_default.png" type="Texture" id=107]
 [ext_resource path="res://assets/buttons/fast_forward_pressed.png" type="Texture" id=108]
+[ext_resource path="res://ui/SubMenu/TaxMenu.tscn" type="PackedScene" id=109]
 
 [sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 0.133333, 0.886275, 0.129412, 1 )
@@ -171,23 +172,28 @@ custom_constants/separation = 20
 alignment = 1
 
 [node name="Money" type="Label" parent="HUD/TopBar/HBoxContainer"]
-margin_left = 600.0
-margin_right = 600.0
+margin_left = 590.0
+margin_right = 590.0
 margin_bottom = 14.0
 
 [node name="City_Income" type="Label" parent="HUD/TopBar/HBoxContainer"]
-margin_left = 620.0
-margin_right = 620.0
+margin_left = 610.0
+margin_right = 610.0
 margin_bottom = 14.0
 
 [node name="City_Tax_Rate" type="Label" parent="HUD/TopBar/HBoxContainer"]
-margin_left = 640.0
-margin_right = 640.0
+margin_left = 630.0
+margin_right = 630.0
 margin_bottom = 14.0
 
 [node name="Population" type="Label" parent="HUD/TopBar/HBoxContainer"]
-margin_left = 660.0
-margin_right = 660.0
+margin_left = 650.0
+margin_right = 650.0
+margin_bottom = 14.0
+
+[node name="Demand" type="Label" parent="HUD/TopBar/HBoxContainer"]
+margin_left = 670.0
+margin_right = 670.0
 margin_bottom = 14.0
 
 [node name="ActionText" type="Label" parent="HUD/TopBar"]
@@ -886,6 +892,8 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="TaxMenu" parent="HUD" instance=ExtResource( 109 )]
+
 [node name="VectorMap" type="YSort" parent="."]
 script = ExtResource( 7 )
 
@@ -894,6 +902,7 @@ script = ExtResource( 7 )
 [node name="SaveDialog" type="FileDialog" parent="Popups"]
 margin_left = 483.0
 margin_top = 295.0
+rect_min_size = Vector2( 150, 52.5 )
 resizable = true
 script = ExtResource( 39 )
 __meta__ = {
@@ -903,6 +912,7 @@ __meta__ = {
 [node name="LoadDialog" type="FileDialog" parent="Popups"]
 margin_right = 315.0
 margin_bottom = 130.0
+rect_min_size = Vector2( 150, 52.5 )
 window_title = "Open a File"
 resizable = true
 mode = 0

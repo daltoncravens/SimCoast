@@ -16,7 +16,8 @@ func _ready():
 	$HUD/TopBar/HBoxContainer/Money.text = "Player Money: $" + Econ.comma_values(str(Econ.money))
 	$HUD/TopBar/HBoxContainer/City_Income.text = "City's Net Profit: $" + Econ.comma_values(str(Econ.city_income))
 	$HUD/TopBar/HBoxContainer/City_Tax_Rate.text = "Tax Rate: " + str(Econ.city_tax_rate * 100) + "%"
-	$HUD/TopBar/HBoxContainer/Population.text = "Total Population: " + str(UpdatePopulation.get_population()) 
+	$HUD/TopBar/HBoxContainer/Population.text = "Total Population: " + str(UpdatePopulation.get_population())
+	$HUD/TopBar/HBoxContainer/Demand.text = "Residential Demand: " + str(UpdateDemand.calcResidentialDemand()) + "/10" + " Commercial Demand: " + str(UpdateDemand.calcCommercialDemand()) + "/10"
 	$HUD/Date/Year.text = str(UpdateDate.year)
 	$HUD/Date/Month.text = UpdateDate.Months.keys()[UpdateDate.month]
 	
@@ -337,6 +338,7 @@ func update_game_state():
 	UpdateValue.update_land_value()
 	UpdateHappiness.update_happiness()
 	UpdatePopulation.update_population()
+	UpdateDemand.get_demand()
 	Econ.calcCityIncome()
 	Econ.calculate_upkeep_costs()
 	UpdateDate.update_date()

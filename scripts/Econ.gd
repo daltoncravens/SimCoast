@@ -144,6 +144,42 @@ func adjust_tax_rate(val):
 		BASE_TAX_RATE = 1
 	get_node("/root/CityMap/HUD/TopBar/HBoxContainer/City_Tax_Rate").text = "Tax Rate: " + str(BASE_TAX_RATE * 100) + "%"
 
+func adjust_individual_tax_rate(num, dir):
+	var currRate
+	match num:
+		0:
+			currRate = LIGHT_RES_PROPERTY_RATE
+			currRate = adjust_individual_tax_rate_helper(currRate, dir)
+			LIGHT_RES_PROPERTY_RATE = currRate
+		1:
+			currRate = LIGHT_RES_INCOME_RATE
+			currRate = adjust_individual_tax_rate_helper(currRate, dir)
+			LIGHT_RES_INCOME_RATE = currRate
+		2:
+			currRate = HEAVY_RES_PROPERTY_RATE
+			currRate = adjust_individual_tax_rate_helper(currRate, dir)
+			HEAVY_RES_PROPERTY_RATE = currRate
+		3:
+			currRate = HEAVY_RES_INCOME_RATE
+			currRate = adjust_individual_tax_rate_helper(currRate, dir)
+			HEAVY_RES_INCOME_RATE = currRate
+		4:
+			currRate = LIGHT_COM_PROPERTY_RATE
+			currRate = adjust_individual_tax_rate_helper(currRate, dir)
+			LIGHT_COM_PROPERTY_RATE = currRate
+		5:
+			currRate = LIGHT_COM_INCOME_RATE
+			currRate = adjust_individual_tax_rate_helper(currRate, dir)
+			LIGHT_COM_INCOME_RATE = currRate
+		6:
+			currRate = HEAVY_COM_PROPERTY_RATE
+			currRate = adjust_individual_tax_rate_helper(currRate, dir)
+			HEAVY_COM_PROPERTY_RATE = currRate
+		7:
+			currRate = HEAVY_COM_INCOME_RATE
+			currRate = adjust_individual_tax_rate_helper(currRate, dir)
+			HEAVY_COM_INCOME_RATE = currRate
+
 # Helper Functions
 func comma_values(val):
 	var pos = val.length() % 3
@@ -154,3 +190,16 @@ func comma_values(val):
 			res += ","
 		res += val[i]
 	return res
+
+func adjust_individual_tax_rate_helper(currRate, dir):
+	if (dir == 0):
+		currRate += 0.01
+	else:
+		currRate -= 0.01
+	
+	if (currRate < 0):
+		currRate = 0
+	elif (currRate > 1):
+		currRate = 1
+	
+	return currRate

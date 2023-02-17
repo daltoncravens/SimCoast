@@ -147,7 +147,18 @@ func calc_city_wealth(tile): #Return a value based on city wealth
 
 func calc_taxation_rate(tile): #Return a weight depending on tax rate of tile
 	var cityTaxValue = 0
-	cityTaxValue = Econ.BASE_TAX_RATE * TAX_WEIGHT
+	
+	match(tile.zone):
+		Tile.TileZone.LIGHT_RESIDENTIAL:
+			cityTaxValue = Econ.LIGHT_RES_PROPERTY_RATE + Econ.LIGHT_RES_PROPERTY_RATE
+		Tile.TileZone.HEAVY_RESIDENTIAL:
+			cityTaxValue = Econ.HEAVY_RES_PROPERTY_RATE + Econ.HEAVY_RES_PROPERTY_RATE
+		Tile.TileZone.LIGHT_COMMERCIAL:
+			cityTaxValue = Econ.LIGHT_COM_PROPERTY_RATE + Econ.LIGHT_COM_PROPERTY_RATE
+		Tile.TileZone.HEAVY_COMMERCIAL:
+			cityTaxValue = Econ.HEAVY_COM_PROPERTY_RATE + Econ.HEAVY_COM_PROPERTY_RATE
+	
+	cityTaxValue = cityTaxValue * TAX_WEIGHT
 	return cityTaxValue
 
 func is_valid_tile(i, j) -> bool: # Check to see if these indices are valid tile coordinates
