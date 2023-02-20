@@ -26,9 +26,10 @@ func update_population():
 			var maxRange = currTile.landValue + currTile.happiness
 			var selectTile = BASE_BUILD_CHANCE * (currTile.landValue + currTile.happiness)
 			
-			if currTile.is_zoned() && currTile.is_powered():
+			# cannot add buldings or people without power, zoning, or if the tile is damaged
+			if currTile.is_zoned() && currTile.is_powered() && currTile.tileDamage == 0:
 				rng.randomize()
-				#only add buildings to tiles that already have buildings if a tile is at over 50% capacity
+				#only add buildings to tiles that already have buildings if a tile is at over 50% capacity 
 				if (selectTile > rng.randf_range(0, maxRange) && currTile.data[3] != 0 && currTile.data[2]/currTile.data[3] > .5):
 					currTile.add_building()
 				#if tile has no buildings, add building if random chance hits
