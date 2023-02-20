@@ -226,18 +226,18 @@ func calculate_damage():
 			# If buildings present, determine damage based on water height
 			if tile.get_water_height() > 0:
 				if tile.has_building() && tile.is_light_zoned():
-					if tile.get_water_height() <= 1:
+					if tile.get_water_height() <= 1 && tile.changeInWaterHeight > 0:
 						tile.set_damage(Tile.TileStatus.LIGHT_DAMAGE)
-					elif tile.get_water_height() <= 3:
+					elif tile.get_water_height() <= 3 && tile.changeInWaterHeight > 0:
 						tile.set_damage(Tile.TileStatus.MEDIUM_DAMAGE)
-					else:
+					elif tile.get_water_height() > 3 && tile.changeInWaterHeight > 0: 
 						tile.set_damage(Tile.TileStatus.HEAVY_DAMAGE)
 				elif tile.has_building() && tile.is_heavy_zoned():
-					if tile.get_water_height() <= 3:
+					if tile.get_water_height() <= 3 && tile.changeInWaterHeight > 0:
 						tile.set_damage(Tile.TileStatus.LIGHT_DAMAGE)
-					elif tile.get_water_height() <= 6:
+					elif tile.get_water_height() <= 6 && tile.changeInWaterHeight > 0:
 						tile.set_damage(Tile.TileStatus.MEDIUM_DAMAGE)
-					else:
+					elif tile.get_water_height() > 6 && tile.changeInWaterHeight > 0:
 						tile.set_damage(Tile.TileStatus.HEAVY_DAMAGE)
 				elif tile.inf == Tile.TileInf.ROAD:
 					if tile.get_water_height() >= 5:
@@ -247,6 +247,7 @@ func calculate_damage():
 						tile.lower_tile()
 				#tile.remove_water()
 				#tile.cube.update()
+				tile.changeInWaterHeight = 0
 
 	# Restore ocean height to sea level
 	Global.oceanHeight = 0
