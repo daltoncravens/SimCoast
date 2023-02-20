@@ -217,6 +217,7 @@ func _unhandled_input(event):
 			Global.Tool.REPAIR:
 				if tile.has_building():
 					tile.data[4] = 0
+					tile.tileDamage = 0
 
 			Global.Tool.COPY_TILE:
 				copyTile = tile
