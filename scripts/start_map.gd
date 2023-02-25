@@ -339,6 +339,7 @@ func update_game_state():
 	UpdateHappiness.update_happiness()
 	UpdatePopulation.update_population()
 	UpdateDemand.get_demand()
+	UpdateErosion.update_erosion()
 	Econ.calcCityIncome()
 	Econ.calculate_upkeep_costs()
 	UpdateDate.update_date()

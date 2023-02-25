@@ -148,7 +148,6 @@ config/icon="res://icon.png"
 
 Econ="*res://scripts/Econ.gd"
 Global="*res://scripts/Global.gd"
-UpdateGraphics="*res://scripts/updateGraphics.gd"
 City="*res://scripts/City.gd"
 UpdatePopulation="*res://scripts/updatePopulation.gd"
 UpdateWaves="*res://scripts/updateWaves.gd"
@@ -159,6 +158,8 @@ UpdateDate="*res://scripts/updateDate.gd"
 UpdateValue="*res://scripts/UpdateValue.gd"
 UpdateHappiness="*res://scripts/UpdateHappiness.gd"
 UpdateDemand="*res://scripts/updateDemand.gd"
+UpdateGraphics="*res://scripts/updateGraphics.gd"
+UpdateErosion="*res://scripts/updateErosion.gd"
 
 [display]
 

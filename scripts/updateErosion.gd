@@ -7,14 +7,18 @@ func update_erosion():
 	for i in mapHeight:
 		for j in mapWidth:
 			var currTile = Global.tileMap[i][j]
-			if currTile.TileBase != Tile.TileBase.OCEAN:
+			if currTile.base != Tile.TileBase.OCEAN:
 				var waterPresence = calc_water_neighbors(currTile)
-				if currTile.TileBase == Tile.TileBase.DIRT:
-					currTile.erosion += 0.1
-				elif currTile.TileBase == Tile.TileBase.ROCK:
-					currTile.erosion += 0.05
-				elif currTile.TileBase == Tile.TileBase.SAND:
-					currTile.erosion += 0.2
+				if currTile.base == Tile.TileBase.DIRT:
+					currTile.erosion += 0.01 * waterPresence
+				elif currTile.base == Tile.TileBase.ROCK:
+					currTile.erosion += 0.005 * waterPresence
+				elif currTile.base == Tile.TileBase.SAND:
+					currTile.erosion += 0.02 * waterPresence
+			# if tile reaches max erosion, reduce height of tile and reset
+			if currTile.erosion >= 100:
+				currTile.erosion = 0
+				currTile.baseHeight -= 1
 func calc_water_neighbors(tile):
 	# check 8 adjacent tiles for water
 	var numWaterTiles = 0
