@@ -79,6 +79,7 @@ var cube = Area2D.new()
 var data = [0, 0, 0, 0, 0]
 var powered = false
 var tileDamage = 0
+var erosion = 0
 # Purchase price of a tile
 var landValue = 0
 # Income of a zone
