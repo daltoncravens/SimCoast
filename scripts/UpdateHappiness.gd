@@ -1,6 +1,7 @@
 extends Node
 
 const BASE_HAPPINESS = 50
+const NO_POWER_UNHAPPINESS = 50
 
 func update_happiness():
 	for i in Global.mapWidth:
@@ -13,7 +14,9 @@ func update_happiness():
 				var zoneConnectionsValue = UpdateValue.calc_zone_connections(currTile)
 				var tileDamageValue = UpdateValue.calc_tile_damage(currTile)
 				var taxRateValue = UpdateValue.calc_taxation_rate(currTile)
-				
+				if !currTile.is_powered():
+					happiness =- NO_POWER_UNHAPPINESS
+			
 				happiness = happiness + waterValue + zoneConnectionsValue + taxRateValue + tileDamageValue
 				
 				if happiness < 0:

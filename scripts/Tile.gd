@@ -155,6 +155,10 @@ func clear_tile():
 		tileDamage -= data[0] * Econ.REMOVE_COMMERCIAL_BUILDING
 	else:
 		tileDamage -= data[0] * Econ.REMOVE_BUILDING_DAMAGE
+	if data[2] > 0:
+		var removedpop = remove_people(16)
+		UpdatePopulation.TOTAL_POPULATION += removedpop
+		
 	zone = TileZone.NONE
 	inf = TileInf.NONE
 	data = [0, 0, 0, 0, 0]
