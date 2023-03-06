@@ -245,15 +245,10 @@ func calculate_damage():
 				elif tile.get_base() == Tile.TileBase.SAND:
 					if tile.get_water_height() >= 5:
 						tile.lower_tile()
+				#TODO: Decide later if we want to remove the water from flooded tiles automatically
 				#tile.remove_water()
 				#tile.cube.update()
 				tile.changeInWaterHeight = 0
-
-	# Restore ocean height to sea level
-	Global.oceanHeight = 0
-	while Global.oceanHeight < Global.seaLevel:
-		Global.oceanHeight += 1
-		updateOceanHeight(1)
 
 		
 func tile_out_of_bounds(cube):
