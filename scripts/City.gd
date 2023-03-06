@@ -36,13 +36,13 @@ func extend_map():
 	Global.tileMap.append(new_row)
 
 	for j in Global.mapWidth:
-		Global.tileMap[Global.mapHeight][j] = Tile.new(Global.mapHeight, j, 0, 0, 0, 0, 0, [0, 0, 0, 0, 0], 100, Econ.TILE_BASE_VALUE, 0)
+		Global.tileMap[Global.mapHeight][j] = Tile.new(Global.mapHeight, j, 0, 0, 0, 0, 0, [0, 0, 0, 0, 0], 0, Econ.TILE_BASE_VALUE, 0)
 		$VectorMap.add_tile(Global.mapHeight, j)
 	
 	Global.mapHeight += 1
 		
 	for i in Global.mapHeight:
-		Global.tileMap[i].append(Tile.new(i, Global.mapWidth, 0, 0, 0, 0, 0, [0, 0, 0, 0, 0], 100, Econ.TILE_BASE_VALUE, 0))
+		Global.tileMap[i].append(Tile.new(i, Global.mapWidth, 0, 0, 0, 0, 0, [0, 0, 0, 0, 0], 0, Econ.TILE_BASE_VALUE, 0))
 		$VectorMap.add_tile(i, Global.mapWidth)
 	
 	Global.mapWidth += 1
@@ -226,18 +226,18 @@ func calculate_damage():
 			# If buildings present, determine damage based on water height
 			if tile.get_water_height() > 0:
 				if tile.has_building() && tile.is_light_zoned():
-					if tile.get_water_height() <= 1:
+					if tile.get_water_height() <= 1 && tile.changeInWaterHeight > 0:
 						tile.set_damage(Tile.TileStatus.LIGHT_DAMAGE)
-					elif tile.get_water_height() <= 3:
+					elif tile.get_water_height() <= 3 && tile.changeInWaterHeight > 0:
 						tile.set_damage(Tile.TileStatus.MEDIUM_DAMAGE)
-					else:
+					elif tile.get_water_height() > 3 && tile.changeInWaterHeight > 0: 
 						tile.set_damage(Tile.TileStatus.HEAVY_DAMAGE)
 				elif tile.has_building() && tile.is_heavy_zoned():
-					if tile.get_water_height() <= 3:
+					if tile.get_water_height() <= 3 && tile.changeInWaterHeight > 0:
 						tile.set_damage(Tile.TileStatus.LIGHT_DAMAGE)
-					elif tile.get_water_height() <= 6:
+					elif tile.get_water_height() <= 6 && tile.changeInWaterHeight > 0:
 						tile.set_damage(Tile.TileStatus.MEDIUM_DAMAGE)
-					else:
+					elif tile.get_water_height() > 6 && tile.changeInWaterHeight > 0:
 						tile.set_damage(Tile.TileStatus.HEAVY_DAMAGE)
 				elif tile.inf == Tile.TileInf.ROAD:
 					if tile.get_water_height() >= 5:
@@ -245,14 +245,10 @@ func calculate_damage():
 				elif tile.get_base() == Tile.TileBase.SAND:
 					if tile.get_water_height() >= 5:
 						tile.lower_tile()
+				#TODO: Decide later if we want to remove the water from flooded tiles automatically
 				#tile.remove_water()
 				#tile.cube.update()
-
-	# Restore ocean height to sea level
-	Global.oceanHeight = 0
-	while Global.oceanHeight < Global.seaLevel:
-		Global.oceanHeight += 1
-		updateOceanHeight(1)
+				tile.changeInWaterHeight = 0
 
 		
 func tile_out_of_bounds(cube):

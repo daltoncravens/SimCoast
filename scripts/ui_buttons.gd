@@ -63,7 +63,7 @@ func button_hover(button):
 		'clear_button':
 			toolInfo.text = "Clear tile"
 		'repair_button':
-			toolInfo.text = "Repair damaged buildings"
+			toolInfo.text = "Repair damaged tiles"
 		'add_water_button':
 			toolInfo.text = "Increase tile water height  (Right Click: Lower tile water height)"
 		'clear_water_button':

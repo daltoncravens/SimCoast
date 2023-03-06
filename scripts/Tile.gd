@@ -84,6 +84,7 @@ var landValue = 0
 # Income of a zone
 var profitRate = 0
 var happiness = 0
+var changeInWaterHeight = 0
 
 # Economy AI: equation coefficient constants
 var desirability = 0.2
@@ -155,6 +156,8 @@ func clear_tile():
 		tileDamage -= data[0] * Econ.REMOVE_COMMERCIAL_BUILDING
 	else:
 		tileDamage -= data[0] * Econ.REMOVE_BUILDING_DAMAGE
+	if tileDamage < 0:
+		tileDamage = 0
 	zone = TileZone.NONE
 	inf = TileInf.NONE
 	data = [0, 0, 0, 0, 0]
@@ -171,11 +174,13 @@ func lower_tile():
 
 func raise_water():
 	waterHeight += 1
+	changeInWaterHeight = 1
 	if (waterHeight + baseHeight) > Global.MAX_HEIGHT:
 		waterHeight = Global.MAX_HEIGHT - baseHeight
 
 func lower_water():
 	waterHeight -= 1
+	changeInWaterHeight = -1
 	if waterHeight < 0:
 		waterHeight = 0
 
@@ -240,9 +245,31 @@ func is_ocean():
 
 func remove_water():
 	waterHeight = 0
+	changeInWaterHeight = 0
 
 func set_damage(n):
-	data[4] = n
+	if n == TileStatus.LIGHT_DAMAGE:
+		tileDamage += .25
+	elif n == TileStatus.MEDIUM_DAMAGE:
+		tileDamage += .5
+	elif n == TileStatus.HEAVY_DAMAGE:
+		tileDamage += .75
+	
+		
+	if tileDamage < .5:
+		data[4] = TileStatus.LIGHT_DAMAGE
+	elif tileDamage >=.5 && tileDamage <= .75:
+		data[4] = TileStatus.MEDIUM_DAMAGE
+	elif tileDamage > .75:
+		data[4] = TileStatus.HEAVY_DAMAGE
+		
+	if tileDamage >= 1:
+		tileDamage = 1
+		#the tile is completely destroyed at this point
+		#should remove all buildings and all population?
+		while data[0] > 0:
+			remove_building()
+		remove_people(data[2])
 
 func is_powered():
 	return powered
@@ -276,7 +303,10 @@ func add_building():
 
 func remove_building():		
 	if data[0] <= 1:
-		data = [0, 4, 0, 0, 0]
+		data[0] = 0
+		data[1] = 4
+		data[2] = 0
+		data[3] = 0
 		inf = TileInf.NONE
 	
 	else:
@@ -284,10 +314,12 @@ func remove_building():
 		data[3] -= 4
 		if data[2] > data[3]:
 			data[2] = data[3]
-	if zone == TileZone.HEAVY_COMMERCIAL || zone == TileZone.LIGHT_COMMERCIAL:
-		tileDamage -= Econ.REMOVE_COMMERCIAL_BUILDING
-	else:
-		tileDamage -= Econ.REMOVE_BUILDING_DAMAGE
+#	if zone == TileZone.HEAVY_COMMERCIAL || zone == TileZone.LIGHT_COMMERCIAL:
+#		tileDamage -= Econ.REMOVE_COMMERCIAL_BUILDING
+#	else:
+#		tileDamage -= Econ.REMOVE_BUILDING_DAMAGE
+	if tileDamage < 0:
+		tileDamage = 0
 
 func add_people(n):	
 	var before = data[2]

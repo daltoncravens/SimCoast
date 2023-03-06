@@ -43,7 +43,7 @@ func update_land_value():
 				var cityWealthValue = calc_city_wealth(currTile)
 				var taxRateValue = calc_taxation_rate(currTile)
 				
-				value += waterValue + baseValue + zoneConnectionsValue + numZonesValue + numPeopleValue + tileDamageValue + cityWealthValue + taxRateValue
+				value += waterValue + baseValue + zoneConnectionsValue + numZonesValue + numPeopleValue - tileDamageValue + cityWealthValue + taxRateValue
 				value = value / GLOBAL_TILE_VALUE_WEIGHT
 				currTile.landValue = value
 
@@ -134,7 +134,10 @@ func  calc_num_people(tile): #Return value of number of people in city
 	return UpdatePopulation.TOTAL_POPULATION * PERSON_VALUE
 
 func calc_tile_damage(tile): #Return a value depending on tile damage
-	return (100 - tile.tileDamage) * TILE_DAMAGE_WEIGHT #100 is max tile health
+	#this returns a value that represents the percentage of damage a tile has
+	#this limits happiness to, at most, 100 - the damage of the tile.
+	#introducing a cap to happiness that is proportional to damage of the tile
+	return tile.tileDamage * 100 #1 is max tile health, so *100 is percentiles
 
 func calc_city_wealth(tile): #Return a value based on city wealth
 	var cityWealthValue = 0
